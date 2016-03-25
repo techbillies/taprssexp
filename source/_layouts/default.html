@@ -1,0 +1,26 @@
+{% capture root_url %}{{ site.root | strip_slash }}{% endcapture %}
+{% include head.html %}
+<body {% if page.body_id %} id="{{ page.body_id }}" {% endif %} {% if page.sidebar == false %} class="no-sidebar" {% endif %} class="collapse-sidebar sidebar-footer" >
+  <header role="banner">{% include header.html %}</header>
+  <nav role="navigation">{% include navigation.html %}</nav>
+  <div id="main">
+    <div id="content">
+      {{ content | expand_urls: root_url }}
+    </div>
+  </div>
+  <div class="sidebar">
+    <p class="sidebar-content">
+      <a href="http://nilenso.com">nilenso</a> is an employee-owned software cooperative based out of Bangalore, India.
+    </p>
+    <p class="sidebar-content">
+      We practice test driven development and continuous delivery, and love working with Clojure and Ruby on Rails.
+    </p>
+    <p class="sidebar-content">
+      This blog is a showcase of our growth as a consultancy, a product company and generally curious beings.
+      Get in touch with us at <a href="mailto:hello@nilenso.com">hello@nilenso.com</a>.
+    </p>
+  </div>
+</body>
+{% include footer.html %}
+{% include after_footer.html %}
+</html>

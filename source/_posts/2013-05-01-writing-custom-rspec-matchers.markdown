@@ -2,9 +2,7 @@
 title: "Writing Custom RSpec Matchers"
 kind: article
 created_at: 2013-05-01 06:26:00 UTC
-author: "Timothy Andrew"
-categories: 
-tags: 
+author: Timothy Andrew
 layout: post
 ---
 <p>RSpec matchers let you abstract away common assertions in your test code.</p>

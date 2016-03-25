@@ -2,9 +2,7 @@
 title: "Turning Your Local Git Repo Into a Remote"
 kind: article
 created_at: 2013-05-09 14:48:00 UTC
-author: "Timothy Andrew"
-categories: 
-tags: 
+author: Timothy Andrew
 layout: post
 ---
 <p>Need to pull some changes from a friend&#8217;s local Git repo without having to push to <code>origin</code>? This post will show you how to do that.</p>

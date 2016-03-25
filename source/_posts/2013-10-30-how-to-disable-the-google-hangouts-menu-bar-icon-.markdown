@@ -2,9 +2,7 @@
 title: "How to Disable the Google Hangouts Menu Bar Icon on OS X"
 kind: article
 created_at: 2013-10-30 09:40:00 UTC
-author: "Timothy Andrew"
-categories: 
-tags: 
+author: Timothy Andrew
 layout: post
 ---
 <p>This has been annoying me for weeks now. Google Hangouts would place an menu-bar icon for each instance of Chrome I had running. Repeatedly quitting them didn&#8217;t have much effect; they&#8217;d keep coming back.</p>

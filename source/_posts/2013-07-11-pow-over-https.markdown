@@ -2,9 +2,7 @@
 title: "Pow Over HTTPS"
 kind: article
 created_at: 2013-07-11 06:56:00 UTC
-author: "Timothy Andrew"
-categories: 
-tags: 
+author: Timothy Andrew
 layout: post
 ---
 <p>I use <a href="http://pow.cx">Pow</a> to manage web servers on my development machine. It works pretty well.

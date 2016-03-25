@@ -9,3 +9,4 @@ gem 'jekyll'
 
 gem 'jekyll-paginate'
 gem 'rdiscount'
+gem 'pygments.rb'

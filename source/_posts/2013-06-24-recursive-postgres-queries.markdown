@@ -2,9 +2,7 @@
 title: "Recursive Postgres Queries"
 kind: article
 created_at: 2013-06-24 03:00:00 UTC
-author: "Timothy Andrew"
-categories: 
-tags: 
+author: Timothy Andrew
 layout: post
 ---
 <h3>Introduction</h3>

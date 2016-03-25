@@ -2,9 +2,7 @@
 title: "Using Swipe.js to swipe between pages of a web app"
 kind: article
 created_at: 2013-04-05 16:15:00 UTC
-author: "Timothy Andrew"
-categories: 
-tags: 
+author: Timothy Andrew
 layout: post
 ---
 <p>I was working with <a href="http://deobald.ca/">Steven</a> on <a href="http://github.com/deobald/jok">Jok</a> today.</p>

@@ -1,0 +1,25 @@
+<div class="clearspace"></div>
+{% if site.subtitle %}
+<p class="description">{{ site.subtitle }}</p>
+<ul id="menu">
+  {% endif %}
+
+  <li>
+    <span class="popular-heading">Popular Posts</span>
+  </li>
+
+  {% for post in site.popular_posts limit: site.popular_posts_count %}
+  <li>
+    <a class="popular-link" href="{{ root_url }}{{ post.url }}">{{ post.title }}</a>
+  </li>
+  {% endfor %}
+</ul>
+
+{% if site.simple_search %}
+<form action="{{ site.simple_search }}" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:{{ site.url | shorthand_url }}" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+{% endif %}

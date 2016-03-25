@@ -1,0 +1,59 @@
+// small-medium-width screen
+@media only screen and (max-width: 800px) {
+  $medium-sidebar-width: 15%;
+  #sidebar {
+    width: $medium-sidebar-width;
+  }
+
+  .left-topbar {
+    width: $medium-sidebar-width;
+    float: left;
+  }
+
+  #main {
+    margin-left: $medium-sidebar-width;
+  }
+
+  ul#menu {
+    width: 50%;
+    margin-left: 0;
+  }
+
+  .description {
+    margin: 0 0 20px;
+  }
+}
+
+
+@media only screen and (min-width: 800px) and (max-width: 1000px) {
+  ul#menu {
+    width: 70%;
+    margin-left: 0;
+  }
+
+  .description {
+    margin: 0 0 20px;
+  }
+}
+
+@media only screen and (min-width: 1000px) and (max-width: 1300px) {
+  ul#menu {
+    width: 60%;
+    margin-left: 0;
+  }
+
+  .description {
+    margin: 0 0 20px;
+  }
+}
+
+@media only screen and (min-width: 1300px) {
+  ul#menu {
+    width: 80%;
+    margin-left: 0;
+  }
+
+  .description {
+    margin: 0 0 30px 0;
+  }
+}

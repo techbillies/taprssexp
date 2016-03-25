@@ -1,0 +1,500 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Nilenso Blog</title>
+  <meta name="author" content="Nilenso">
+
+  
+  <meta name="description" content="
+  
+  
+  
+    
+      
+  
+  
+    
+      Functional Programming 101 - With Haskell
+      
+      
+    
+      
+        
+
+
+
+
+
+
+
+
+
+
+        
+      
+    
+...">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+
+  
+  <link rel="canonical" href="http://blog.nilenso.com/page5/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Nilenso Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <!-- Typekit fonts -->
+  <script type="text/javascript" src="//use.typekit.net/xgt4lgm.js"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-43704022-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  
+</ul>
+  
+<header class="nilenso-header">
+  <img class="header-logo-image left" src="/images/nilenso-200.png" />
+  <a class="header-link logo-name" href="http://nilenso.com">nilenso</a>
+  <a class="header-link right page-link rss-link" href="/atom.xml" title="subscribe via RSS"><img class="rss-link-image" src="/images/rss.png"></img></a>
+  <a class="header-link page-link" href="/blog/archives">Archive</a>
+  <a class="header-link page-link active" href="/">Blog</a>
+</header>
+<div class="clear"></div>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/24/functional-programming-101-with-haskell/">Functional Programming 101 - With Haskell</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+<time datetime="2014-01-24T00:00:00+05:30" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In this blog post, I&#39;ll attempt to explain some basic concepts of Functional Programming, using Haskell. This blog post isn&#39;t about Haskell per-se, but about one way of approaching this problem, which demonstrates the benefits of functional programming.</p>
+
+
+<p> <p>You can run most of these examples in ghci, by saving the contents of the example into a .hs file, loading up ghci and running :load file.hs.</p> <p>Many thanks to <a href="http://www.iit.edu/csl/cs/faculty/beckman_mattox.shtml">Mattox Beckman</a> for coming up with the programming exercise, and Junjie Ying for coming finding a better data structure for this explanation than I came up with.</p><h2 id='the-problem'>The Problem</h2><p>You are Hercules, about to fight the dreaded Hydra. The Hydra has 9 heads. When a head is chopped off, it spawns 8 more heads. When one of these 8 heads is cut off, each one spawns out 7 more heads. Chopping one of these spawns 6 more heads, and so on until the weakest head of the hydra will not spawn out any more heads.</p> <p>Our job is to figure out how many chops Hercules needs to make in order to kill all heads of the Hydra. And no, it&#39;s not n!.</p><h2 id='prelude-simple-overview-of-haskell-syntax'>Prelude: Simple Overview Of Haskell Syntax</h2><p>Before we dive into code, i&#39;ll explain a few constructs which are unique to Haskell, so it&#39;s easy for non Haskellers.</p> <ul><li>List Creation: You can create a list / array using the : operator. This can even be done lazily to get an infinite list. <script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=basics-1.hs"></script><noscript>  <pre>let firstArray = 0:1:[2, 3]<br />&ndash; [0, 1, 2, 3]<br />let infiniteOnes = 1:infiniteOnes<br />&ndash; [1, 1, 1, 1, 1, &hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;]<br />&ndash; never stops, hit ctrl-C to get your interpreter back</pre></noscript></li><li>Defining Function: Looks just like defining a variable, but it takes parameters. One way they are different from other languages is the ability to do pattern matching to simplify your code. Here, I define a method that sums all the elements of a list. <script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=basics-2.hs"></script><noscript>  <pre>sumOfElements []     = 0<br />sumOfElements (x:xs) = x + sumOfElements xs</pre></noscript></li><li>More List Foo: Adding lists can be done with ++. Checking if a list is empty can be done with null. You can use replicate to create a list with the same elements over and over. <script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=basics-3.hs"></script><noscript>  <pre>[1] ++ [3]     &ndash; [1, 3]<br />null []        &ndash; True<br />null [1]       &ndash; False<br />replicate 2 3  &ndash; [3, 3]</pre></noscript></li></ul><h2 id='choosing-a-data-structure'>Choosing a data structure</h2><p>Let&#39;s choose a simple data structure to represent the hydra. We&#39;ll pick an array to represent the heads of the Hydra, using the <code>level</code> of each head as the value. The initial state of the Hydra (with 9 <code>level 9</code> heads) can be represented as follows: <code>[9, 9, 9, 9, 9, 9, 9, 9, 9]</code>.</p><h2 id='chopping-off-a-head'>Chopping off a head</h2><p>The whole point of functional programming is to build small functions and compose them later. We&#39;ll build a few functions, specific to our domain, and a few more general ones to orchestrate.</p> <p>Let&#39;s first build a specific function to chop off the Hydra&#39;s head. We know that chopping off one <code>level 9</code> head should result in 8 <code>level 8</code> heads (and 8 of the original <code>level 9</code> heads). This is represented as <code>[8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9]</code></p> <p>Let&#39;s build the chop function. It takes a single argument, and the current levels of the all live heads. It will return the state of the heads after chopping the first one.</p> <p>The three lines of code below map to these rules:</p> <ul><li>If there are no heads left, just return <code>[]</code></li><li>If we find that there is a level 1 head at the start of our list, just chop it off and return the rest of the array</li><li>If we find that there is a higher level head at the start of our list, spawn n - 1 heads in it&#39;s place</li></ul> <p><script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=chop.hs"></script><noscript>  <pre>chop []       = []<br />chop (1:xs)   = xs<br />chop (n:xs)   = (replicate (n - 1) (n - 1)) ++ xs<br />&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-<br />chop [1]<br />&ndash; []<br />chop [4]<br />&ndash; [3, 3, 3]<br />chop [3, 3, 3]<br />&ndash; [2, 2, 3, 3]<br />chop [9,9,9,9,9,9,9,9,9]<br />&ndash; [8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9]</pre></noscript></p><h2 id='repeatedly-chopping-heads'>Repeatedly chopping heads</h2><p>Our function chop is a pure function as, given some input, it always returns the same output, without any sort of side effects. Side effects is a general term for modifying inputs / IO Operations / DB Calls, and so on.</p> <p>Since chop is pure function, we can safely call it over and over. Let&#39;s build a list where each element is the result of chopping the previous element. <script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=repeatedly-chop1.hs"></script><noscript>  <pre>repeatedlyChop heads = heads:repeatedlyChop (chop heads)<br />&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-<br />repeatedlyChop [3]<br />&ndash; [[3],[2,2],[1,2],[2],[1], [], [], [] &hellip;]<br />&ndash; this is an infinite list</pre></noscript></p> <p>This paradigm is so common, that we have a functional construct that does this: <a href="http://hackage.haskell.org/package/base-4.6.0.1/docs/Prelude.html#v:iterate">iterate</a>. We can replace the above code with the following: <script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=repeatedly-chop2.hs"></script><noscript>  <pre>repeatedlyChop heads = iterate chop heads</pre></noscript></p><h2 id='truncate-that-infinite-list'>Truncate that infinite list</h2><p>Great, we now have built a list of all the states the Hydra is in while Hercules is busy chopping away at it. However, this list goes on forever (we never put in a termination condition in the earlier code), so let&#39;s do that now.</p> <p>We can use a simple empty check (null) to test if the hydra is still alive. Let&#39;s keep items as long as the Hydra is alive <script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=takewhilealive.hs"></script><noscript>  <pre>takeWhileAlive (x:xs) = if null x then [] else x:(takeWhileAlive xs)</pre></noscript></p> <p>Putting the two together <script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=iteratethroughheads.hs"></script><noscript>  <pre>repeatedlyChopTillDead heads = takeWhileAlive (repeatedlyChopTillDead heads)<br />&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-<br />repeatedlyChopTillDead [4]<br />&ndash; [[4],[3,3,3],[2,2,3,3],[1,2,3,3],[2,3,3],[1,3,3],[3,3],[2,2,3],[1,2,3],[2,3],[1,3],[3],[2,2],[1,2],[2],[1]]</pre></noscript></p> <p>Again, these patterns are so common, that we can replace the entire thing with a single line. <a href="http://hackage.haskell.org/package/base-4.6.0.1/docs/Prelude.html#v:takeWhile">takeWhile</a> keeps things in the list until the first element that doesn&#39;t match. <script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=repeatedly-simple.hs"></script><noscript>  <pre>repeatedlyChopTillDead heads = takeWhile (not.null) (iterate chop heads)</pre></noscript></p><h2 id='finishing-up'>Finishing up</h2><p>Now that we have the sequence of chops needed to kill that Hydra, figuring out the number of chops is just a matter of figuring out how long the sequence is. <script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=count-chops.hs"></script><noscript>  <pre>countOfChops heads = length (repeatedlyChopTillDead heads)<br />&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;<br />countOfChops [1] &ndash; 1<br />countOfChops [3] &ndash; 5<br />countOfChops [9,9,9,9,9,9,9,9,9] &ndash; 986409 (this takes a while)</pre></noscript></p><h2 id='extending'>Extending</h2><p>Now that we&#39;ve solved the problem, what next? How easy is it to extend this? Let&#39;s add a new requirement: Hercules, though a half god, can only fight at most n Hydra heads at a time. If the number of Hydra heads goes above n, then hercules dies. Let&#39;s make a function <code>willHerculesDie</code> which takes two parameters, n and the Hydra.</p> <p>Turns out, this is pretty simple. We just need to count all the heads that are alive. If the count is more than n at any point, then we return true, and Hercules dies. <script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=herculeswilldie.hs"></script><noscript>  <pre>willHerculesDie n heads = any (> n) (map length (repeatedlyChopTillDead heads))<br />&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-<br />willHerculesDie 37 [9,9,9,9,9,9,9,9,9] &ndash; False<br />willHerculesDie 36 [9,9,9,9,9,9,9,9,9] &ndash; True</pre></noscript></p><h2 id='so-what-next'>So what next?</h2><p>We&#39;ve built a bunch of really composable functions, and we can look at each one independently to tune the system.</p> <p>You can get Haskell set up with the <a href="http://www.haskell.org/platform/">Haskell Platform</a> and play around with the code <a href="https://gist.github.com/gja/24df70ad958b0ba87e37/#file-hydra-hs">here</a>.</p> <p>Some great books you can check out:</p> <ul><li><a href="http://mitpress.mit.edu/sicp/full-text/book/book.html">Structure and Interpretation of Computer Programs</a></li><li><a href="http://learnyouahaskell.com/">Learn you a Haskell for Great Good</a> - Greatest Haskell Tutorial out there</li><li><a href="https://leanpub.com/fp-oo">Functional Programming for the Object-Oriented Programmer</a></li></ul> <p><hr /><b>If you liked this post, you could:</b><br /> <h4 style="text-align: center;">  <a class="twitter-follow-button" data-show-count="false" href="https://twitter.com/tdinkar">Follow @tdinkar</a></h4> <div style="text-align: center;">  <b><a href="http://news.ycombinator.com/item?id=7113259">upvote it</a> on Hacker News</b></div> <div style="text-align: center;">  <b>or just <a href="http://www.blogger.com/comment.g?blogID=9188785269813520484&postID=5931143789690992852">leave a comment</a></b></div> <br/></p><div class="author">
+  <img src="http://nilenso.com/images/people/tejas-200.png" style="width: 96px; height: 96;">
+  <span style="position: absolute; padding: 32px 15px;">
+    <i>Original post by <a href="http://twitter.com/tdinkar">Tejas Dinkar</a> - check out <a href="http://blog.gja.in/">Side Effect Free Rants</a></i>
+  </span>
+</div></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/30/how-to-disable-the-google-hangouts-menu-bar-icon/">How to Disable the Google Hangouts Menu Bar Icon on OS X</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+<time datetime="2013-10-30T00:00:00+05:30" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This has been annoying me for weeks now. Google Hangouts would place an menu-bar icon for each instance of Chrome I had running. Repeatedly quitting them didn&#8217;t have much effect; they&#8217;d keep coming back.</p>
+
+
+
+
+<p><img src="http://blog.timothyandrew.net/images/hangouts/menubar.png" alt="Menu Bar Screenshot" /></p>
+
+
+
+
+<p>Luckily, there&#8217;s an easy way to turn off the menu-bar icons.</p>
+
+
+
+
+<ul>
+<li>Open Chrome</li>
+<li>Menu Bar > Chrome > Preferences</li>
+<li>Click on Extensions, scroll down to Hangouts, and click on <em>Options</em></li>
+<li>Uncheck <em>Show system tray icon</em></li>
+<li>Click <em>OK</em></li>
+</ul>
+
+
+
+
+<p>And that&#8217;s it.</p>
+
+
+<div class="author">
+  <img src="http://nilenso.com/images/people/timothy-200.jpg" style="width: 96px; height: 96;">
+  <span style="position: absolute; padding: 32px 15px;">
+    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
+  </span>
+</div>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/19/ashoka-survey-offline-tool/">Building an offline survey tool for Rural India</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+<time datetime="2013-09-19T18:21:00+05:30" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>At Nilenso, we&rsquo;ve helped <a href="http://india.ashoka.org/">Ashoka</a> accomplish their initiative in building infrastructure for the <a href="https://www.ashoka.org/citizensector">citizen sector</a>.</p>
+
+<p>Infiniti is a suite of products envisioned for social entrepreneurs, the fellows at Ashoka and other citizen sector organizations to get a variety of quality data through crowd sourcing, surveys and market research.</p>
+
+<p>Field agents responsible for carrying out these organized surveys face problems where there is often severe lack of proper mobile connectivity and even basic amenities. The data capturing tools therefore need to be really effective offline and should have the capability to synced to the central server once the agents return back to camp.</p>
+
+<p><img src="/images/rural-survey-use.png" alt="" /></p>
+
+<p>It is currently very much in use at Ashoka around these verticals:</p>
+
+<ul>
+<li>Nutrition and Wellness – for addressing malnutrition problem among children in India</li>
+<li>Affordable Housing – for enabling access to housing in the informal sector</li>
+<li>Rural Innovation and Farming – to understand the role of women in Agriculture</li>
+</ul>
+
+
+<p>And is largely composed of these ideas:</p>
+
+<p><img src="/images/infiniti.png" alt="Infiniti Suite" /></p>
+
+<p>As a part of this, we built Ashoka Survey Web – one of the arms that takes care of data collection, validation, integrity and reporting.</p>
+
+<h2>How does Survey Web work?</h2>
+
+<p>It is a collection of these 4 applications:</p>
+
+<ul>
+<li>the auth provider, <a href="https://github.com/nilenso/ashoka-user-owner">user-owner</a>.</li>
+<li>the survey builder, <a href="https://github.com/nilenso/ashoka-survey-web">survey-web</a></li>
+<li>response collection from the web, <a href="https://github.com/nilenso/ashoka-survey-web">survey-web</a>.</li>
+<li>the mobile applications:
+<a href="https://github.com/nilenso/ashoka-survey-mobile">survey-mobile</a>,
+<a href="https://github.com/nilenso/ashoka-survey-mobile-native">survey-mobile-native</a>.</li>
+</ul>
+
+
+<h4>Process</h4>
+
+<p>The fellows at Ashoka first identify the problem sets based on the verticals mentioned above and create a questionnaire that will effectively capture the data necessary. Once that is done, they use the survey builder to quickly digitise them. These surveys can be shared with different registered organisations or shared publicly.</p>
+
+<p>The responses are then collected by the field agents of the respective organizations using the <code>survey-mobile</code> application that can take validated answers client-side and store them offline. These can be synced to <code>survey-web</code>, once the field agents get internet connectivity.</p>
+
+<p>Here&rsquo;s a figure explaining the roles and interfaces of each of these applications:</p>
+
+<p><img src="/images/architecture.png" alt="Architecture Diagram" /></p>
+
+<p>We created a quick one-minute screencast that describes a simple workflow on how a survey is created, how a response is taken on that survey on the web and some basic reports you can see around it.</p>
+
+<p><video width="640" height="360" controls>
+  <source src="/videos/ashoka-survey-screencast.mp4" type="video/mp4">
+  <source src="/videos/ashoka-survey-screencast.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video></p>
+
+<h4>Need for a separate auth app</h4>
+
+<p>The <code>user-owner</code> app was built to serve as a centralized auth provider for all of Ashoka&rsquo;s web services. It is implemented using the <a href="https://github.com/applicake/doorkeeper">doorkeeper</a> gem.</p>
+
+<h4>Survey Builder amongst the alternatives available</h4>
+
+<p><a href="http://wufoo.com">Wufoo</a> and <a href="http://forms.google.com">Google Forms</a> aren&rsquo;t designed for long surveys. They work well for short forms/questionnaires that can be answered on the web, but they do not have support for nesting questions or collecting responses from a mobile app offline.</p>
+
+<p><a href="http://opendatakit.org">OpenDataKit</a> doesn&rsquo;t have a good interface for building long surveys or nested questions. It requires working with XLS files for many complex operations.</p>
+
+<p><a href="http://surveymonkey.com">SurveyMonkey</a> is a good tool, but we couldn&rsquo;t use it since we needed complete ownership of the survey and response data.</p>
+
+<h4>Survey Builder V2</h4>
+
+<p>The current survey builder works well and is pretty functional, but it fails on a few usability aspects.</p>
+
+<ul>
+<li><p>Being able to switch between one question type to another. Simply using a drop-down bar instead of individual buttons to solve this.</p></li>
+<li><p>Editing concerns are shared across both panes, fine-grained question (question options, sub-questions etc.) level editing is on the left pane, more general editing and meta-information (type of question, maximum/minimum values for answers etc.) about the questions is on the right.</p></li>
+</ul>
+
+
+<p>We worked together with Accenture to come up with new designs and started working on rebuilding it last month. It is still in progress, and can be viewed from the <code>create-v2</code> menu. The new visual designs are <a href="https://github.com/nilenso/ashoka-survey-web/commit/a5aeb01fadedf43311a779412ef49c0c28081d92">here</a>.</p>
+
+<h4>The Native Android App</h4>
+
+<p>The <code>survey-mobile</code> app is built with <a href="http://www.appcelerator.com/platform/titanium-platform/">Titanium</a>. We&rsquo;re looking to move away from this to a native android app. You can read a bit about where we&rsquo;re at in this <a href="http://blog.nilenso.com/blog/2013/09/10/android-native-mvp/">post</a> and checkout the mockups <a href="https://github.com/nilenso/ashoka-survey-mobile-native/commit/317c4692227249d9b476286d821493404b0acb0f">here</a>.</p>
+
+<h4>Data Portal</h4>
+
+<p>Each survey conducted by Ashoka typically has about 300 responses. We currently have some basic reports built with google charts. But we don&rsquo;t have the ability to say, interpret data of similar/same respondents across multiple surveys.</p>
+
+<p>This is a separate project where the idea is to build connections between disparate sources of data and make sense out of them.</p>
+
+<h4>Contribution</h4>
+
+<p>Each of these applications are entirely open-source, feel free to check them out on the <a href="https://github.com/nilenso">nilenso GitHub page</a>!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="6">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="4">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+Included file 'custom/asides/subscribe.html' not found in _includes directory<section>
+  <h1>Popular Posts</h1>
+  <ul id="recent_posts">
+    
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/03/01/suggestions-conferences-and-festivals/">Suggestions: Conferences and festivals</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/02/16/howto-bicycle-commute-in-bangalore/">HOWTO: Bicycle Commute in Bangalore</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/20/how-do-vipassana-centres-in-india-differ/">How do Vipassana centres in India differ?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/06/bangalore-2030/">Bangalore 2030</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/06/30/how-to-coop-salaries-and-reviews/">How to co-op: Salaries & Reviews</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/nilenso">@nilenso</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'nilenso',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section id="twitter">
+  <h1 class="tweets">Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("nilenso", , );
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <p>Follow <a href="http://twitter.com/nilenso">@nilenso</a></p>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <div class="sidebar">
+    <p class="sidebar-content">
+      <a href="http://nilenso.com">nilenso</a> is an employee-owned software cooperative based out of Bangalore, India.
+    </p>
+    <p class="sidebar-content">
+      We practice test driven development and continuous delivery, and love working with Clojure and Ruby on Rails.
+    </p>
+    <p class="sidebar-content">
+      This blog is a showcase of our growth as a consultancy, a product company and generally curious beings.
+      Get in touch with us at <a href="mailto:hello@nilenso.com">hello@nilenso.com</a>.
+    </p>
+  </div>
+</body>
+<div class="footer">
+  <div class="section-content contact-info">
+    <p class="contact-phone-number">
+      <a class="contact-link email-link" href="mailto:hello@nilenso.com">hello@nilenso.com</a>
+      <a class="contact-link contact-social-link" href="http://twitter.com/nilenso">@nilenso</a>
+      <a class="contact-link contact-social-link" href="http://github.com/nilenso">github.com/nilenso</a>
+      <a class="contact-link" href="tel:+918040937123">+91 80 4093 7123</a>
+     </p>
+    <p class="contact-address">Nilenso Software LLP, #105, 10th Cross, Indiranagar Stage 1, Bangalore, India, 560038</p>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</html>
