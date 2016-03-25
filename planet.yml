@@ -16,7 +16,7 @@ planet:
 blogs:
   - author: "Akshay Gupta"
     feed: "http://blog.kitallis.in/feeds/posts/default"
-    image:  "http://nilenso.com/images/people/akshay-200.png"
+    image:  "http://nilenso.com/images/people/kitallis-200.png"
     twitter: "kitallis"
 
   - author: "Tejas Dinkar"
@@ -26,7 +26,7 @@ blogs:
 
   - author: "Timothy Andrew"
     feed: "http://blog.timothyandrew.net/atom.xml"
-    image:  "http://nilenso.com/images/people/timothy-200.jpg"
+    image:  "http://nilenso.com/images/people/tim-200.png"
     twitter: "timothyandrew"
 
   - author: "Neha Kumari"
