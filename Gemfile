@@ -6,3 +6,6 @@ end
 
 gem 'planet'
 gem 'jekyll'
+
+gem 'jekyll-paginate'
+gem 'rdiscount'
