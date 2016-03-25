@@ -1,12 +1,26 @@
 # blog.nilenso.com
 Scripts to automate the nilenso blog/planet (v2)
 
+
+## Prerequisites
+
+Install `rbenv` and add this to `~/.bash_profile`:
+
+```
+export PATH="$HOME/.rbenv/bin:$PATH"
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+```
+
 ## Installing
+
+You will probably need to close and re-open your shell after each of these commands, because Ruby.
 
 ```
 rbenv install 2.2.3
+gem install bundler
 bundle install
 ```
+
 
 ## Generating + Publishing
 
