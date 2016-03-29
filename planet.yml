@@ -19,6 +19,29 @@ blogs:
     image:  "http://nilenso.com/images/people/kitallis-200.png"
     twitter: "kitallis"
 
+  - author: "Steven Deobald"
+    feed: "http://blog.deobald.ca/feeds/posts/default"
+    image:  "http://nilenso.com/images/people/steven-200.png"
+    twitter: "deobald"
+
+  - author: "Srihari Sriraman"
+    feed: "http://sriharisriraman.in/atom.xml"
+    image:  "http://nilenso.com/images/people/srihari-200.png"
+    twitter: "sriharisriraman"
+
+    # - author: Nivedita Priyadarshini
+    #   feed: "http:///"
+    #   image:  "http://nilenso.com/images/people/nid-200.png"
+    #   twitter: "nid90"
+
+    # TODO: add @abhin4v, @dvenkatr, @govindkrjoshi, @krish8664, @neenaoffline, @nid90, @noopurvarma, @yudistrange
+
+
+    ########################
+    # Alumni: new posts won't be tagged with `nilenso` and if we regenerate
+    #         the planet, old posts won't be lost
+    #########################
+
   - author: "Tejas Dinkar"
     feed: "http://blog.gja.in/feeds/posts/default"
     image:  "http://nilenso.com/images/people/gja-200.png"
@@ -34,32 +57,7 @@ blogs:
     image:  "http://nilenso.com/images/people/neha-200.png"
     twitter: "__neha"
 
-  - author: "Steven Deobald"
-    feed: "http://blog.deobald.ca/feeds/posts/default"
-    image:  "http://nilenso.com/images/people/steven-200.png"
-    twitter: "deobald"
-
   - author: "Prashant Karpe"
     feed: "http://like-that-only.tumblr.com/rss"
     image:  "http://nilenso.com/images/people/prashant-200.png"
     twitter: "prashantwit"
-
-  - author: "Srihari Sriraman"
-    feed: "http://sriharisriraman.in/atom.xml"
-    image:  "http://nilenso.com/images/people/srihari-200.png"
-    twitter: "sriharisriraman"
-
-  # - author: Asif Kalam
-  #   feed: "http://blog.asifskalam.com/"
-  #   image:  "http://nilenso.com/images/people/asif-200.png"
-  #   twitter: "asifskalam"
-
-  # - author: Jithu Gopal
-  #   feed: "http://jithugopal.com/blog/"
-  #   image:  "http://nilenso.com/images/people/jithu-200.png"
-  #   twitter: "tras"
-
-  # - author: Nivedita Priyadarshini
-  #   feed: "http:///"
-  #   image:  "http://nilenso.com/images/people/nid-200.png"
-  #   twitter: "nid90"
