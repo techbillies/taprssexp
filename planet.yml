@@ -29,6 +29,11 @@ blogs:
     image:  "http://nilenso.com/images/people/srihari-200.png"
     twitter: "sriharisriraman"
 
+  - author: "Unnikrishnan Geethagovindan"
+    feed: "http://blog.unnikrishnan.in/feed/"
+    image:  "http://blog.unnikrishnan.in/wp-content/uploads/2016/05/13124641_10207964967054916_8185125548463219102_n-e1464062267378.jpg"
+    twitter: "krish8664"
+
     # - author: Nivedita Priyadarshini
     #   feed: "http:///"
     #   image:  "http://nilenso.com/images/people/nid-200.png"
