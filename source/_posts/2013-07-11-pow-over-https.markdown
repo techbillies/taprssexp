@@ -36,7 +36,7 @@ To start my server, I just hit a URL like <code>http://surveyweb.dev</code>, whi
 
 
 <p>And now, both URLs work over HTTPS.</p><div class="author">
-  <img src="http://nilenso.com/images/people/timothy-200.jpg" style="width: 96px; height: 96;">
+  <img src="http://nilenso.com/images/people/tim-200.png" style="width: 96px; height: 96;">
   <span style="position: absolute; padding: 32px 15px;">
     <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
   </span>

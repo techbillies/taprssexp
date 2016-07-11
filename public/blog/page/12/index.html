@@ -18,7 +18,7 @@
   
   
     
-      GSoC 2011 - 0
+      zero to emacs in under 5 minutes
       
       
     
@@ -40,7 +40,7 @@
   
 
 
-  This is part zero of ...">
+  Yo...">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -113,6 +113,96 @@
   <header>
   
     
+      <h1 class="entry-title"><a href="/blog/2012/03/25/zero-to-emacs-in-under-5-minutes/">zero to emacs in under 5 minutes</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+<time datetime="2012-03-25T00:00:00+05:30" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><div dir="ltr" style="text-align: left;" trbidi="on"><div dir="ltr" style="text-align: left;" trbidi="on">You want to write Clojure. You want to write it in Emacs. Here's how.<br /><br /><span style="font-size: large;">1. Grab Leiningen.</span><br /><blockquote class="tr_bq"><pre><code><br />mkdir -p ~/bin<br />cd ~/bin<br />wget https://raw.github.com/technomancy/leiningen/stable/bin/lein<br />chmod +x lein<br />echo 'PATH=$PATH:~/bin' &gt;&gt; ~/.profile<br />lein self-install<br /></code><br /></pre></blockquote>This will get you leiningen, Clojure's build tool.<br /><br /><br /><span style="font-size: large;">2. Grab Clojure.</span><br /><br /><blockquote class="tr_bq"><pre><code><br />cd ~/code<br />lein new my-first-clojure-project<br />cd my-first-clojure-project<br />lein deps<br /></code></pre></blockquote>`lein deps` will bring down a local copy of Clojure. Look in <span style="font-family: 'Courier New', Courier, monospace;">~/code/my-first-clojure-project/lib</span>&nbsp;!<br /><br /><br /><span style="font-size: large;">3. Grab swank-clojure.</span><br /><br /><blockquote class="tr_bq"><pre><code><br />lein plugin install swank-clojure 1.4.0<br /></code></pre></blockquote>This gives you the `clojure-jack-in` command in emacs. It's your samurai sword.<br /><br /><br /><span style="font-size: large;">4. Grab a healthy .emacs config. </span><br /><blockquote class="tr_bq"><pre><code><br />mv ~/.emacs ~/.emacs.bak<br />mv ~/.emacs.d ~/.emacs.d.bak<br />git clone git@github.com:c42/dotfiles.git<br />ln -s dotfiles/emacs.d ~/.emacs.d<br /></code></pre></blockquote></div><span style="font-size: large;"><br /></span><span style="font-size: large;">5. Grab an emacs. </span><br /><br />Ubuntu:&nbsp;<a href="https://launchpad.net/~cassou/+archive/emacs">https://launchpad.net/~cassou/+archive/emacs</a><br />OS X:&nbsp;<a href="http://emacsformacosx.com/emacs-builds/Emacs-pretest-24.0.94-universal-10.6.8.dmg">http://emacsformacosx.com/emacs-builds/Emacs-pretest-24.0.94-universal-10.6.8.dmg</a><br /><br />Running emacs for the first time will automatically install all the packages you need. Now run your first emacs repl!<br /><blockquote class="tr_bq"><pre><code>M-x clojure-jack-in<br /></code></pre></blockquote><br /><span style="font-size: large;">TADA!</span></div>
+
+
+<div class="author">
+  <img src="http://nilenso.com/images/people/steven-200.png" style="width: 96px; height: 96;">
+  <span style="position: absolute; padding: 32px 15px;">
+    <i>Original post by <a href="http://twitter.com/deobald">Steven Deobald</a> - check out <a href="http://blog.deobald.ca/">Hungry, horny, sleepy, curious.</a></i>
+  </span>
+</div>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2011/06/20/gsoc-1-2/">GSoC - 1 &amp; 2</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+<time datetime="2011-06-20T00:00:00+05:30" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><div dir="ltr" style="text-align: left;" trbidi="on"><span style="font-style: italic;">These are parts one and two of my milestone log for GSoC. </span><br /><br />I got done with college a few days ago and I'm fairly certain that I should be able to complete what I proposed for the mid-terms. We have a few things looking in good shape now.<br /><br /><a href="http://youtu.be/QcvKE-ndxEU"><b>delete</b></a><br /><iframe class="youtube-player" frameborder="0" height="385" src="http://www.youtube.com/embed/QcvKE-ndxEU" type="text/html" width="640"></iframe><br /><br /><a href="http://youtu.be/zzzbumwKEPI"><b>multi-select</b></a><br /><iframe class="youtube-player" frameborder="0" height="385" src="http://www.youtube.com/embed/zzzbumwKEPI" type="text/html" width="640"></iframe><br /><br /><a href="http://youtu.be/YdKxYCBd-ow"><b>popup-menus</b></a><br /><iframe class="youtube-player" frameborder="0" height="385" src="http://www.youtube.com/embed/YdKxYCBd-ow" type="text/html" width="640"></iframe><br /><br /><a href="http://youtu.be/YEKNhynoWjg"><b>favourites</b></a><br /><iframe class="youtube-player" frameborder="0" height="385" src="http://www.youtube.com/embed/YEKNhynoWjg" type="text/html" width="640"></iframe><br /><br /><b>cheatsheet</b><br /><ul style="text-align: left;"><li>Use <i>Ctrl</i> as the modifier to multi-select items, release it to stop multi-selecting and perform operations.</li><li>A modified popup-menu appears for doing stuff on multiple items, this only appears on right-clicking the selected items. Non-selected items have their own menus. Effectively, it's possible to still normally work on the non-selected items even with selection in place.</li><li>Favorites are logged in .gtk-bookmarks, it is possible to add new items from either editing the file directly, or dragging stuff in GtkFileChooser. Consequently, <a href="https://bugzilla.gnome.org/show_bug.cgi?id=561221">this</a> would need to be fixed later on, to allow Nautilus to do the same. </li></ul><br /><b>next</b><br /><ul style="text-align: left;"><li>Initiate new Zeigeist events if bookmarked URIs are not previously indexed.&nbsp; </li><li>Finish the Nautilus DBus API discussed over <a href="http://lists.freedesktop.org/archives/xdg/2011-May/thread.html#11947">here</a>.</li><li>Fix all the <i>FIXME</i>s.</li></ul><br /><b>ahead</b><br /><ul style="text-align: left;"><li>Start with other filtering categories like Trash and Conversation monitoring.</li><li>The journal currently looks bare. The interface needs to be brought in-sync with the standard guidelines and stuff like, icons, header stylizations, and layouts need some improvements. Here's a nice mockup by David Prieto to serve a bit of inspiration -</li></ul><div class="separator" style="clear: both; text-align: center;"><a href="http://i.imgur.com/JwCfy.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="400" src="http://i.imgur.com/JwCfy.png" width="640" /></a></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br /><b>tip</b><br />We have a neat way to make gnome-shell extensions <a href="https://live.gnome.org/GnomeShell/Extensions/FAQ/CreatingExtensions#multifile">multi-file</a> (thanks, Federico!).<br />It'll now be much easier to update this journal as an extension. I've updated all of the above, <a href="https://github.com/kitallis/gnome-shell-activity-journal">here</a>.</div>
+
+
+<div class="author">
+  <img src="http://nilenso.com/images/people/kitallis-200.png" style="width: 96px; height: 96;">
+  <span style="position: absolute; padding: 32px 15px;">
+    <i>Original post by <a href="http://twitter.com/kitallis">Akshay Gupta</a> - check out <a href="http://blog.kitallis.in/">kitallis.</a></i>
+  </span>
+</div>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
       <h1 class="entry-title"><a href="/blog/2011/05/26/gsoc-2011-0/">GSoC 2011 - 0</a></h1>
       
       
@@ -139,98 +229,12 @@
 
 
 <div class="author">
-  <img src="http://nilenso.com/images/people/akshay-200.png" style="width: 96px; height: 96;">
+  <img src="http://nilenso.com/images/people/kitallis-200.png" style="width: 96px; height: 96;">
   <span style="position: absolute; padding: 32px 15px;">
     <i>Original post by <a href="http://twitter.com/kitallis">Akshay Gupta</a> - check out <a href="http://blog.kitallis.in/">kitallis.</a></i>
   </span>
 </div>
 
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2011/05/17/open-containing-folder-for-eog-and-gedit/">&quot;Open Containing Folder&quot; for EoG and gedit</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-<time datetime="2011-05-17T00:00:00+05:30" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><div dir="ltr" style="text-align: left;" trbidi="on">&nbsp;<a href="https://bugzilla.gnome.org/show_bug.cgi?id=650402">Bug 650402</a><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/-jutmW0vezgs/TdJ7l_7a8zI/AAAAAAAAAGQ/NsrA6F7CAQE/s1600/Screenshot-wallpaper-684085.jpg.png" imageanchor="1" style="clear: left; float: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" height="317" src="http://3.bp.blogspot.com/-jutmW0vezgs/TdJ7l_7a8zI/AAAAAAAAAGQ/NsrA6F7CAQE/s400/Screenshot-wallpaper-684085.jpg.png" width="400" /></a></div><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><a href="https://bugzilla.gnome.org/show_bug.cgi?id=650396">Bug 650396</a><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/-8xUu8zyJYCU/TdJ7n8fklyI/AAAAAAAAAGU/cZeGztg7nvY/s1600/Screenshot-Unsaved+Document+4+-+gedit.png" imageanchor="1" style="clear: left; float: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" height="321" src="http://3.bp.blogspot.com/-8xUu8zyJYCU/TdJ7n8fklyI/AAAAAAAAAGU/cZeGztg7nvY/s400/Screenshot-Unsaved+Document+4+-+gedit.png" width="400" /></a></div><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />Based around Federico's recent <a href="http://people.gnome.org/%7Efederico/news-2010-08.html#evince-open-folder">fix</a> to add an Open Folder functionality in Evince. Although the nautilus bug to launch <span style="font-size: x-small;">nautilus file:///home/kitallis/foo.png</span> and <i>select</i> the corresponding file, recently got <a href="http://git.gnome.org/browse/nautilus/commit/?id=a96761350ad422ec084c12f649562f9a2a83963d">fixed</a>. These patches currently use gtk_show_uri() with the parent uri of the file to just launch the default file manager. </div>
-
-
-<div class="author">
-  <img src="http://nilenso.com/images/people/akshay-200.png" style="width: 96px; height: 96;">
-  <span style="position: absolute; padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/kitallis">Akshay Gupta</a> - check out <a href="http://blog.kitallis.in/">kitallis.</a></i>
-  </span>
-</div>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2008/06/10/tech-leaderisms/">Tech Leaderisms.</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-<time datetime="2008-06-10T00:00:00+05:30" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Are you a developer? Yes? Then I&rsquo;m sorry to tell you, friend: There is a Tech Lead in you. Rather, someone will try to make you a Tech Lead one day. For your future Tech Lead self, I recommend reading the corresponding articles, <a href="http://www.magpiebrain.com/blog/2006/09/12/a-tech-lead-manifesto/">A Tech Lead Manifesto</a> and <a href="http://www.thekua.com/atwork/2008/05/10/behaviours-of-a-tech-lead/">Behaviours of a Tech Lead</a> (written by colleagues Sam Newman and Pat Kua, respectively).<br /><br />To those insights, I add these recommendations:<br /><br /><span style="font-size:130%;">Know Your Teammates</span><br /><br />Before you start, talk to everyone. Understand each developer&rsquo;s goals and fears with respect to your upcoming project. Know the strengths and weaknesses of everyone on your team, and formulate a plan for dealing with both. Sketch out your team roster and ensure that the experience and skill level is balanced.<br /><br /><br /><span style="font-size:130%;">Use Two-Pizza Teams</span><br /><br />I&rsquo;m not sure who first coined this, but I love the idea. I also like the idea of trying it out in reality: Have an in-office team dinner. Order two pizzas. Were you left hungry? Your team is too large. Or you have one gluttonous developer. But probably your team is too large.<br /><br />Given an oversized team by this yardstick, work with all stakeholders involved to divide up the project. You may even find additional value in simplifications required to divide up your previously bloated project.<br /><br /><br /><span style="font-size:130%;">Develop Horizontally Until Release 1</span><br /><br />It may seem obvious, but I&rsquo;m still surprised how often this rule is ignored. If you haven&rsquo;t deployed into a production environment yet, build out &ndash; not down. Complex business rules will materialize in every story. They always do. Create new stories from these rules and put them on the shelf until they are truly more important than the next functional story coming down the pipe.<br /><br />As a Tech Lead, you share this responsibility with your stakeholders. At the end of the day, they will decide what is most important. However, the unseen complexity of a business is visible to you because it materializes as code; share this with everyone.<br /><br /><br /><span style="font-size:130%;">Build It Yourself </span><span style="font-size:130%;">First</span><br /><br />All too often slogans such as &ldquo;You Aren&rsquo;t Gonna Need It&rdquo; are thrown around the the software community until they&rsquo;re almost law. Lately, I find the most troubling to be &ldquo;Not Invented Here Syndrome&rdquo;; more often than not, I find the opposite Syndrome afflicting developers: &ldquo;There&rsquo;s a Framework For That! Syndrome&rdquo;<br /><br />Sure there is. Build it yourself anyway.<br /><br />The majority of frameworks are simply implementations of patterns. Whether as ubiquitous as Dependency Injection, or as domain-specific as a shopping cart, try implementing the pattern yourself before reaching for the nearest third-party library. You very well might throw it away, but often you&rsquo;ll end up with an implementation which is significantly lighter and easier to test.<br /><br /><br /><span style="font-size:130%;">Keep Metrics and Ratchet Your Build</span><br /><br /><a href="http://skizz.biz">Chris</a> wrote about &ldquo;<a href="http://skizz.biz/blog/2008/03/11/fixing-broken-windows-with-ratcheting/">ratcheting</a>&rdquo; recently. Go read it! The flip side of ratcheting is, of course, preventative medicine. Why wait until you have 60 TODOs before breaking the build? Place as many reasonable limits on yourself as you can, early on. In the thick of the project your motivation to do so might be overruled by the desire to Just Write Code. Tools such as <a href="http://www.panopticode.org/">Panopticode</a>, <a href="http://metric-fu.rubyforge.org/">metric_fu</a>, <a href="http://pmd.sourceforge.net/">PMD</a>, and <a href="http://www.mono-project.com/Gendarme">Gendarme</a> will help you a great deal, but they&rsquo;re just the tip of the iceberg. Be creative not only in the tools you choose, but the rules you write and the metrics you extract.<div class="author">
-  <img src="http://nilenso.com/images/people/steven-200.png" style="width: 96px; height: 96;">
-  <span style="position: absolute; padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/deobald">Steven Deobald</a> - check out <a href="http://blog.deobald.ca/">Hungry, horny, sleepy, curious.</a></i>
-  </span>
-</div></p>
 </div>
   
   
@@ -265,6 +269,14 @@ Included file 'custom/asides/subscribe.html' not found in _includes directory<se
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/05/16/i-have-cramps/">&quot;I have cramps.&quot;</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/12/threading-macros-in-clojure/">Threading macros in clojure</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/01/suggestions-conferences-and-festivals/">Suggestions: Conferences and festivals</a>
       </li>
     
@@ -274,14 +286,6 @@ Included file 'custom/asides/subscribe.html' not found in _includes directory<se
     
       <li class="post">
         <a href="/blog/2016/01/20/how-do-vipassana-centres-in-india-differ/">How do Vipassana centres in India differ?</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/12/06/bangalore-2030/">Bangalore 2030</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/06/30/how-to-coop-salaries-and-reviews/">How to co-op: Salaries & Reviews</a>
       </li>
     
   </ul>
