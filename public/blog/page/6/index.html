@@ -18,7 +18,7 @@
   
   
     
-      Octopress, Planet.rb and the Nilenso Blog
+      How to Disable the Google Hangouts Menu Bar Icon on OS X
       
       
     
@@ -34,10 +34,7 @@
 
 
 
-        
-      
-    
-...">
+      ...">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -103,6 +100,204 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/30/how-to-disable-the-google-hangouts-menu-bar-icon/">How to Disable the Google Hangouts Menu Bar Icon on OS X</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+<time datetime="2013-10-30T00:00:00+05:30" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This has been annoying me for weeks now. Google Hangouts would place an menu-bar icon for each instance of Chrome I had running. Repeatedly quitting them didn&#8217;t have much effect; they&#8217;d keep coming back.</p>
+
+
+
+
+<p><img src="http://blog.timothyandrew.net/images/hangouts/menubar.png" alt="Menu Bar Screenshot" /></p>
+
+
+
+
+<p>Luckily, there&#8217;s an easy way to turn off the menu-bar icons.</p>
+
+
+
+
+<ul>
+<li>Open Chrome</li>
+<li>Menu Bar > Chrome > Preferences</li>
+<li>Click on Extensions, scroll down to Hangouts, and click on <em>Options</em></li>
+<li>Uncheck <em>Show system tray icon</em></li>
+<li>Click <em>OK</em></li>
+</ul>
+
+
+
+
+<p>And that&#8217;s it.</p>
+
+
+<div class="author">
+  <img src="http://nilenso.com/images/people/tim-200.png" style="width: 96px; height: 96;">
+  <span style="position: absolute; padding: 32px 15px;">
+    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
+  </span>
+</div>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/19/ashoka-survey-offline-tool/">Building an offline survey tool for Rural India</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+<time datetime="2013-09-19T18:21:00+05:30" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>At Nilenso, we&rsquo;ve helped <a href="http://india.ashoka.org/">Ashoka</a> accomplish their initiative in building infrastructure for the <a href="https://www.ashoka.org/citizensector">citizen sector</a>.</p>
+
+<p>Infiniti is a suite of products envisioned for social entrepreneurs, the fellows at Ashoka and other citizen sector organizations to get a variety of quality data through crowd sourcing, surveys and market research.</p>
+
+<p>Field agents responsible for carrying out these organized surveys face problems where there is often severe lack of proper mobile connectivity and even basic amenities. The data capturing tools therefore need to be really effective offline and should have the capability to synced to the central server once the agents return back to camp.</p>
+
+<p><img src="/images/rural-survey-use.png" alt="" /></p>
+
+<p>It is currently very much in use at Ashoka around these verticals:</p>
+
+<ul>
+<li>Nutrition and Wellness – for addressing malnutrition problem among children in India</li>
+<li>Affordable Housing – for enabling access to housing in the informal sector</li>
+<li>Rural Innovation and Farming – to understand the role of women in Agriculture</li>
+</ul>
+
+
+<p>And is largely composed of these ideas:</p>
+
+<p><img src="/images/infiniti.png" alt="Infiniti Suite" /></p>
+
+<p>As a part of this, we built Ashoka Survey Web – one of the arms that takes care of data collection, validation, integrity and reporting.</p>
+
+<h2>How does Survey Web work?</h2>
+
+<p>It is a collection of these 4 applications:</p>
+
+<ul>
+<li>the auth provider, <a href="https://github.com/nilenso/ashoka-user-owner">user-owner</a>.</li>
+<li>the survey builder, <a href="https://github.com/nilenso/ashoka-survey-web">survey-web</a></li>
+<li>response collection from the web, <a href="https://github.com/nilenso/ashoka-survey-web">survey-web</a>.</li>
+<li>the mobile applications:
+<a href="https://github.com/nilenso/ashoka-survey-mobile">survey-mobile</a>,
+<a href="https://github.com/nilenso/ashoka-survey-mobile-native">survey-mobile-native</a>.</li>
+</ul>
+
+
+<h4>Process</h4>
+
+<p>The fellows at Ashoka first identify the problem sets based on the verticals mentioned above and create a questionnaire that will effectively capture the data necessary. Once that is done, they use the survey builder to quickly digitise them. These surveys can be shared with different registered organisations or shared publicly.</p>
+
+<p>The responses are then collected by the field agents of the respective organizations using the <code>survey-mobile</code> application that can take validated answers client-side and store them offline. These can be synced to <code>survey-web</code>, once the field agents get internet connectivity.</p>
+
+<p>Here&rsquo;s a figure explaining the roles and interfaces of each of these applications:</p>
+
+<p><img src="/images/architecture.png" alt="Architecture Diagram" /></p>
+
+<p>We created a quick one-minute screencast that describes a simple workflow on how a survey is created, how a response is taken on that survey on the web and some basic reports you can see around it.</p>
+
+<p><video width="640" height="360" controls>
+  <source src="/videos/ashoka-survey-screencast.mp4" type="video/mp4">
+  <source src="/videos/ashoka-survey-screencast.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video></p>
+
+<h4>Need for a separate auth app</h4>
+
+<p>The <code>user-owner</code> app was built to serve as a centralized auth provider for all of Ashoka&rsquo;s web services. It is implemented using the <a href="https://github.com/applicake/doorkeeper">doorkeeper</a> gem.</p>
+
+<h4>Survey Builder amongst the alternatives available</h4>
+
+<p><a href="http://wufoo.com">Wufoo</a> and <a href="http://forms.google.com">Google Forms</a> aren&rsquo;t designed for long surveys. They work well for short forms/questionnaires that can be answered on the web, but they do not have support for nesting questions or collecting responses from a mobile app offline.</p>
+
+<p><a href="http://opendatakit.org">OpenDataKit</a> doesn&rsquo;t have a good interface for building long surveys or nested questions. It requires working with XLS files for many complex operations.</p>
+
+<p><a href="http://surveymonkey.com">SurveyMonkey</a> is a good tool, but we couldn&rsquo;t use it since we needed complete ownership of the survey and response data.</p>
+
+<h4>Survey Builder V2</h4>
+
+<p>The current survey builder works well and is pretty functional, but it fails on a few usability aspects.</p>
+
+<ul>
+<li><p>Being able to switch between one question type to another. Simply using a drop-down bar instead of individual buttons to solve this.</p></li>
+<li><p>Editing concerns are shared across both panes, fine-grained question (question options, sub-questions etc.) level editing is on the left pane, more general editing and meta-information (type of question, maximum/minimum values for answers etc.) about the questions is on the right.</p></li>
+</ul>
+
+
+<p>We worked together with Accenture to come up with new designs and started working on rebuilding it last month. It is still in progress, and can be viewed from the <code>create-v2</code> menu. The new visual designs are <a href="https://github.com/nilenso/ashoka-survey-web/commit/a5aeb01fadedf43311a779412ef49c0c28081d92">here</a>.</p>
+
+<h4>The Native Android App</h4>
+
+<p>The <code>survey-mobile</code> app is built with <a href="http://www.appcelerator.com/platform/titanium-platform/">Titanium</a>. We&rsquo;re looking to move away from this to a native android app. You can read a bit about where we&rsquo;re at in this <a href="http://blog.nilenso.com/blog/2013/09/10/android-native-mvp/">post</a> and checkout the mockups <a href="https://github.com/nilenso/ashoka-survey-mobile-native/commit/317c4692227249d9b476286d821493404b0acb0f">here</a>.</p>
+
+<h4>Data Portal</h4>
+
+<p>Each survey conducted by Ashoka typically has about 300 responses. We currently have some basic reports built with google charts. But we don&rsquo;t have the ability to say, interpret data of similar/same respondents across multiple surveys.</p>
+
+<p>This is a separate project where the idea is to build connections between disparate sources of data and make sense out of them.</p>
+
+<h4>Contribution</h4>
+
+<p>Each of these applications are entirely open-source, feel free to check them out on the <a href="https://github.com/nilenso">nilenso GitHub page</a>!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -229,255 +424,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/09/15/gimp-tito/">gimp tito</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-<time datetime="2013-09-15T00:00:00+05:30" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>&lsquo;Tito&rsquo; is like Quicksilver inside GIMP. You bring up tito and enter something, it gives a dropdown of possible actions. You hit enter to execute that action. <a href="https://plus.google.com/116053365635940402074">Michael Natterer</a> (maintainer) told me on IRC about a year ago that it can go upstream with a few changes. Quite sadly, I haven&rsquo;t had the time to make those changes.</p>
-
-
-
-
-<p>It works pretty well though. Here are a few screenshots:</p>
-
-
-
-
-<p><img src="http://sriharisriraman.in/images/tito-images/snap.jpg" alt="snap" />
-<img src="http://sriharisriraman.in/images/tito-images/apcan.jpg" alt="apply canvas" />
-<img src="http://sriharisriraman.in/images/tito-images/blur.jpg" alt="blur" />
-<img src="http://sriharisriraman.in/images/tito-images/desktop.jpg" alt="desktop" />
-More screenshots <a href="https://github.com/ssrihari/gimp-tito/wiki/About-gimp-tito#v-screenshots">here</a>.</p>
-
-
-
-
-<h3>Currently implemented features</h3>
-
-
-
-
-<ul>
-<li> It searches first through labels and then tooltips of actions</li>
-<li> It supports fuzzy search</li>
-<li> It is adaptive: frequently used actions appear higher in the results list</li>
-<li> It shows the tooltip, icon and shortcut in each search result if present</li>
-<li> It is highly configurable via a preferences window</li>
-</ul>
-
-
-
-
-<p>More high level details in the <a href="https://github.com/ssrihari/gimp-tito/wiki/About-gimp-tito">tito-readme</a>.
-There is also an old <a href="http://www.youtube.com/watch?v=G0PuH1LFWhA">screencast</a> I made. It isn&rsquo;t great, but you can see it in action ;)</p>
-
-
-
-
-<h3>The story behind it</h3>
-
-
-
-
-<p>We were four developers who knew little about gtk and git. We started off well and shared our initial prototype. We got a mix of positive and dismissive responses from the gimp dev list. You can see the <a href="http://www.gimpusers.com/forums/gimp-developer/14142-an-update-on-the-menu-search">thread</a> where the devs and I debated the values it provided.</p>
-
-
-
-
-<p>Quite a few devs tried it out and gave me feedback. I incorporated that feedback and fixed bugs and regularly interacted with the team on how it could be better. But tito got a fair amount of push back from the interaction design perspective.</p>
-
-
-
-
-<h3>We can finish this together</h3>
-
-
-
-
-<p>I really need some company in finishing this up. Mitch (Michael Natterer on IRC) took a look at the diff and suggested a few changes that would make it eligible to go upstream. I&rsquo;ve created <a href="https://github.com/ssrihari/gimp-tito/issues">issues</a> for these on github. My gut feeling is that this should take lesser than a week. Please <a href="https://twitter.com/sriharisriraman">get in touch</a> if you are interested. Let&rsquo;s collaborate!</p>
-
-
-<div class="author">
-  <img src="http://nilenso.com/images/people/srihari-200.png" style="width: 96px; height: 96;">
-  <span style="position: absolute; padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/sriharisriraman">Srihari Sriraman</a> - check out <a href="http://sriharisriraman.in/">Srihari&#39;s Blog</a></i>
-  </span>
-</div>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/09/10/android-native-mvp/">Android Development - Harnessing powers of MVP</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-<time datetime="2013-09-10T18:33:00+05:30" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>As we set out to develop the native android app for <a href="https://thesurveys.org">Ashoka Survey</a>, discussions about how should the architecture pan out ensued. Literature on the internet was not promising and we had to come back to the drawing board for almost every hurdle we jumped through – setting up the IDE, prominent libraries that could come handy, better ways to do testing. After two repo reboots, we finally decided on these:</p>
-
-<ul>
-<li>IntelliJ Idea CE</li>
-<li>JUnit</li>
-<li><a href="https://github.com/robolectric/robolectric">Robolectric</a></li>
-<li><a href="https://github.com/roboguice/roboguice">RoboGuice</a></li>
-<li><a href="https://code.google.com/p/mockito">Mockito</a></li>
-<li><a href="http://fest.easytesting.org/">FEST</a></li>
-</ul>
-
-
-<p>Maven dictated the basic skeleton to work out from. If you are not aware of dependency injection, do check out an <a href="http://planet.nilenso.com/blog/2013/07/10/using-roboguice-to-inject-views-into-a-pojo/">earlier post by us on RoboGuice</a>. We used <a href="https://github.com/loopj/android-async-http">Android Async Http library</a> to deal with servicing network requests.</p>
-
-<p>Once we had the project setup sorted out, we ventured into getting out a basic login screen.</p>
-
-<h3>Architecture</h3>
-
-<p>Identifying boundaries is paramount for writing good tests. Our <code>LoginActivity</code> started out to do way too many things - talking to network boundary and manipulating the view along with it. Testing proved to be a challenge at this point. What we wanted was:</p>
-
-<ol>
-<li>Check to see if a view layer could be extracted out from <code>Activity</code>.</li>
-<li>Identify a service layer which deals with IO.</li>
-<li>Identify an presenter which could orchestrate the above.</li>
-</ol>
-
-
-<p>Basically, flesh out an MVP-ish architecture. If the view layer and service layer can be neatly segregated out from the <code>Activity</code> into the presenter, testing them is just a breeze.</p>
-
-<p><img src="/images/mvp.png" alt="MVP" /></p>
-
-<p>A peek into the <a href="https://github.com/nilenso/ashoka-survey-mobile-native/blob/4cc2acd7698771fe483fb43cc6f38c0092495d1c/src/main/java/com/infinitisuite/surveymobile/LoginActivity.java">LoginActivity</a> reveals this.</p>
-
-<pre><code class="java">public class LoginActivity extends RoboActivity {
-
-    @Inject LoginPresenter mPresenter;
-    @InjectView(R.id.sign_in_button) Button mSignInButtonView;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        mPresenter.onCreate();
-
-        mSignInButtonView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPresenter.attemptLogin();
-            }
-        });
-    }
-    ...
-}
-</code></pre>
-
-<p>That&rsquo;s it! Everything else is being delegated to the presenter. Nice and clean.</p>
-
-<p>So, let&rsquo;s look at the <a href="https://github.com/nilenso/ashoka-survey-mobile-native/blob/4cc2acd7698771fe483fb43cc6f38c0092495d1c/src/main/java/com/infinitisuite/surveymobile/presenters/LoginPresenter.java">LoginPresenter</a>.</p>
-
-<pre><code class="java">public class LoginPresenter {
-    private IUserService userService;
-    private ILoginView loginView;
-
-    @Inject
-    public LoginPresenter(IUserService userService, ILoginView loginView) {
-        this.userService = userService;
-        this.loginView = loginView;
-    }
-    ...
-}
-</code></pre>
-
-<p>Presenter is injected with the <a href="https://github.com/nilenso/ashoka-survey-mobile-native/blob/4cc2acd7698771fe483fb43cc6f38c0092495d1c/src/main/java/com/infinitisuite/surveymobile/services/UserService.java">UserService</a> and the <a href="https://github.com/nilenso/ashoka-survey-mobile-native/blob/4cc2acd7698771fe483fb43cc6f38c0092495d1c/src/main/java/com/infinitisuite/surveymobile/views/LoginView.java">LoginView</a> which then acts more or less like a controller henceforth. If you notice carefully, the presenter speaks only to respective service and view interfaces. This helps in generating cheap mocks against which you can run your tests.</p>
-
-<p>Let&rsquo;s have a look at <a href="https://github.com/nilenso/ashoka-survey-mobile-native/blob/4cc2acd7698771fe483fb43cc6f38c0092495d1c/src/test/java/com/infinitisuite/surveymobile/presenters/LoginPresenterTest.java">LoginPresenterTest</a>.</p>
-
-<pre><code class="java">public class LoginPresenterTest {
-
-    private LoginPresenter presenter;
-    private ILoginView loginViewMock;
-    private UserServiceStub userService;
-
-    @Before
-    public void setUp() throws Exception {
-        loginViewMock = mock(ILoginView.class);
-        userService = new UserServiceStub();
-        presenter = new LoginPresenter(userService, loginViewMock);
-    }
-    ...
-    @Test
-    public void shows_error_message_if_username_and_password_are_wrong() throws Exception {
-        userService.setFailure();
-        doReturn("foo@bar.com").when(loginViewMock).getEmail();
-        doReturn("bar").when(loginViewMock).getPassword();
-        presenter.attemptLogin();
-        verify(loginViewMock, times(1)).showLoginError();
-    }
-    ...
-}
-</code></pre>
-
-<p>The mock is setup and verified to see if the contract defined by <code>ILoginView</code> interface is invoked. It should be pointed out this is the farthest these tests could go and are not exactly end-to-end. You could just create implementation stubs out of this interface, not touching any view state, and still have the test passing. But having this view layer abstraction, makes it so painless to write presenter tests. We shoud have a combination of few end-to-end tests and a whole battery of these functional tests.</p>
-
-<h3>Conclusion</h3>
-
-<p>We wanted to give MVP a go because android applications did not appear to have patterns set in stone. It still isn&rsquo;t clear if MVP would pan out well with complex views or is it justified to break view logic entirely out of <code>Activity</code>. This is very much a work in progress.</p>
-
-<p><img src="http://cl.ly/image/131M1t0b1K2n/2013-09-09%2009.47.00.png" alt="Login Screen" /></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7">&larr; Older</a>
@@ -505,6 +451,14 @@ Included file 'custom/asides/subscribe.html' not found in _includes directory<se
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/05/16/i-have-cramps/">&quot;I have cramps.&quot;</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/12/threading-macros-in-clojure/">Threading macros in clojure</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/01/suggestions-conferences-and-festivals/">Suggestions: Conferences and festivals</a>
       </li>
     
@@ -514,14 +468,6 @@ Included file 'custom/asides/subscribe.html' not found in _includes directory<se
     
       <li class="post">
         <a href="/blog/2016/01/20/how-do-vipassana-centres-in-india-differ/">How do Vipassana centres in India differ?</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/12/06/bangalore-2030/">Bangalore 2030</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/06/30/how-to-coop-salaries-and-reviews/">How to co-op: Salaries & Reviews</a>
       </li>
     
   </ul>
