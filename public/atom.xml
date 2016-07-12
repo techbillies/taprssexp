@@ -4,7 +4,7 @@
   <title><![CDATA[Nilenso Blog]]></title>
   <link href="http://blog.nilenso.com/atom.xml" rel="self"/>
   <link href="http://blog.nilenso.com/"/>
-  <updated>2016-07-11T13:10:04+05:30</updated>
+  <updated>2016-07-12T12:24:01+05:30</updated>
   <id>http://blog.nilenso.com/</id>
   <author>
     <name><![CDATA[Nilenso]]></name>
@@ -310,102 +310,6 @@
   </span>
 </div>
 
-]]></content>
-    
-  </entry>
-  
-  <entry>
-    
-    <title type="html"><![CDATA[How to co-op: Salaries & Reviews]]></title>
-    <link href="http://blog.nilenso.com/blog/2015/06/30/how-to-coop-salaries-and-reviews/"/>
-    
-    <updated>2015-06-30T14:33:00+05:30</updated>
-    <id>http://blog.nilenso.com/blog/2015/06/30/how-to-coop-salaries-and-reviews</id>
-    
-    <content type="html"><![CDATA[<p>Today, I&rsquo;m a wifi parasite in the <a href="http://www.uswitch.com/">uSwitch</a> office. Over lunch, <a href="http://www.thattommyhall.com/">Tom Hall</a> pointed out that nilenso doesn&rsquo;t pay bonuses, instead opting for transparent salaries, chosen on merit to the degree possible. (Read more on our original post: <a href="http://blog.deobald.ca/2014/11/huh-software-cooperative.html">&ldquo;Huh? A Software Co-operative?&rdquo;</a>) His question is one we get often: How <em>do</em> we decide salaries?</p>
-
-<p>Our first stab at this was a model we&rsquo;d inherited from other companies we&rsquo;d worked at: have salary bands which match up to the skill and experience of the current staff, match that to the available cash, and set salaries accordingly. At first, we actually started off with an approach that was even more naive &ndash; rather than salary bands, we had &ldquo;levels&rdquo;. To improve one&rsquo;s salary beyond the usual bump provided for inflation, it was really a huge leap from &ldquo;college kid&rdquo; to &ldquo;junior&rdquo; to &ldquo;intermediate&rdquo; to &ldquo;senior&rdquo;. Under this model, we also had no real vision for future &ldquo;levels&rdquo; (yagni?); the most senior person on staff was the highest salary we imagined paying.</p>
-
-<p><img src="/images/salaries-levels.png" alt="What broken salary bands look like." /></p>
-
-<p>This system is very obviously broken when graphed this way, but there are a number of other little firms in Bangalore which still operate this way. The inevitable conclusion is the introduction of &ldquo;Level 2.5&rdquo; and other confused ideas which make a broken system even worse.</p>
-
-<p>Incrementing on this inherited model, we tried to smooth out the curve and divide up each &ldquo;level&rdquo; into ten increments. The old integer levels (now L1.0, L2.0, and so on) represented concrete, documented responsibility changes under the incremental system. The new incremental levels (L2.2, L4.3) were sort of <a href="https://en.wikipedia.org/wiki/Inbetweening">tweened</a> into thirds. A concrete example: L2.0 is a intermediate developer who is capable of driving design decisions (and a pair, if pair programming). L3.0 is an intermediate developer who can mentor, architect individual systems, and drive hiring decisions. L2.1 to 2.3, L2.4 to 2.6, and L2.7 to 2.9 give us three junior-to-senior tiers to play with when describing the growth of a developer from a &ldquo;solid intermediate pair&rdquo; to &ldquo;mentor&rdquo;. With increments, everyone grew 0.2 or 0.3 each year, rather than jumping from L2 to L3 every three years. (In practice, the integer system usually meant redesigning the entire system every year.)</p>
-
-<h2>Reviews in 2014</h2>
-
-<p>Once we had the incremental model in place, we tried to iterate on our previous experience of &ldquo;behind closed doors&rdquo; reviews, as well. The goals were transparency, fairness, and comfort. Big all-hands referendums could be emberassing &ndash; and had proven inefficient for all sorts of other decisions, which caused us to elect a small &ldquo;Executive&rdquo; (two people), similar to an elected Board of Directors in a large corporate co-operative. The Executive drove the review process. We kept track of each review on a whiteboard, so everyone could see what was going on as it happened. Each review included the two people from the Executive, the person being reviewed, that person&rsquo;s &ldquo;sponsor&rdquo; (another vestige of another company we&rsquo;d worked for - namely, ThoughtWorks), and their closest coworkers/team members. The sponsor presented a proposed salary, and the review discussion worked backward from there. The process worked reasonably well, but as we discovered this year, we were a bit too liberal with salary jumps.</p>
-
-<p>Once we&rsquo;d finished the review cycle, we took a step back and tried to answer the &ldquo;what does the future look like?&rdquo; question. Working with <a href="http://c2.com/cgi/wiki?PythonPhilosophy">&ldquo;explicit is better than implicit&rdquo;</a> as a foundational rule, one is forced to visualize a <em>complete</em> salary framework. This implies a couple of things:</p>
-
-<p>1) &ldquo;complete&rdquo; inherently means &ldquo;global&rdquo;
-2) &ldquo;complete&rdquo; inherently means &ldquo;lifelong&rdquo;</p>
-
-<p>Therefore, our salary bands had to map a curve from the lowest-paid, straight-out-of-college hacker to the most talented and experienced computer scientist money can hire. The former is easy enough to imagine&hellip; we&rsquo;ve all hired dozens of those folks. But the best of the best, the world over, near the end of her career? I&rsquo;m not even sure I&rsquo;ve met such a person.</p>
-
-<h2>The COMPLETE Salary Curve</h2>
-
-<p>So, for the sake of argument, let&rsquo;s assume we&rsquo;re hiring Leslie Lamport, assuming he makes a high salary at Microsoft Research. Or perhaps a senior-most computer programmer from Google. A little asking around, <a href="http://www.glassdoor.com/Salary/Microsoft-Researcher-Salaries-E1651_D_KO10,20.htm">Glassdoor</a>, and that infamous secret.ly &ldquo;salaries at Google&rdquo; thread all told us that our ballpark figure of $500,000 USD wasn&rsquo;t too far off. Maybe a little higher or a little lower, but something so far away from nilenso&rsquo;s present reality need not be overly precise. It&rsquo;s just a helpful stake in the ground. For us, a $500,000 salary represents Developer Level 10.0 &ndash; someone who&rsquo;s about to retire and has turned the industry upside down over the course of their career.</p>
-
-<p>There&rsquo;s huge value in imagining the highest salary you will ever pay. We humans don&rsquo;t like to spend a lot of time pondering the end of our productive days. We like to spend time pondering the scary last chapter of our mortality even less. But these things are real. Everything real, everything fact-based, has to be laid bare in a completely transparent organization.</p>
-
-<p>Our first pass was difficult, uncomfortable, and (of course) incorrect.</p>
-
-<p><img src="/images/salary-curve-2014.png" alt="nilenso's salary curve from 2014" /></p>
-
-<p>Fast forward one year to nilenso&rsquo;s 2015 review cycle, and it was apparent our 2014 curve didn&rsquo;t really fit. We&rsquo;d made a few mistakes: high-end salaries (L4.x and L5.x) were too high, some jumps had been too big, the L1 salary band didn&rsquo;t fit on a smooth curve. (You can see this from the graph: the L1-L2 salary band has a steeper slope than L2-L3 and the inflection at L4-L5 is also obviously incorrect.)  However, being completely honest about the data is only step #1. Step #2 is to be completely honest with <em>ourselves</em>: we&rsquo;d made some mistakes in 2014 and we needed to correct them. We jiggled the L1 salary band a bit, some L2.x salaries didn&rsquo;t jump as much as expected, L4.x and L5.x salaries came way down.</p>
-
-<p>Our second pass was difficult, uncomfortable, and (will likely be) incorrect.</p>
-
-<p><img src="/images/salary-curve-2015.png" alt="nilenso's salary curve from 2014" /></p>
-
-<p>&hellip;but it was a little less difficult, a little less uncomfortable, and (hopefully) a little less incorrect. The goal is not perfection. Next year, the benefit of hindsight will expose this year&rsquo;s mistakes and we can once again go through the mild discomfort of correcting them. And, with any luck, our second pass was enough of an improvement on our first that the mistakes will be smaller.</p>
-
-<p>I&rsquo;ve jumped ahead of myself a bit, here. The 2015 salary curve starts at about 7.5 lakh rupees ($12,000 USD) for Developer Level 0.0 and curves relatively smoothly up to 317 lakh rupees ($500,000 USD) for our realistic Developer Level 10.0. Everyone at nilenso is presently L1.x - L4.x, so don&rsquo;t get too excited about multi-crore salaries we might lavish you with. But how did we arrive at the curve?</p>
-
-<h2>Reviews in 2015: Tim &amp; Deepa to the rescue</h2>
-
-<p>Our review process in our first year wasn&rsquo;t too bad. Everyone received meaningful feedback and was given a clear path for growth. However, it felt ad-hoc, everyone&rsquo;s feedback/reviews were delayed (as they are in most companies), and it felt strange to have the Executive drive the conversation &ndash; even the most logical and robotic Executives are still human and will introduce their own bias. In 2015, we improved on this thanks to two distinct efforts from Tim and Deepa, who signed up to organize the 2015 review process. This would normally be a thankless job, consisting mostly of manually coordinating an Excel spreadsheet. But not this year.</p>
-
-<p>First, Tim (being Tim) spent a Saturday automating the review workflow. <a href="https://github.com/nilenso/reviews">The nilenso reviews app</a> was born. Since any annual review cycle for any company tends to be little more than swimlanes of todo lists, it was the perfect job for Rails and Heroku. Tim, and anyone else at nilenso, could modify the workflow, relationships, and privacy across the reviews process in a matter of minutes with a quick code change and redeploy. Everyone could glance at <a href="http://reviews.nilenso.com">http://reviews.nilenso.com</a> to see their feedback and to hassle people who hadn&rsquo;t reviewed their colleagues yet.</p>
-
-<p>The review app lets everyone ask for reviews/feedback from specific people. Reviewers are then tasked with completing a review for everyone who asked them. Each review is a free-form text entry field and a &ldquo;suggested level&rdquo; field, if the reviewer is comfortable suggesting the reviewee&rsquo;s growth in the past year. Though we&rsquo;d initially planned on discussing salaries directly, the Level system addresses skill, contribution, network, and experience rather than what anyone &ldquo;feels&rdquo; other employees should make. This has the immeasurable advantage of keeping emotion out of the equation and keeping everyone focused on the facts at hand.</p>
-
-<p>Second, Deepa facilitated the review meetings. After scheduling and planning each meeting with Tim, she played the role of non-participating faciliatator to discussions which included the reviewee, everyone who gave them a review in the app, and anyone else who wanted to listen in. Each meeting started with everyone in the room grabbing a laptop (or iPad) and quickly re-reading the reviews in question, to make sure they hadn&rsquo;t missed anything. Then the reviewee would summarize their self-review and the reviews they&rsquo;d received from their coworkers; we did away with &ldquo;sponsors&rdquo; and let the person speak for themselves. At the end of the summary, s/he would explain whether the average Suggested Level (calculated by the app) seemed appropriate. The floor was then open to discuss and debate. By the end of these meetings, everyone knew what everyone else&rsquo;s level would be for the upcoming year.</p>
-
-<p>The meetings cost us a lot of time but everyone agreed it was time well spent. Attempts to limit participation in 2014 hadn&rsquo;t prevented the review meetings from cutting into everyone&rsquo;s work day, and in 2015 there was no question that the open forum felt totally transparent.</p>
-
-<p>A good rule of thumb for corporate transparency: You&rsquo;re probably doing it right when everyone finds the transparency boring.</p>
-
-<p><img src="/images/salaries-levels-line.png" alt="Levels / salary bands, plotted more sensibly" /></p>
-
-<p>A small consulting company has a fixed amount of money to spend on annual raises. By working through the entire review process without discussing money, we were free to be completely honest with one another with feedback^ and conversation. Certainly some conversations were harder than others but the overall process was smooth. Once everyone&rsquo;s reviews were complete, Deepa took away a Level Curve (really more of a straight line with dots on it, like above) which she could retrofit our earnings onto. That became the proposed Salary Curve, which we discussed one last time and then finalized.</p>
-
-<p>^ It&rsquo;s worth noting that we expect feedback to be a continuous, daily process. If someone is giving you new constructive criticism for the first time only in the annual review process, they&rsquo;ve failed you miserably. Since peer-to-peer reviews take the form of &ldquo;feedback&rdquo; the terms are sometimes used interchangeably. Though we may muddle terminology, we try not to muddle intent.</p>
-
-<h2>Unsolved Problems</h2>
-
-<p>Though we have a smooth, meaningful Level/Salary Curve for developers, we are yet to figure out what this will look like for administrators, executives, project managers, designers, accountants, or operations staff. We only have one desiger, executive, and PM on-staff at the moment, so our best approach is to find some middle ground between industry averages and the developer curve. But that&rsquo;s vague. These roles are definitely in beta at nilenso.</p>
-
-<p>A meaningful salary curve for operations staff is even murkier. Though we have 3 people who do operations (security &amp; operations, cleaning, operations &amp; basic accounting) and their salaries are similar, the industry average for these positions is unfairly low in India. We&rsquo;re also less sure what the growth path for each of these folks will be in the coming 2 or 3 years. Mintu will certainly get bored of working security at some point, and we need to make sure the Salary/Level Curve for Operations makes sense in light of that.</p>
-
-<p>Though nilenso has a very liberal paid leaves policy (unlimited sick leave and plenty of vacation), we do not have sabbaticals (unpaid leave) figured out. Sabbaticals present a number of difficulties: Does a senior employee have more access to sabbaticals than a junior employee? Someone senior undoubtedly makes more money and has longer vacations in any company, but most companies don&rsquo;t offer sabbaticals. Is one&rsquo;s salary based on a 12-month working year, or 12 months less any sabbatical months? How can we plan sabbaticals far enough in advance that they&rsquo;re comfortable for both us and our clients? How many sabbaticals can a consulting firm support in one year? At one time?</p>
-
-<p>Nilenso has expenses. An office, non-billable staff, food, travel, books/classes/conferences, and a couple of internet connections. While everyone would love to take a sabbatical whenever they like, it is damaging to a company if the company isn&rsquo;t 100% remote and overhead-free.</p>
-
-<h2>Other Approaches</h2>
-
-<p>Discussing salaries-in-a-coop always leads to the peripheral topics: performance reviews, bonuses, reinvestment, paycheques, and sabbaticals. I was excited to find that talking with <a href="http://www.twitter.com/thattommyhall">Tom Hall</a> and <a href="https://github.com/hraberg">Hakan Raberg</a> the conversation was almost entirely focused on sabbaticals. <a href="http://www.juxt.pro">Juxt</a> and <a href="http://www.mavenhive.in">MavenHive</a> take a similar approach: you get paid for the hours you work. A company could take this idea to either extreme: either by hiring subcontractors rather than full-blown employees or by laying out basic salaries and adjusting them every month.</p>
-
-<p>Tom hasn&rsquo;t chosen a model yet, and I&rsquo;m guessing it will evolve with his co-op. His key issue is the ability for employees to take sabbaticals (he describes the need for sabbaticals as a &ldquo;founding principle&rdquo;), which for a consultancy implies salaries will swell and shrink with billable hours. At nilenso, we&rsquo;ve had varying success with mixing hourly billing rates and monthly retainers. Depending on one&rsquo;s billing model, the process of taking sabbaticals could shift. Once Tom&rsquo;s co-op Gets Huge&trade;, it will require operations, admin, and accounting staff. Those folks still need to get paid even <a href="http://www.hillhacks.in">if all the developers are off at HillHacks for a month</a>, so I&rsquo;m excited to see what solution he and his team opt for.</p>
-
-<h2>tl;dr</h2>
-
-<p>For us, decoupling performance reviews from both feedback and salaries has worked really well. Feedback should be a daily occurrence, not a yearly ceremony. Salary structure should be a consequence of financial planning, not individual evaluation. Because we were discussing &ldquo;levels&rdquo;, rather than salaries, emotions were (largely) kept at bay and we could discuss facts. We will definitely use <a href="https://github.com/nilenso/reviews">Tim&rsquo;s Review App</a> again next year since we found it a great tool for getting things done and for discussions. We recommend you try it too!</p>
-
-<p>We will keep publishing our experiments, failures, and learnings. And we&rsquo;d love to hear from you at <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#104;&#101;&#x6c;&#x6c;&#111;&#64;&#110;&#105;&#108;&#x65;&#x6e;&#115;&#111;&#x2e;&#99;&#111;&#x6d;">&#x68;&#x65;&#x6c;&#x6c;&#x6f;&#x40;&#x6e;&#x69;&#x6c;&#101;&#x6e;&#x73;&#111;&#x2e;&#x63;&#x6f;&#109;</a> if you have a suggestion!</p>
-
-<p>Huge thanks to <a href="https://twitter.com/timothyandrew">Tim</a> and <a href="https://twitter.com/deepa_v">Deepa</a> for making this post happen!</p>
 ]]></content>
     
   </entry>
@@ -1038,6 +942,163 @@ There is also an old <a href="http://www.youtube.com/watch?v=G0PuH1LFWhA">screen
 <p>We wanted to give MVP a go because android applications did not appear to have patterns set in stone. It still isn&rsquo;t clear if MVP would pan out well with complex views or is it justified to break view logic entirely out of <code>Activity</code>. This is very much a work in progress.</p>
 
 <p><img src="http://cl.ly/image/131M1t0b1K2n/2013-09-09%2009.47.00.png" alt="Login Screen" /></p>
+]]></content>
+    
+  </entry>
+  
+  <entry>
+    
+    <title type="html"><![CDATA[You probably shouldn&#39;t be nesting your CSS]]></title>
+    <link href="http://blog.nilenso.com/blog/2013/09/08/you-probably-shouldn-t-be-nesting-your-css/"/>
+    
+    <updated>2013-09-08T00:00:00+05:30</updated>
+    <id>http://blog.nilenso.com/blog/2013/09/08/you-probably-shouldn-t-be-nesting-your-css</id>
+    
+    <content type="html"><![CDATA[<p><strong>TL;DR:</strong>  Don&rsquo;t nest CSS. Nest class names instead. This is one of the most useful take-aways from <a href="http://smacss.com">SMACSS</a>.
+Follow this, and it will change the way you write scss for the better.</p>
+
+
+
+
+<p>With the coming of <a href="http://sass-lang.com/">sass</a>,  we have all seen how writing css has gotten easier.
+We love writing css that is similar to our html. The following would seem natural to us:</p>
+
+
+<p><figure class='code'><figcaption><span>HTML for a component</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;my-component&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;header&gt;&lt;/header&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;some-section&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;header&gt;&lt;/header&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;description&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;important&quot;</span><span class="nt">&gt;&lt;/span&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><figure class='code'><figcaption><span>Styling the component (the wrong way)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='sass'><span class='line'><span class="nt">div</span><span class="nc">.my-component</span> <span class="err">{</span>
+</span><span class='line'>  <span class="nt">header</span> <span class="err">{}</span>
+</span><span class='line'>  <span class="nc">.some-section</span> <span class="err">{</span>
+</span><span class='line'>    <span class="nt">header</span> <span class="err">{}</span>
+</span><span class='line'>    <span class="nt">p</span> <span class="err">{</span>
+</span><span class='line'>      <span class="nc">.important</span> <span class="err">{}</span>
+</span><span class='line'>    <span class="err">}</span>
+</span><span class='line'>  <span class="err">}</span>
+</span><span class='line'><span class="err">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>This gives us the comfort of nesting css the same way we nest html. It gives us context that
+<code>some-section</code> rests inside <code>my-component</code>, but nothing more. And, this gets convoluted quickly. if I had to override the style for this component elsewhere, I&rsquo;d have to do something like:</p>
+
+
+<p><figure class='code'><figcaption><span>Overriding the style for .important</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sass'><span class='line'><span class="nc">.my-component</span> <span class="nc">.some-section</span> <span class="nt">p</span> <span class="nc">.important</span> <span class="err">{}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>The correct way:</h2>
+
+
+
+
+<p>Add the context, name of component/module in the class attribute:</p>
+
+
+<p><figure class='code'><figcaption><span>HTML for a component</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;my-component&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;header</span> <span class="na">class=</span><span class="s">&quot;my-component-header&quot;</span><span class="nt">&gt;&lt;/header&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;my-component-section&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;header</span> <span class="na">class=</span><span class="s">&quot;my-component-section-header&quot;</span><span class="nt">&gt;&lt;/header&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;my-component-section-description&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;my-component-section-important&quot;</span><span class="nt">&gt;&lt;/span&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><figure class='code'><figcaption><span>Styling the component (the correct way)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='sass'><span class='line'><span class="nc">.my-component</span> <span class="err">{}</span>
+</span><span class='line'><span class="nc">.my-component-header</span> <span class="err">{}</span>
+</span><span class='line'><span class="nc">.my-component-section</span> <span class="err">{}</span>
+</span><span class='line'><span class="nc">.my-component-section-header</span> <span class="err">{}</span>
+</span><span class='line'><span class="nc">.my-component-section-description</span> <span class="err">{}</span>
+</span><span class='line'><span class="nc">.my-component-section-important</span> <span class="err">{}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h3>What does this give us?</h3>
+
+
+
+
+<ul>
+<li>All the context that we got in nesting css. Except that the nesting is in the name instead of nested braces that are hard to read.</li>
+<li>CSS with minimum specificity so that it is easy to override. For the purpose of subclassing modules, it is preferable to nest the styling by exactly one level. See exceptions below.</li>
+<li>Independence from structure, so we can move our components around without having to move css around. For this purpose, it is also good to stay away from element selectors.</li>
+<li>Control over cascading, that you thought was only possible <a href="http://37signals.com/svn/posts/3003-css-taking-control-of-the-cascade">with nesting</a>. The nesting in class names gives a unique name to your selector that is quite hard to override accidentally with cascading.</li>
+<li>The answer to &ldquo;Where is the CSS for this?&rdquo;. Since the selectors have almost a one to one mapping with the class attributes, you just have to file-search for them now.</li>
+<li>Speed. See how this helped <a href="https://speakerdeck.com/jonrohan/githubs-css-performance?slide=11">github</a> speed up their diff pages.</li>
+</ul>
+
+
+
+
+<h3>Conclusion:</h3>
+
+
+
+
+<p>Don&rsquo;t nest CSS. You could start off with the <a href="http://thesassway.com/beginner/the-inception-rule">inception rule</a>, but I strongly suggest you stick to zero nesting levels (see exceptions below).</p>
+
+
+
+
+<h3>Exceptions:</h3>
+
+
+
+
+<ul>
+<li>When you are writing modules that you will <a href="http://smacss.com/book/type-module#subclassing">subclass</a>, it is necessary to nest (by one level) the styling under the module&rsquo;s selector so that you can keep the defaults and override only the differences.</li>
+<li>When overriding <a href="http://smacss.com/book/type-base">base rules</a>, one usually has to provide enough specificity to override an element selector, say. In these cases, nesting (by one level) is ok.</li>
+</ul>
+
+
+<div class="author">
+  <img src="http://nilenso.com/images/people/srihari-200.png" style="width: 96px; height: 96;">
+  <span style="position: absolute; padding: 32px 15px;">
+    <i>Original post by <a href="http://twitter.com/sriharisriraman">Srihari Sriraman</a> - check out <a href="http://sriharisriraman.in/">Srihari&#39;s Blog</a></i>
+  </span>
+</div>
+
 ]]></content>
     
   </entry>
