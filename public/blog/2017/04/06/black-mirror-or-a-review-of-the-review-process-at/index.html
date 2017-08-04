@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Use Lambdas for Date-based Rails Scopes - Nilenso Blog</title>
+  <title>Black Mirror*, or a review of the review process at a software co-operative - Nilenso Blog</title>
   <meta name="author" content="Nilenso">
 
   
@@ -15,7 +15,7 @@
   
   
     
-      Use Lambdas for Date-based Rails Scopes
+      Black Mirror*, or a review of the review process at a software co-operative
     
   
     
@@ -32,12 +32,7 @@
 
 
         
-      
-    
-  
-
-
-A scope allows you t...">
+ ...">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -47,7 +42,7 @@ A scope allows you t...">
   <meta name="apple-mobile-web-app-capable" content="yes"/>
 
   
-  <link rel="canonical" href="http://blog.nilenso.com/blog/2013/04/07/use-lambdas-for-date-based-rails-scopes/">
+  <link rel="canonical" href="http://blog.nilenso.com/blog/2017/04/06/black-mirror-or-a-review-of-the-review-process-at/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Nilenso Blog" type="application/atom+xml">
@@ -107,7 +102,7 @@ A scope allows you t...">
   <header>
   
     
-      <h1 class="entry-title">Use Lambdas for Date-based Rails Scopes</h1>
+      <h1 class="entry-title">Black Mirror*, or a review of the review process at a software co-operative</h1>
     
   
     
@@ -122,80 +117,62 @@ A scope allows you t...">
 
 
 
-<time datetime="2013-04-07T00:00:00+05:30" pubdate data-updated="true"></time>
+<time datetime="2017-04-06T00:00:00+05:30" pubdate data-updated="true"></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>A scope allows you to specify an ARel query that can be used as a method call to the model (or association objects).</p>
+<div class="entry-content"><p>*Deliberately sensationalist headline designed to grab eyeballs.</p>
 
 
-<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Item</span>
-</span><span class='line'>  <span class="n">scope</span> <span class="ss">:delivered</span><span class="p">,</span> <span class="n">where</span><span class="p">(</span><span class="ss">delivered</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Item</span><span class="o">.</span><span class="n">delivered</span><span class="o">.</span><span class="n">to_sql</span>                     <span class="c1"># SELECT &quot;items&quot;.<em> FROM &quot;items&quot;  WHERE &quot;items&quot;.&quot;delivered&quot; = &#39;t&#39;</span>
-</span><span class='line'><span class="no">Item</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">price</span><span class="p">:</span> <span class="mi">2000</span><span class="p">)</span><span class="o">.</span><span class="n">delivered</span><span class="o">.</span><span class="n">to_sql</span>  <span class="c1"># SELECT &quot;items&quot;.</em> FROM &quot;items&quot;  WHERE &quot;items&quot;.&quot;price&quot; = 2000 AND &quot;items&quot;.&quot;delivered&quot; = &#39;t&#39;</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>There&#8217;s a problem if we try using a scope for a relative date, though.</p>
+<p>We recently concluded annual reviews at <a href="http://nilenso.com">nilenso</a>, at the end of which, Sandy, who recently joined us, asked: “Why is our process the best we can have?”</p>
 
 
-<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Item</span>
-</span><span class='line'>  <span class="n">scope</span> <span class="ss">:expired</span><span class="p">,</span> <span class="n">where</span><span class="p">(</span><span class="s2">&quot;expiry_date &lt; ?&quot;</span><span class="p">,</span> <span class="no">Date</span><span class="o">.</span><span class="n">today</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>This code gets evaluated when the server is started, and the <em>output</em> of <code>Date.today</code> is stored in the scope.</p>
+<p>This led to a lot of reminiscing about how reviews were conducted at other companies that some of us had worked at.</p>
 
 
+<p>One example went like this: I ask people to review me. I don’t get to read what they said, or find out if they even bothered to write anything at all. Someone from my team (a senior, usually my boss) would look at all these reports along with HR, and hold a meeting with me. The meeting basically involved my boss giving me a summary of the above, based on his/her understanding/interpretation. While I could ask for explanations and examples when I received feedback that I couldn’t relate to, they were not always forthcoming.</p>
 
 
-<p>That scope is equivalent to the following:</p>
+<p>There <em>was</em> in fact a level system based on which variable pay was decided, but this was not disclosed. Since the bonuses were kept confidential, even if a person did find out what someone else made, they couldn’t question their pay relative to their colleague (maybe s/he is a better negotiator?).** There was no incremental movement between levels. Post x number of years, you either moved up or out.</p>
 
 
-<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Item</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">expired</span>
-</span><span class='line'>    <span class="n">where</span><span class="p">(</span><span class="s2">&quot;expiry_date &lt; ?&quot;</span><span class="p">,</span> <span class="s2">&quot;2013-04-01&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>The date is hardcoded in there, and will not be changed until the scope is re-evaluated.
-This typically happens only when the server is restarted.</p>
+<p>Another colleague said that reviews at his previous organisation involved filling out a report, mentioning the number of bugs you had fixed (or caused), SLAs you had met (or missed), and so on, and that “regardless of all this, your appraisal merely depended on the ‘relationship’ you had developed with your manager. Nothing really came about even when you rejected whatever level the manager gave you, because in the end s/he decides it.”</p>
 
 
+<p>While these may sound like extreme cases, they are very real (and not all that uncommon). Regardless of experience, the adjectives thrown around to describe the performance management process ranged from “random” and “unfair” to “opaque” and “senseless”.</p>
 
 
-<p>To get around this problem, use a lambda when defining date (or time) based scopes. This will force the evaluation of the scope each time it is <em>called</em>.</p>
+<p>We’ve <a href="https://blog.nilenso.com/blog/2015/06/30/how-to-co-op-salaries-reviews/">written</a> about how we conduct reviews before, but here’s a quick recap.</p>
 
 
-<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Item</span>
-</span><span class='line'>  <span class="n">scope</span> <span class="ss">:expired</span><span class="p">,</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="n">where</span><span class="p">(</span><span class="s2">&quot;expiry_date &lt; ?&quot;</span><span class="p">,</span> <span class="no">Date</span><span class="o">.</span><span class="n">today</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure><div class="author">
-  <img src="http://nilenso.com/images/people/tim-200.png" style="width: 96px; height: 96;">
+<ul><li>We use an <a href="https://github.com/nilenso/reviews">app</a> (hey, we’re a tech company!) to write reviews for each other. This is open source, if you’d like to use it, be our guest.</li><li>The reviews written are visible to everyone within nilenso.</li><li>Once this is done (and we stress that reviews should summarise feedback that has <em>already been given during the course of the year)</em> and a “level” has been suggested, we collectively sit down to discuss, and finalise compensation for the coming year.</li></ul>
+
+
+<p>Stacey Adams’ <a href="https://en.wikipedia.org/wiki/Equity_theory">equity theory</a>, that describes how individuals perceive the distribution of resources is well documented. In order to apply this concept, however, and to determine whether one’s compensation is fair, what one needs is data on how the available resources (profits) were distributed to begin with. The approach that most organisations take in this regard is to hold back information relevant to employees. We run against that grain here.</p>
+
+
+<p>I don’t claim that our method is perfect. In fact, it’s constantly being tweaked. I would posit, however, that the fact that the rationale behind it is completely transparent, and open to critique, makes it better than a system which keeps hidden from its participants, the thought that went into creating it.</p>
+
+
+<p>I’m also not going to pretend that this will work for everyone. More specifically, I’ll admit that this process may not scale well, and beyond a point, will have to be adapted it to suit the needs of a company that employs hundreds, as opposed to tens of people.</p>
+
+
+<p>In the meantime, I’ll leave you with this quote by JFK:</p>
+
+
+<blockquote>“We are not afraid to entrust the American people with unpleasant facts, foreign ideas, alien philosophies, and competitive values. For a nation that is afraid to let its people judge the truth and falsehood in an open market is a nation that is afraid of its people.”</blockquote>
+
+
+<p>**We would write down our bonuses on a piece of paper, throw them in a hat, and then read them out loud. This way, everyone knew where s/he stood, but no one knew who got what.</p>
+
+
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=147cf2d92deb" width="1" height="1"><div class="author">
+  <img src="https://nilenso.com/images/people/deepa-200.png" style="width: 96px; height: 96;">
   <span style="position: absolute; padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
+    <i>Original post by <a href="http://twitter.com/deepa_v">Deepa Venkatraman</a> - check out <a href="https://medium.com/@deepa_93680?source=rss-35a7eb01f164------2">Stories by Deepa Venkatraman on Medium</a></i>
   </span>
 </div></p>
 </div>
@@ -204,7 +181,7 @@ This typically happens only when the server is restarted.</p>
   <footer>
     <p class="meta">
       
-<span class="byline author vcard">Posted by <span class="fn">Timothy Andrew</span></span>
+<span class="byline author vcard">Posted by <span class="fn">Deepa Venkatraman</span></span>
 
       
 
@@ -216,7 +193,7 @@ This typically happens only when the server is restarted.</p>
 
 
 
-<time datetime="2013-04-07T00:00:00+05:30" pubdate data-updated="true"></time>
+<time datetime="2017-04-06T00:00:00+05:30" pubdate data-updated="true"></time>
       
 
 
@@ -224,7 +201,7 @@ This typically happens only when the server is restarted.</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.nilenso.com/blog/2013/04/07/use-lambdas-for-date-based-rails-scopes/" data-via="nilenso" data-counturl="http://blog.nilenso.com/blog/2013/04/07/use-lambdas-for-date-based-rails-scopes/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.nilenso.com/blog/2017/04/06/black-mirror-or-a-review-of-the-review-process-at/" data-via="nilenso" data-counturl="http://blog.nilenso.com/blog/2017/04/06/black-mirror-or-a-review-of-the-review-process-at/" >Tweet</a>
   
   
   
@@ -233,10 +210,10 @@ This typically happens only when the server is restarted.</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/04/05/using-swipe-js-to-swipe-between-pages-of-a-web-app/" title="Previous Post: Using Swipe.js to swipe between pages of a web app">&laquo; Using Swipe.js to swipe between pages of a web app</a>
+        <a class="basic-alignment left" href="/blog/2016/05/16/i-have-cramps/" title="Previous Post: &quot;I have cramps.&quot;">&laquo; &quot;I have cramps.&quot;</a>
       
       
-        <a class="basic-alignment right" href="/blog/2013/04/12/changing-the-server-timeout-on-engineyard/" title="Next Post: Changing the Server Timeout on EngineYard">Changing the Server Timeout on EngineYard &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2017/05/05/designing-for-rural-india-part-1/" title="Next Post: Designing for Rural India — Part 1">Designing for Rural India — Part 1 &raquo;</a>
       
     </p>
   </footer>
