@@ -12,6 +12,8 @@ planet:
       - "gnome"
       - "lifehacks"
       - "dev"
+      - "cooperatives"
+      - "design"
 
 blogs:
   - author: "Akshay Gupta"
@@ -33,6 +35,16 @@ blogs:
     feed: "http://blog.unnikrishnan.in/feed/"
     image:  "http://blog.unnikrishnan.in/wp-content/uploads/2016/05/13124641_10207964967054916_8185125548463219102_n-e1464062267378.jpg"
     twitter: "krish8664"
+
+  - author: "Deepa Venkatraman"
+    feed: "https://medium.com/feed/@deepa_93680"
+    image: "https://nilenso.com/images/people/deepa-200.png"
+    twitter: "deepa_v"
+
+  - author: "Noopur Varma"
+    feed: "https://medium.com/feed/@noopurvarma"
+    image: "https://nilenso.com/images/people/noopur-200.png"
+    twitter: "9porcupine"
 
     # - author: Nivedita Priyadarshini
     #   feed: "http:///"
