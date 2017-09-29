@@ -16,6 +16,12 @@ planet:
       - "design"
 
 blogs:
+  - author: "Abhinav Sarkar"
+    feed: "http://abhinavsarkar.net/tags/nilenso/feed.xml"
+    image: "https://nilenso.com/images/people/abhinav-200.png"
+    twitter: "abhin4v"
+    tags: "nilenso"
+
   - author: "Akshay Gupta"
     feed: "http://blog.kitallis.in/feeds/posts/default"
     image:  "http://nilenso.com/images/people/kitallis-200.png"
@@ -55,7 +61,7 @@ blogs:
     #   image:  "http://nilenso.com/images/people/nid-200.png"
     #   twitter: "nid90"
 
-    # TODO: add @abhin4v, @dvenkatr, @govindkrjoshi, @krish8664, @neenaoffline, @nid90, @noopurvarma, @yudistrange
+    # TODO: add @govindkrjoshi, @neenaoffline, @nid90, @noopurvarma, @yudistrange
 
 
     ########################

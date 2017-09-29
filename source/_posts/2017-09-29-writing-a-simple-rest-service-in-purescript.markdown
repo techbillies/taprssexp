@@ -1,142 +1,12 @@
-
-<!DOCTYPE html>
-<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
-<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
-<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  <title>Nilenso Blog</title>
-  <meta name="author" content="Nilenso">
-
-  
-  <meta name="description" content="
-  
-  
-  
-    
-      
-  
-  
-    
-      Writing a Simple REST Service in Purescript
-      
-      
-    
-      
-        
-
-
-
-
-
-
-
-
-
-
-        
-      
-   ...">
-  
-
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-
-  
-  <link rel="canonical" href="http://blog.nilenso.com/">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Nilenso Blog" type="application/atom+xml">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-
-  <!-- Typekit fonts -->
-  <script type="text/javascript" src="//use.typekit.net/xgt4lgm.js"></script>
-  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
-  
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-43704022-1']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
-
-
-
-</head>
-
-<body   class="collapse-sidebar sidebar-footer" >
-  <header role="banner">
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  
-</ul>
-  
-<header class="nilenso-header">
-  <img class="header-logo-image left" src="/images/nilenso-200.png" />
-  <a class="header-link logo-name" href="http://nilenso.com">nilenso</a>
-  <a class="header-link right page-link rss-link" href="/atom.xml" title="subscribe via RSS"><img class="rss-link-image" src="/images/rss.png"></img></a>
-  <a class="header-link page-link" href="/blog/archives">Archive</a>
-  <a class="header-link page-link active" href="/">Blog</a>
-</header>
-<div class="clear"></div>
-
-</nav>
-  <div id="main">
-    <div id="content">
-      <div class="blog-index">
-  
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2017/09/29/writing-a-simple-rest-service-in-purescript/">Writing a Simple REST Service in Purescript</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-<time datetime="2017-09-29T00:00:00+05:30" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>At <a href="https://nilenso.com">Nilenso</a>, we’ve been working with a client who has chosen <a href="http://purescript.org">Purescript</a> as their primary programming language. Since I didn’t find any canonical documentation on writing a web service in PureScript, I thought I’d jot down the approach that we took.</p>
-
-
+---
+title: "Writing a Simple REST Service in Purescript"
+kind: article
+created_at: 2017-09-29 00:00:00 UTC
+author: Abhinav Sarkar
+layout: post
+---
+<p>At <a href="https://nilenso.com">Nilenso</a>, we’ve been working with a client who has chosen <a href="http://purescript.org">Purescript</a> as their primary programming language. Since I didn’t find any canonical documentation on writing a web service in PureScript, I thought I’d jot down the approach that we took.</p>
 <p>The aim of this two part tutorial is to create a simple JSON REST service written in purescript, to run on a node.js server. This assumes that you have basic proficiency with purescript. We have the following requirements:</p>
-
-
 <ol type="1">
 <li>persisting users into a postgres database.</li>
 <li>API endpoints for creating, updating, reading, listing and deleting users.</li>
@@ -145,26 +15,13 @@
 <li>running database migrations automatically.</li>
 <li>reading the server and database configs from environment variables.</li>
 </ol>
-
-
-<p><nav id="toc"><h3>Contents</h3><ol><li><a href="#setting-up">Setting Up</a></li><li><a href="#types-first">Types First</a></li><li><a href="#persisting-it">Persisting It</a></li><li><a href="#serving-it">Serving It</a><ol><li><a href="#getting-user">Getting User</a></li><li><a href="#deleting-user">Deleting User</a></li><li><a href="#creating-user">Creating User</a></li><li><a href="#updating-user">Updating User</a></li><li><a href="#listing-users">Listing Users</a></li></ol></li><li><a href="#conclusion">Conclusion</a></li></ol></nav></p>
-
+<nav id="toc"><h3>Contents</h3><ol><li><a href="#setting-up">Setting Up</a></li><li><a href="#types-first">Types First</a></li><li><a href="#persisting-it">Persisting It</a></li><li><a href="#serving-it">Serving It</a><ol><li><a href="#getting-user">Getting User</a></li><li><a href="#deleting-user">Deleting User</a></li><li><a href="#creating-user">Creating User</a></li><li><a href="#updating-user">Updating User</a></li><li><a href="#listing-users">Listing Users</a></li></ol></li><li><a href="#conclusion">Conclusion</a></li></ol></nav>
 <h2 id="setting-up">Setting Up</h2>
-
-
 <p>We start with installing purescript and the required tools. This assumes that we have <a href="https://nodejs.org">node</a> and <a href="https://www.npmjs.com">npm</a> installed on our machine.</p>
-
-
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">mkdir</span> -p ~/.local/
 $ <span class="ex">npm</span> install -g purescript pulp bower --prefix ~/.local/</code></pre></div>
-
-
 <p><a href="https://github.com/purescript-contrib/pulp">Pulp</a> is a build tool for purescript projects and <a href="http://bower.io">bower</a> is a package manager used to get purescript libraries. You’ll have to add <code>~/.local/bin</code> in your <code>$PATH</code> (if it is not already added) to access the binaries installed.</p>
-
-
 <p>Let’s create a directory for our project and make Pulp initialize it:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">mkdir</span> ps-simple-rest-service
 $ <span class="bu">cd</span> ps-simple-rest-service
 $ <span class="ex">pulp</span> init
@@ -189,17 +46,9 @@ $ <span class="fu">cat</span> bower.json
 }
 $ ls bower_components
 purescript-console  purescript-eff  purescript-prelude purescript-psci-support</code></pre></div>
-
-
 <p>Pulp creates the basic project structure for us. <code>src</code> directory will contain the source while the <code>test</code> directory will contain the tests. <code>bower.json</code> contains the purescript libraries as dependencies which are downloaded and installed in the <code>bower_components</code> directory.</p>
-
-
 <h2 id="types-first">Types First</h2>
-
-
 <p>First, we create the types needed in <code>src/SimpleServer/Types.purs</code>:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">SimpleServer.Types</span> <span class="kw">where</span>
 
 <span class="kw">import </span><span class="dt">Prelude</span>
@@ -226,17 +75,9 @@ derive <span class="kw">instance</span><span class="ot"> genericUser ::</span> <
 
 <span class="kw">instance</span><span class="ot"> encodeUser ::</span> <span class="dt">Encode</span> <span class="dt">User</span> <span class="kw">where</span>
   encode <span class="fu">=</span> genericEncode <span class="fu">$</span> defaultOptions { unwrapSingleConstructors <span class="fu">=</span> true }</code></pre></div>
-
-
 <p>We are using the generic support for purescript types from the <a href="https://pursuit.purescript.org/packages/purescript-generics-rep"><code>purescript-generics-rep</code></a> and <a href="https://pursuit.purescript.org/packages/purescript-foreign-generic"><code>purescript-foreign-generic</code></a> libraries to encode and decode the <code>User</code> type to JSON. We install the library by running the following command:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">bower</span> install purescript-foreign-generic --save</code></pre></div>
-
-
 <p>Now we can load up the module in the purescript REPL and try out the JSON conversion features:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">$</span> pulp repl
 <span class="fu">&gt;</span> <span class="kw">import </span><span class="dt">SimpleServer.Types</span>
 <span class="fu">&gt;</span> user <span class="fu">=</span> <span class="dt">User</span> { id<span class="fu">:</span> <span class="dv">1</span>, name<span class="fu">:</span> <span class="st">&quot;Abhinav&quot;</span>}
@@ -255,26 +96,14 @@ derive <span class="kw">instance</span><span class="ot"> genericUser ::</span> <
 <span class="fu">&gt;</span> eUser <span class="fu">=</span> <span class="kw">let</span> (<span class="dt">Identity</span> eUser) <span class="fu">=</span> runExceptT <span class="fu">$</span> dUser <span class="kw">in</span> eUser
 <span class="fu">&gt;</span> eUser
 (<span class="dt">Right</span> (<span class="dt">User</span> { id<span class="fu">:</span> <span class="dv">1</span>, name<span class="fu">:</span> <span class="st">&quot;Abhinav&quot;</span> }))</code></pre></div>
-
-
 <p>We use <code>encodeJSON</code> and <code>decodeJSON</code> functions from <a href="https://pursuit.purescript.org/packages/purescript-foreign-generic/4.3.0/docs/Data.Foreign.Generic"><code>Data.Foreign.Generic</code></a> module to encode and decode the <code>User</code> instance to JSON. The return type of <code>decodeJSON</code> is a bit complicated as it needs to return the parsing errors too. In this case, the decoding returns no errors and we get back a <code>Right</code> with the correctly parsed <code>User</code> instance.</p>
-
-
 <h2 id="persisting-it">Persisting It</h2>
-
-
 <p>Next, we add the support for saving a <code>User</code> instance to a postgres DB. First, we install the required libraries using bower and npm: <a href="https://github.com/brianc/node-postgres"><code>pg</code></a> for Javascript bindings to call postgres, <a href="https://pursuit.purescript.org/packages/purescript-aff"><code>purescript-aff</code></a> for asynchronous processing and <a href="https://pursuit.purescript.org/packages/purescript-postgresql-client"><code>purescript-postgresql-client</code></a> for purescript wrapper over <code>pg</code>:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">npm</span> init -y
 $ <span class="ex">npm</span> install pg@6.4.0 --save
 $ <span class="ex">bower</span> install purescript-aff --save
 $ <span class="ex">bower</span> install purescript-postgresql-client --save</code></pre></div>
-
-
 <p>Before writing the code, we create the database and users table using the command-line postgres client:</p>
-
-
 <pre><code>$ psql postgres
 psql (9.5.4)
 Type &quot;help&quot; for help.
@@ -293,11 +122,7 @@ simple_server=# \d users
  name   | character varying(100) | not null
 Indexes:
     &quot;users_pkey&quot; PRIMARY KEY, btree (id)</code></pre>
-
-
 <p>Now we add support for converting a <code>User</code> instance to and from an SQL row by adding the following code in the <code>src/SimpleServer/Types.purs</code> file:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Array</span> <span class="kw">as</span> <span class="dt">Array</span>
 <span class="kw">import </span><span class="dt">Data.Either</span> (<span class="dt">Either</span>(..))
 <span class="kw">import </span><span class="dt">Database.PostgreSQL</span> (class <span class="dt">FromSQLRow</span>, class <span class="dt">ToSQLRow</span>, fromSQLValue, toSQLValue)
@@ -313,11 +138,7 @@ Indexes:
 
 <span class="kw">instance</span><span class="ot"> userToSQLRow ::</span> <span class="dt">ToSQLRow</span> <span class="dt">User</span> <span class="kw">where</span>
   toSQLRow (<span class="dt">User</span> {id, name}) <span class="fu">=</span> [toSQLValue id, toSQLValue name]</code></pre></div>
-
-
 <p>We can try out the persistence in the REPL:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">$</span> pulp repl
 <span class="dt">PSCi</span>, version <span class="fl">0.11</span><span class="fu">.</span><span class="dv">6</span>
 <span class="dt">Type</span> <span class="fu">:?</span> for help
@@ -349,17 +170,9 @@ unit
 …
 unit
 (<span class="dt">User</span> { id<span class="fu">:</span> <span class="dv">1</span>, name<span class="fu">:</span> <span class="st">&quot;Abhinav&quot;</span> })</code></pre></div>
-
-
 <p>We create the <code>databaseConfig</code> record with the configs needed to connect to the database. Using the recond, we create a new postgres connection pool (<code>PG.newPool</code>) and get a connection from it (<code>PG.withConnection</code>). We call <code>PG.execute</code> with the connection, the SQL insert query for the users table and the <code>User</code> instance, to insert the user into the table. All of this is done inside <a href="https://pursuit.purescript.org/packages/purescript-aff/3.1.0/docs/Control.Monad.Aff#v:launchAff"><code>launchAff</code></a> which takes care of sequencing the callbacks correctly to make the asynchronous code look synchronous.</p>
-
-
 <p>Similarly, in the second part, we query the table using <code>PG.query</code> function by calling it with a connection, the SQL select query and the <code>User</code> ID as the query parameter. It returns an <code>Array</code> of users which we log to the console using the <code>logShow</code> function.</p>
-
-
 <p>We use this experiment to write the persistence related code in the <code>src/SimpleServer/Persistence.purs</code> file:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">SimpleServer.Persistence</span>
   ( insertUser
   , findUser
@@ -404,24 +217,12 @@ deleteUser conn userID <span class="fu">=</span> PG.execute conn (<span class="d
 
 <span class="ot">listUsers ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Connection</span> <span class="ot">-&gt;</span> <span class="dt">Aff</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff) (<span class="dt">Array</span> <span class="dt">User</span>)
 listUsers conn <span class="fu">=</span> PG.query conn (<span class="dt">PG.Query</span> listUsersQuery) <span class="dt">PG.Row0</span></code></pre></div>
-
-
 <h2 id="serving-it">Serving It</h2>
-
-
 <p>We can now write a simple HTTP API over the persistence layer using <a href="https://expressjs.com">express</a> to provide CRUD functionality for users. Let’s install express and <a href="https://pursuit.purescript.org/packages/purescript-express">purescript-express</a>, the purescript wrapper over it:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">npm</span> install express --save
 $ <span class="ex">bower</span> install purescript-express --save</code></pre></div>
-
-
 <h3 id="getting-user">Getting User</h3>
-
-
 <p>We do this top-down. First, we change <code>src/Main.purs</code> to run the HTTP server by providing the server port and database configuration:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">Main</span> <span class="kw">where</span>
 
 <span class="kw">import </span><span class="dt">Prelude</span>
@@ -447,11 +248,7 @@ main <span class="fu">=</span> runServer port databaseConfig
                      , max<span class="fu">:</span> <span class="dv">10</span>
                      , idleTimeoutMillis<span class="fu">:</span> <span class="dv">1000</span>
                      }</code></pre></div>
-
-
 <p>Next, we wire up the server routes to the handlers in <code>src/SimpleService/Server.purs</code>:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">SimpleService.Server</span> (runServer) <span class="kw">where</span>
 
 <span class="kw">import </span><span class="dt">Prelude</span>
@@ -482,14 +279,8 @@ runServer port databaseConfig <span class="fu">=</span> catchException logShow <
     pool <span class="ot">&lt;-</span> PG.newPool databaseConfig
     <span class="kw">let</span> app&#39; <span class="fu">=</span> app pool
     liftEff <span class="fu">$</span> listenHttp app&#39; port \_ <span class="ot">-&gt;</span> log <span class="fu">$</span> <span class="st">&quot;Server listening on :&quot;</span> <span class="fu">&lt;&gt;</span> show port</code></pre></div>
-
-
 <p><code>runServer</code> creates a PostgreSQL connection pool and passes it to the <code>app</code> function which creates the express application, which in turn, binds it to the handler <code>getUser</code>. Then it launches the HTTP server by calling <code>listenHttp</code>.</p>
-
-
 <p>Finally, we write the actual <code>getUser</code> handler in <code>src/SimpleService/Handler.purs</code>:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">SimpleService.Handler</span> <span class="kw">where</span>
 
 <span class="kw">import </span><span class="dt">Prelude</span>
@@ -522,20 +313,12 @@ respond status body <span class="fu">=</span> <span class="kw">do</span>
 respondNoContent status <span class="fu">=</span> <span class="kw">do</span>
   setStatus status
   end</code></pre></div>
-
-
 <p><code>getUser</code> validates the route parameter for valid user ID, sending error HTTP responses in case of failures. It then calls <code>findUser</code> to find the user and returns appropriate response.</p>
-
-
 <p>We can test this on command line using <a href="https://httpie.org">HTTPie</a>. We run <code>pulp --watch run</code> in one terminal to start the server with file watching, and test it from another terminal:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">pulp</span> --watch run
 <span class="ex">*</span> Building project in ps-simple-rest-service
 <span class="ex">*</span> Build successful.
 <span class="ex">Server</span> listening on :4000</code></pre></div>
-
-
 <pre class="http"><code>$ http GET http://localhost:4000/v1/user/1 # should return the user we created earlier
 HTTP/1.1 200 OK
 Connection: keep-alive
@@ -549,8 +332,6 @@ X-Powered-By: Express
     &quot;id&quot;: 1,
     &quot;name&quot;: &quot;Abhinav&quot;
 }</code></pre>
-
-
 <pre class="http"><code>$ http GET http://localhost:4000/v1/user/s
 HTTP/1.1 422 Unprocessable Entity
 Connection: keep-alive
@@ -563,8 +344,6 @@ X-Powered-By: Express
 {
     &quot;error&quot;: &quot;User ID must be an integer: s&quot;
 }</code></pre>
-
-
 <pre class="http"><code>$ http GET http://localhost:4000/v1/user/2
 HTTP/1.1 404 Not Found
 Connection: keep-alive
@@ -577,14 +356,8 @@ X-Powered-By: Express
 {
     &quot;error&quot;: &quot;User not found with id: 2&quot;
 }</code></pre>
-
-
 <h3 id="deleting-user">Deleting User</h3>
-
-
 <p><code>deleteUser</code> handler is similar. We add the route in the <code>app</code> function in the <code>src/SimpleService/Server.purs</code> file:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- previous code</span>
 <span class="kw">import </span><span class="dt">Node.Express.App</span> (<span class="dt">App</span>, delete, get, listenHttp)
 <span class="kw">import </span><span class="dt">SimpleService.Handler</span> (createUser, deleteUser, getUser)
@@ -596,11 +369,7 @@ app pool <span class="fu">=</span> <span class="kw">do</span>
   delete <span class="st">&quot;/v1/user/:id&quot;</span> <span class="fu">$</span> deleteUser pool
 
 <span class="co">-- previous code</span></code></pre></div>
-
-
 <p>And we add the handler in the <code>src/SimpleService/Handler.purs</code> file:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">deleteUser ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">Handler</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
 deleteUser pool <span class="fu">=</span> getRouteParam <span class="st">&quot;id&quot;</span> <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
   <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respond <span class="dv">422</span> { error<span class="fu">:</span> <span class="st">&quot;User ID is required&quot;</span> }
@@ -616,14 +385,8 @@ deleteUser pool <span class="fu">=</span> getRouteParam <span class="st">&quot;i
       <span class="kw">if</span> found
         <span class="kw">then</span> respondNoContent <span class="dv">204</span>
         <span class="kw">else</span> respond <span class="dv">404</span> { error<span class="fu">:</span> <span class="st">&quot;User not found with id: &quot;</span> <span class="fu">&lt;&gt;</span> sUserId }</code></pre></div>
-
-
 <p>After the usual validations on the route param, <code>deleteUser</code> tries to find the user by the given user ID and if found, it deletes the user. Both the persistence related functions are run inside a single SQL transaction using <code>PG.withTransaction</code> function. <code>deleteUser</code> return 404 status if the user is not found, else it returns 204 status.</p>
-
-
 <p>Let’s try it out:</p>
-
-
 <pre class="http"><code>$ http GET http://localhost:4000/v1/user/1
 HTTP/1.1 200 OK
 Connection: keep-alive
@@ -637,15 +400,11 @@ X-Powered-By: Express
     &quot;id&quot;: 1,
     &quot;name&quot;: &quot;Abhinav&quot;
 }</code></pre>
-
-
 <pre class="http"><code>$ http DELETE http://localhost:4000/v1/user/1
 HTTP/1.1 204 No Content
 Connection: keep-alive
 Date: Mon, 11 Sep 2017 05:10:56 GMT
 X-Powered-By: Express</code></pre>
-
-
 <pre class="http"><code>$ http GET http://localhost:4000/v1/user/1
 HTTP/1.1 404 Not Found
 Connection: keep-alive
@@ -658,8 +417,6 @@ X-Powered-By: Express
 {
     &quot;error&quot;: &quot;User not found with id: 1&quot;
 }</code></pre>
-
-
 <pre class="http"><code>$ http DELETE http://localhost:4000/v1/user/1
 HTTP/1.1 404 Not Found
 Connection: keep-alive
@@ -672,14 +429,8 @@ X-Powered-By: Express
 {
     &quot;error&quot;: &quot;User not found with id: 1&quot;
 }</code></pre>
-
-
 <h3 id="creating-user">Creating User</h3>
-
-
 <p><code>createUser</code> handler is a bit more involved. First, we need to add an express middleware to parse the body of the request as JSON. We use <a href="https://github.com/expressjs/body-parser"><code>body-parser</code></a> for this and access it through purescript FFI. We create a new file <code>src/SimpleService/Middleware/BodyParser.js</code> with the content:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="st">&quot;use strict&quot;</span><span class="op">;</span>
 
 <span class="kw">var</span> bodyParser <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;body-parser&quot;</span>)<span class="op">;</span>
@@ -687,11 +438,7 @@ X-Powered-By: Express
 <span class="va">exports</span>.<span class="at">jsonBodyParser</span> <span class="op">=</span> <span class="va">bodyParser</span>.<span class="at">json</span>(<span class="op">{</span>
   <span class="dt">limit</span><span class="op">:</span> <span class="st">&quot;5mb&quot;</span>
 <span class="op">}</span>)<span class="op">;</span></code></pre></div>
-
-
 <p>And write a wrapper for it in the file <code>src/SimpleService/Middleware/BodyParser.purs</code> with the content:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">SimpleService.Middleware.BodyParser</span> <span class="kw">where</span>
 
 <span class="kw">import </span><span class="dt">Prelude</span>
@@ -699,17 +446,9 @@ X-Powered-By: Express
 <span class="kw">import </span><span class="dt">Node.Express.Types</span> (<span class="dt">ExpressM</span>, <span class="dt">Response</span>, <span class="dt">Request</span>)
 
 foreign <span class="kw">import </span>jsonBodyParser :: forall e. <span class="dt">Fn3</span> <span class="dt">Request</span> <span class="dt">Response</span> (<span class="dt">ExpressM</span> e <span class="dt">Unit</span>) (<span class="dt">ExpressM</span> e <span class="dt">Unit</span>)</code></pre></div>
-
-
 <p>We also need to install the <code>body-parser</code> npm dependency:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">npm</span> install --save body-parser</code></pre></div>
-
-
 <p>Next, we change the <code>app</code> function in the <code>src/SimpleService/Server.purs</code> file to add the middleware and the route:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- previous code</span>
 <span class="kw">import </span><span class="dt">Node.Express.App</span> (<span class="dt">App</span>, delete, get, listenHttp, post, useExternal)
 <span class="kw">import </span><span class="dt">SimpleService.Handler</span> (createUser, deleteUser, getUser)
@@ -723,11 +462,7 @@ app pool <span class="fu">=</span> <span class="kw">do</span>
   get <span class="st">&quot;/v1/user/:id&quot;</span> <span class="fu">$</span> getUser pool
   delete <span class="st">&quot;/v1/user/:id&quot;</span> <span class="fu">$</span> deleteUser pool
   post <span class="st">&quot;/v1/users&quot;</span> <span class="fu">$</span> createUser pool</code></pre></div>
-
-
 <p>And finally, we write the handler in the <code>src/SimpleService/Handler.purs</code> file:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- previous code</span>
 <span class="kw">import </span><span class="dt">Data.Either</span> (<span class="dt">Either</span>(..))
 <span class="kw">import </span><span class="dt">Data.Foldable</span> (intercalate)
@@ -747,14 +482,8 @@ createUser pool <span class="fu">=</span> getBody <span class="fu">&gt;&gt;=</sp
         <span class="kw">else</span> <span class="kw">do</span>
           liftAff (PG.withConnection pool <span class="fu">$</span> flip P.insertUser u)
           respondNoContent <span class="dv">201</span></code></pre></div>
-
-
 <p><code>createUser</code> calls <a href="https://pursuit.purescript.org/packages/purescript-express/0.5.2/docs/Node.Express.Request#v:getBody"><code>getBody</code></a> which has type signature <code>forall e a. (Decode a) =&gt; HandlerM (express :: EXPRESS | e) (Either MultipleErrors a)</code>. It returns either a list of parsing errors or a parsed instance, which in our case, is a <code>User</code>. In case of errors, we just return the errors rendered as string with a 422 status. If we get a parsed <code>User</code> instance, we do some validations on it, returning appropriate error messages. If all validations pass, we create the user in the DB by calling <code>insertUser</code> from the persistence layer and respond with a status 201.</p>
-
-
 <p>We can try it out:</p>
-
-
 <pre class="http"><code>$ http POST http://localhost:4000/v1/users name=&quot;abhinav&quot;
 HTTP/1.1 422 Unprocessable Entity
 Connection: keep-alive
@@ -767,8 +496,6 @@ X-Powered-By: Express
 {
     &quot;error&quot;: &quot;Error at array index 0: (ErrorAtProperty \&quot;id\&quot; (TypeMismatch \&quot;Int\&quot; \&quot;Undefined\&quot;))&quot;
 }</code></pre>
-
-
 <pre class="http"><code>$ http POST http://localhost:4000/v1/users id:=1 name=&quot;&quot;
 HTTP/1.1 422 Unprocessable Entity
 Connection: keep-alive
@@ -781,16 +508,12 @@ X-Powered-By: Express
 {
     &quot;error&quot;: &quot;User name must not be empty&quot;
 }</code></pre>
-
-
 <pre class="http"><code>$ http POST http://localhost:4000/v1/users id:=1 name=&quot;abhinav&quot;
 HTTP/1.1 201 Created
 Connection: keep-alive
 Content-Length: 0
 Date: Mon, 11 Sep 2017 05:52:23 GMT
 X-Powered-By: Express</code></pre>
-
-
 <pre class="http"><code>$ http GET http://localhost:4000/v1/user/1
 HTTP/1.1 200 OK
 Connection: keep-alive
@@ -804,17 +527,9 @@ X-Powered-By: Express
     &quot;id&quot;: 1,
     &quot;name&quot;: &quot;abhinav&quot;
 }</code></pre>
-
-
 <p>First try returns a parsing failure because we didn’t provide the <code>id</code> field. Second try is a validation failure because the name was empty. Third try is a success which we check by doing a <code>GET</code> request next.</p>
-
-
 <h3 id="updating-user">Updating User</h3>
-
-
 <p>We want to allow a user’s name to be updated through the API, but not the user’s id. So we add a new type to <code>src/SimpleService/Types.purs</code> to represent a possible change in user’s name:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- previous code</span>
 <span class="kw">import </span><span class="dt">Data.Foreign.NullOrUndefined</span> (<span class="dt">NullOrUndefined</span>)
 <span class="co">-- previous code</span>
@@ -825,14 +540,8 @@ derive <span class="kw">instance</span><span class="ot"> genericUserPatch ::</sp
 
 <span class="kw">instance</span><span class="ot"> decodeUserPatch ::</span> <span class="dt">Decode</span> <span class="dt">UserPatch</span> <span class="kw">where</span>
   decode <span class="fu">=</span> genericDecode <span class="fu">$</span> defaultOptions { unwrapSingleConstructors <span class="fu">=</span> true }</code></pre></div>
-
-
 <p><code>NullOrUndefined</code> is a wrapper over <code>Maybe</code> with added support for Javascript <code>null</code> and <code>undefined</code> values. We define <code>UserPatch</code> as having a possibly null (or undefined) <code>name</code> field.</p>
-
-
 <p>Now we can add the corresponding handler in <code>src/SimpleService/Handlers.purs</code>:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- previous code</span>
 <span class="kw">import </span><span class="dt">Data.Foreign.NullOrUndefined</span> (unNullOrUndefined)
 <span class="co">-- previous code</span>
@@ -859,14 +568,8 @@ updateUser pool <span class="fu">=</span> getRouteParam <span class="st">&quot;i
             <span class="kw">case</span> savedUser <span class="kw">of</span>
               <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respond <span class="dv">404</span> { error<span class="fu">:</span> <span class="st">&quot;User not found with id: &quot;</span> <span class="fu">&lt;&gt;</span> sUserId }
               <span class="dt">Just</span> user <span class="ot">-&gt;</span> respond <span class="dv">200</span> (encode user)</code></pre></div>
-
-
 <p>After checking for a valid user ID as before, we get the decoded request body as a <code>UserPatch</code> instance. If the path does not have the name field or has it as <code>null</code>, there is nothing to do and we respond with a 204 status. If the user name is present in the patch, we validate it for non-emptiness. Then, within a DB transaction, we try to find the user with the given ID, responding with a 404 status if the user is not found. If the user is found, we update the user’s name in the database, and respond with a 200 status and the saved user encoded as JSON response body.</p>
-
-
 <p>Finally, we can add the route to our server’s router in <code>src/SimpleService/Server.purs</code> to make the functionality available:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- previous code</span>
 <span class="kw">import </span><span class="dt">Node.Express.App</span> (<span class="dt">App</span>, delete, get, http, listenHttp, post, useExternal)
 <span class="kw">import </span><span class="dt">Node.Express.Types</span> (<span class="dt">EXPRESS</span>, <span class="dt">Method</span>(..))
@@ -883,11 +586,7 @@ app pool <span class="fu">=</span> <span class="kw">do</span>
   patch <span class="st">&quot;/v1/user/:id&quot;</span>  <span class="fu">$</span> updateUser pool
   <span class="kw">where</span>
     patch <span class="fu">=</span> http (<span class="dt">CustomMethod</span> <span class="st">&quot;patch&quot;</span>)</code></pre></div>
-
-
 <p>We can try it out now:</p>
-
-
 <pre class="http"><code>$ http GET http://localhost:4000/v1/user/1
 HTTP/1.1 200 OK
 Connection: keep-alive
@@ -901,8 +600,6 @@ X-Powered-By: Express
     &quot;id&quot;: 1,
     &quot;name&quot;: &quot;abhinav&quot;
 }</code></pre>
-
-
 <pre class="http"><code>$ http PATCH http://localhost:4000/v1/user/1 name=abhinavsarkar
 HTTP/1.1 200 OK
 Connection: keep-alive
@@ -916,8 +613,6 @@ X-Powered-By: Express
     &quot;id&quot;: 1,
     &quot;name&quot;: &quot;abhinavsarkar&quot;
 }</code></pre>
-
-
 <pre class="http"><code>$ http GET http://localhost:4000/v1/user/1
 HTTP/1.1 200 OK
 Connection: keep-alive
@@ -931,15 +626,11 @@ X-Powered-By: Express
     &quot;id&quot;: 1,
     &quot;name&quot;: &quot;abhinavsarkar&quot;
 }</code></pre>
-
-
 <pre class="http"><code>$ http PATCH http://localhost:4000/v1/user/1
 HTTP/1.1 204 No Content
 Connection: keep-alive
 Date: Fri, 11 Sep 2017 06:42:31 GMT
 X-Powered-By: Express</code></pre>
-
-
 <pre class="http"><code>$ http PATCH http://localhost:4000/v1/user/1 name=&quot;&quot;
 HTTP/1.1 422 Unprocessable Entity
 Connection: keep-alive
@@ -952,25 +643,13 @@ X-Powered-By: Express
 {
     &quot;error&quot;: &quot;User name must not be empty&quot;
 }</code></pre>
-
-
 <h3 id="listing-users">Listing Users</h3>
-
-
 <p>Listing users is quite simple since it doesn’t require us to take any request parameter.</p>
-
-
 <p>We add the handler to the <code>src/SimpleService/Handler.purs</code> file:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- previous code</span>
 <span class="ot">listUsers ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">Handler</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
 listUsers pool <span class="fu">=</span> liftAff (PG.withConnection pool P.listUsers) <span class="fu">&gt;&gt;=</span> encode <span class="fu">&gt;&gt;&gt;</span> respond <span class="dv">200</span></code></pre></div>
-
-
 <p>And the route to the <code>src/SimpleService/Server.purs</code> file:</p>
-
-
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- previous code</span>
 <span class="kw">import </span><span class="dt">SimpleService.Handler</span> (createUser, deleteUser, getUser, listUsers, updateUser)
 <span class="co">-- previous code</span>
@@ -986,19 +665,13 @@ app pool <span class="fu">=</span> <span class="kw">do</span>
   get <span class="st">&quot;/v1/users&quot;</span>       <span class="fu">$</span> listUsers pool
   <span class="kw">where</span>
     patch <span class="fu">=</span> http (<span class="dt">CustomMethod</span> <span class="st">&quot;patch&quot;</span>)</code></pre></div>
-
-
 <p>And that’s it. We can test this endpoint:</p>
-
-
 <pre class="http"><code>$ http POST http://localhost:4000/v1/users id:=2 name=sarkarabhinav
 HTTP/1.1 201 Created
 Connection: keep-alive
 Content-Length: 0
 Date: Fri, 11 Sep 2017 07:06:24 GMT
 X-Powered-By: Express</code></pre>
-
-
 <pre class="http"><code>$ http GET http://localhost:4000/v1/users
 HTTP/1.1 200 OK
 Connection: keep-alive
@@ -1018,272 +691,10 @@ X-Powered-By: Express
         &quot;name&quot;: &quot;sarkarabhinav&quot;
     }
 ]</code></pre>
-
-
 <h2 id="conclusion">Conclusion</h2>
-
-
-<p>That concludes the first part of the two part tutorial. We learned how to set up a Purescript project, how to access a postgres database and how to create a JSON REST API over the database. The code till the end of this part can be seen in <a href="https://github.com/abhin4v/ps-simple-rest-service/tree/a455268226ed072a3755ddda1f52d7cc5f8dd194">github</a>. In the next part, we’ll learn how to do API validation, logging, database migrations and application configuration.</p>
-
-
-<div class="author">
+<p>That concludes the first part of the two part tutorial. We learned how to set up a Purescript project, how to access a postgres database and how to create a JSON REST API over the database. The code till the end of this part can be seen in <a href="https://github.com/abhin4v/ps-simple-rest-service/tree/a455268226ed072a3755ddda1f52d7cc5f8dd194">github</a>. In the next part, we’ll learn how to do API validation, logging, database migrations and application configuration.</p><div class="author">
   <img src="https://nilenso.com/images/people/abhinav-200.png" style="width: 96px; height: 96;">
   <span style="position: absolute; padding: 32px 15px;">
     <i>Original post by <a href="http://twitter.com/abhin4v">Abhinav Sarkar</a> - check out <a href="http://abhinavsarkar.net">Posts tagged &quot;nilenso&quot;</a></i>
   </span>
 </div>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2017/09/12/gunak-designing-with-the-indian-government/">Gunak — Designing with the Indian Government</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-<time datetime="2017-09-12T00:00:00+05:30" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4>Working with a government body to digitise their offline hospital quality assurance system</h4>
-
-
-<h3>What’s the problem?</h3>
-
-
-<p>The NRHM (National Rural Health Mission) is an initiative undertaken by the Government of India to address the health needs of under-served rural areas. The NRHM was initially tasked with addressing the health needs of 18 states that had been identified as having weak public health indicators.</p>
-
-
-<p>In an effort to better this setup, the Government of India setup the NHSRC (National Health Systems Resource Centre), under the NRHM, to serve as an apex body for technical assistance. The goal of this institution is to improve health outcomes by facilitating governance reform, health systems innovations, and improved information sharing among all stakeholders — at the national, state, district and sub-district levels — through capacity development and convergence models.</p>
-
-
-<p>One of the areas that the NHSRC works in is the provision of universal healthcare services. Universal access to good quality services — services that are effective, that are safe and satisfying to the patient; services that are patient and community centred, and services that make efficient use of the limited resources available.</p>
-
-
-<p><figure><img alt="" src="https://cdn-images-1.medium.com/max/450/1*8xDWMKa1RdtFHedqIwICWg.jpeg" /></figure><p>The approach for achieving these objectives involves ensuring that every single health facility is scored against pre-defined standards with periodic supportive supervision for ensuring continual improvement.</p><p>There are three main components to conducting an assessment,</p><p>- Facilities<br>- Assessments themselves, and<br>- Facilitators</p><blockquote>Facilitators <em>conduct</em> Assessments <em>for</em> Facilities.</blockquote><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*_nUdGAoCa5TMnX3xgXSJaQ.png" /></figure><p>Facilities are hospitals or other healthcare systems that exist at different levels,</p><ul><li>National level</li><li>State level</li><li>District level</li><li>District Hospital level</li></ul><p>Based on their level, facilities would be eligible for a particular type of assessment.</p><p>There are two main types of assessments in the system,</p><ul><li><strong>National Quality Assessment System (NQAS):</strong> Is a system which has incorporated best practices from the contemporary systems, and contextualised them for meeting the needs of Public Health System in the country</li><li><strong>Kayakalp assessment:</strong> To complement the government’s ‘Swachh Bharat Abhiyan’ (cleanliness in public spaces campaign), the Ministry of Health &amp; Family welfare, Government of India launched a National Initiative to present awards to public health facilities that demonstrate high levels of cleanliness, hygiene and infection control</li></ul><p><strong>Assessments</strong> are a set of pre-defined standards against which facilities are scored. Assessments happen periodically throughout the year under supervision to ensure continual improvement.</p><p><strong>Facilitators</strong> are people with varied experience, who are picked based on the type of assessment. For instance, National level assessments would require facilitators with a certain set of requirements as compared to a State level assessments. For instance, national level facilitators will consist of representatives from the programme divisions (maternal health, child health, family planning, etc.) of the Ministry of Health and Family Welfare, Government of India and National Health Systems Resource Centre.</p><h3>How does the assessment process work?</h3><p>The assessment process requires Facilitators to give a Score (of 0, 1 or 2) to a Measurable Element (ME).</p><p>Each ME belongs to an Area of Concern (AoC) and an AoC belongs to a Standard.</p><p><strong>Standards:</strong> These are broad thematic areas with respect to cleanliness &amp; hygiene, and can be termed as the “pillars” of the system.</p><p><strong>Area of Concern:</strong> Each theme (Standard), has a fixed number of criteria that cover specific attributes.</p><p><strong>Measurable Element:</strong> Is the lowest and most tangible unit of an assessment. MEs are specific requirements that the facilitators are expected to look for in a facility for ascertaining the extent of compliance and award a score.</p><p><strong>Checkpoints:</strong> In the NQAS type assessment, MEs are broken down further into Checkpoints. Checkpoints are departmental checklists.</p><p>This is how the above-mentioned elements exist in the Assessments,</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*eMGSqgyRMWAe1B5VIfCu5Q.jpeg" /></figure><p>Assessments for Facilities are done via <strong>Checklists</strong>, which encapsulate all of the above (Standards, AoCs, MEs and Checkpoints).</p><h3>How were assessments conducted prior to the app?</h3><p>Facilitators were handed sheets of paper with all the Standards, AoC and ME on them. Facilitators would traverse back and forth through this list, assign a compliance score to a ME until they were done with all AoC and subsequently with all Standards.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/450/1*MYeRa6OIbjnpvCMJNPjV9A.png" /></figure><p><strong>Advantages of the offline system</strong>,</p><ul><li>Easy and fast scanning of Standards, AoCs and MEs</li><li>This medium requires little to no training</li></ul><p><strong>Disadvantages of the the offline system</strong>,</p><ul><li>Hard to keep track of progress. Facilitators have to scan and do this themselves by repeatedly going through the list</li><li>Force facilitators to conduct their assessments by the list, rather than what is convenient</li><li>Unobliging towards writing comments for scores awarded to MEs</li><li>Can’t generate reports immediately</li><li>Submitting Assessments as a physical copy and manually syncing the results across the entire district/state/nation</li></ul><h3>What is Gunak?</h3><p>Based on the disadvantages mentioned above, Nikhil (senior member of the NHSRC) thought it’d be best to use technology to make the process of conducting and syncing assessments easier. <strong>Gunak</strong> is the app that aimed at doing this.</p><p><strong>Minimum feature list</strong> we aimed to launch the app with,</p><ul><li>Conduct NQAS and Kayakalp assessments</li><li>Motivate facilitators to enter comments for the scores they give</li><li>Allow assessments to be conducted offline</li><li>Sync assessments once facilitators were in an area with active internet connection</li><li>View detailed reports across all Standards, AoCs and MEs for finished assessments</li><li>Sync reports of finished assessments for peers/superiors to view/review</li></ul><p><strong>The challenges we faced</strong>,</p><ul><li>Maintain familiarity while transitioning facilitators from an offline to an online system</li><li>Translating a multi-tier architecture to mobile</li></ul><h3>Navigation</h3><p><strong>Usage:</strong> For an assessment to be complete, facilitators have to finish all MEs across all AoCs.</p><p><strong>Usage Pattern:</strong> Facilitators, physically visit facilities to conduct assessments. The offline medium sometimes forced the facilitators to finish Measurable Elements in a sequential order (as displayed on paper) since it would be easier to keep track of the progress of the assessment.</p><p><strong>Notes:</strong></p><ol><li>MEs are specific department-wise questions for a facility. Since most facilities aren’t built the same way, following a sequential pattern wasn’t the way to go ahead.</li><li>The assessments are usually carried out over a period of 3–5 days.</li></ol><p>We wanted to design a system that would be flexible and not dictate facilitator behaviour. A system that would always keep the facilitator aware of where they are and their progress. In addition to this, we had to ensure that readability and usability were the main focus since facilitators moved around a lot while conducting assessments.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*n6_cjD2L90y6iRs04Jllkw.jpeg" /></figure><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*SEo8KLo9l7b4iHNfKXCP0A.jpeg" /></figure><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*d8rDosnp93kSlIF8EI5xog.jpeg" /></figure><p>The bottom navigation for an ME, allows facilitators to know the progress of the AoC these MEs belong to. It works as a navigation system where facilitators can jump forward to answer an ME and come back to answer another ME.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*qPKh7IjED-M9TovayibpYQ.jpeg" /></figure><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*Hq2MZVvQbVIkMqseh-SmIw.jpeg" /></figure><h3>Search</h3><p>We wanted to find an equivalent for the ‘flip &amp; find’ function, that facilitators perform on paper, for the app.</p><p>Search allows facilitators to find MEs, AoCs and Standards.</p><p>Our Search feature isn’t a simple text match. As seen below, it can identify that the word ‘hygiene’, could pertain to a Standard, an AoC or MEs.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*TYIUyJtHTqSPWxwBNVXt1A.jpeg" /></figure><h3>Reports</h3><p>One of the main drawbacks of the offline medium was its inability to generate reports. A facilitator or their superior would spend hours going through an assessment and assign a score for the same.</p><p>We took advantage of technology to provide detailed reports based on Departments, AoC and Score, which can be shared as an excel sheet or as an image.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*1qdESsDlkRVWDjUtwbqD4w.jpeg" /></figure><h3>Who did we work with?</h3><p>This project would not have been possible if it wasn’t for the amazing team at <a href="http://www.samanvayfoundation.org/">Samanvay</a>. This is our second project with them, you can read about the first one here,</p><p><a href="https://uxdesign.cc/designing-for-rural-india-part-1-a0700e705400">Designing for Rural India — Part 1</a></p><h3>App Launch and Reception</h3><p>The Gunak app is being rolled out in phases. Its first launch was in August 2017 by the Ministry of Health and Family Welfare, the app has a 4.8* rating on the play store.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*bAw7hqDgqP8B1iTyDrk9Nw.jpeg" /></figure><p>Thank you so much for reading this. If you found this interesting, don’t forget to 👏 👏</p><p>If you have questions or thoughts about the post and/or would like to reach out to us outside of Medium, send us an email, <strong><a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#x6d;&#x6f;&#x73;&#104;&#x69;&#x6d;&#x6f;&#115;&#x68;&#x69;&#64;&#x6e;&#x69;&#108;&#x65;&#x6e;&#x73;&#x6f;&#x2e;&#x63;&#x6f;&#x6d;">&#x6d;&#111;&#115;&#104;&#105;&#109;&#111;&#x73;&#x68;&#105;&#64;&#110;&#105;&#x6c;&#101;&#x6e;&#x73;&#x6f;&#x2e;&#x63;&#111;&#109;</a></strong></p><p>🙏</p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=9d3d4b0eefe" width="1" height="1"><hr><p><a href="https://uxdesign.cc/gunak-designing-with-the-government-9d3d4b0eefe">Gunak — Designing with the Indian Government</a> was originally published in <a href="https://uxdesign.cc">uxdesign.cc</a> on Medium, where people are continuing the conversation by highlighting and responding to this story.</p><div class="author">
-  <img src="https://nilenso.com/images/people/varun-200.png" style="width: 96px; height: 96;">
-  <span style="position: absolute; padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/">Varun Pai</a> - check out <a href="https://medium.com/@irrational_pai?source=rss-3a83e65683fa------2">Stories by Varun Pai on Medium</a></i>
-  </span>
-</div></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2017/05/05/designing-for-rural-india-part-1/">Designing for Rural India — Part 1</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-<time datetime="2017-05-05T00:00:00+05:30" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*FakzMqrPi_dGbGo8LNnhrw.jpeg" /></figure><h3>Designing for Rural India — Part 1</h3><p><em>Journey of designing </em><a href="http://openchs.org/"><em>OpenCHS</em></a><em> with </em><a href="http://samanvayfoundation.org/"><em>Samanvay</em></a></p><p>India does not have a <a href="https://en.wikipedia.org/wiki/National_health_insurance">National health insurance</a> or <a href="https://en.wikipedia.org/wiki/Universal_health_care">universal health care</a> system for all its citizens. This has propelled the private sector to its dominant position in the healthcare market. Private companies provide the lion’s share of healthcare services in the country.</p><p>Despite the structures in place to ensure equality and funding from government and non-government sources, we still observe a visible gap in access to healthcare in rural areas compared to cities. A staggering 68% of the population lives in rural areas and has no or limited access to hospitals and clinics. Consequently, the rural population mostly relies on alternative medicine and government programmes.</p><p>If one had to paint a picture of rural India, it would be people living in mud houses in small villages. These villages have next to no electricity supply. There are setups of solar power stations which people use to charge their cellphones. Travelling to these villages is not always easy. One would require to change at least three different modes of transport to reach many of these villages. The residents seek out healthcare in cases of pregnancy and severe illness like Tuberculosis, Dengue, etc. However, villagers often do not seek treatment for early symptoms which appear less dangerous. This is not always due to lack of awareness. It is often also the case that infrastructure to support the long tail of healthcare is simply not that accessible in rural India.</p><h3>Healthcare in Rural India</h3><p>The public healthcare in rural areas has been developed as a three-tier structure based on predetermined population norms.</p><h4>1. CHC (Community Health Centres)</h4><p>Community Health Centres form the uppermost tier and are established and maintained by the State Government. Community health centres are staffed by four medical professionals supported by twenty-one paramedical and other staff. Surgeons, physicians, gynaecologists and paediatricians provide comprehensive care in each CHC.<br>Each CHC has thirty indoor beds, an Operating Theatre, X-ray, Labour Room, and Laboratory facilities. The community health centre provides expert facilities in obstetric and other care for patients referred to them by the four primary health centres within their jurisdiction.</p><h4>2. PHC (Primary Health Centres)</h4><p>Primary Health Centres (PHCs) comprise the second tier in rural healthcare. PHCs provide integrated, curative and preventive healthcare to the rural population with emphasis on preventive and promotive aspects. Activities include promotion of better health and hygiene practices, tetanus inoculation of pregnant women, intake of IFA tablets and institutional deliveries. A medical officer is in charge of the PHC supported by fourteen paramedical and other staff. Each primary health centre has four to six beds. Patients are referred to the PHCs by six sub-centres.</p><h4>3. Sub-centres</h4><p>A sub-centre is the most peripheral institution and the first contact point between the primary healthcare system and the community. An Auxiliary Nurse Midwife (ANM) is in charge of six sub-centres each of which provides basic drugs for minor ailments. A sub-centre provides services in relation to maternal and child health, family welfare, nutrition, immunisation, diarrhoea control, and control of communicable diseases. ANMs also use <a href="https://play.google.com/store/apps/details?id=org.unicef.eanmapp&amp;hl=en">Anmol Tablet</a>, a product that aids in maintaining and collecting data, specific to primary health.</p><h4>4. Non-government Infrastructures</h4><p>Apart from the government bodies there are other players in the system, which are closest to the villagers (bottom most in this tier). There are private hospitals, which run to provide special services or even basic healthcare.</p><p>Accessing health support is not that easy for village residents. They have to travel long distances to visit public hospitals spending money, and time that could be spent doing their daily chores. That’s when community health services come to play.</p><p>There are non-profit NGO Hospitals which run Community Health Services (CHS). They hire and train health workers who work closely with villagers in providing health services and education.</p><p>Health Workers who work as a part of the Community Health Services are known as <strong>VHWs (Village Health Workers)</strong>, as a part of <em>CRHP (Comprehensive Rural Health Programme)</em>. Jamkhed is a programme run under CRHP.</p><p><em>Jamkhed</em> is centered around mobilising and building the capacity of the community, empowering the people to bring about their own improvements in health and poverty-alleviation. This is one of the better known and appreciated community health systems.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*PKuZOwMYCS8JO1tm_dap7w.jpeg" /><figcaption>Health Workers with a monthly visit chart on the wall</figcaption></figure><h3>Role of VHW ( Village Health Workers )</h3><p>VHWs are individuals selected by the villagers. They are responsible for providing consultation and prescription on basic health care. Their appointment by the community helps establish villagers’ trust in them.</p><p>VHWs typically take care of a single village, but if required, they can be responsible for up to five villages. They are trained in basic healthcare, understanding symptoms and personality development. Since they are only trained in basic healthcare, they escalate severe cases and recommend the patients to visit hospitals. Quite often these volunteers are women.</p><p>Apart from this, VHWs also bust widely held superstitions by providing elementary health education.</p><p>Health workers use their considerable interpersonal communication skills to bring about important behavioural changes with respect to reproductive and hygiene practices in their rural communities.</p><h3>How do they operate now?</h3><p>The infrastructural support that these health workers get is mostly via Community Health programs and some inventory support from the government.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*7RlO_lSMkHgEtYwKt5323g.png" /></figure><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*zMpx7rxkyVO6pSNU8e8n-w.png" /><figcaption>Inventory procurement list and inventory at the health centers</figcaption></figure><p>Here are some highlights about their daily operations -</p><h4>Use of Paper:</h4><p>The health workers <em>still</em> use paper for most of their work. They are provided with a chart that maps various symptoms to common ailments and relevant medication. While this may enable the health workers to swiftly treat common ailments, the strict mapping unfortunately severely restricts their ability to correctly identify edge cases or more subtle health issues.</p><h4>Inventory List:</h4><p>Procurement of medicines is also done using paper. Health workers also track the need for medicines, availability and expiry dates of the medicines. Medicines are procured from Sub-centres where the health workers visit often to give reports to ANM’s about their respective villages.</p><h4>Patient History</h4><p>The health workers aren’t equipped to look at patients history at the time of consultation. They keep manual records which are too comprehensive to look into at the time of visits.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*2B5ceasDOjVx1YHxEuY2eA.png" /><figcaption>Health Worker educating a resident about preventive measures</figcaption></figure><h3>How does OpenCHS help?</h3><p><strong>OpenCHS</strong> strives to fill this gap and provide a decision support system that helps a health worker perform diagnoses. The system also provides the health workers with the steps for treatment.</p><h4>What is OpenCHS?</h4><p>OpenCHS is an Open Community Health Service platform that works in collaboration with NGO Hospitals. OpenCHS is a mobile app that is used by Village Health Workers (VHW) in the field or in their clinics when patients visit them.</p><p>OpenCHS helps VHWs to record patient data, perform diagnoses and manage programme statuses. The app also enables the health workers to consider individual patients’ medical histories during their diagnoses.</p><h3>Our challenges while designing the product</h3><ol><li><strong>Physical Constraints: </strong>Data is not recorded as someone on a desk job would. Health workers not only collect data with the app but they also have to use health equipment to take measurements. This requires the health workers to keep switching their attention between the patient and the application.</li><li><strong>No Electricity and Network Connectivity:</strong> VHWs don’t have access to electricity. They use basic cellphones (not smartphones), which they charge using solar charging stations located at central areas of villages. There is also next to no network connectivity which makes it difficult for an application to work in the field.</li><li><strong>Localisation &amp; Multi-lingual Support</strong>: The application is intended to be used throughout multiple states of India. Each state has their own language. Some villages within a state may even use multiple dialects. We focused on providing multi-lingual support and localisation, in particular with regard to specialised medical terminology and concepts.</li><li><strong>Ease of Use</strong>: VHWs live in remote villages of India, where there is very little or no access to technology. They are used to basic cellphones, i.e. no smartphones. We had to be cautious about not having a higher learning curve for the application for them, so they don’t face issues when they are in the field.</li></ol><h3>What did we do?</h3><p>Considering the challenges and constraints that we were working with, this is how we approached the design of the application.</p><h4><strong>It works o</strong>ffline:</h4><p>We were aware that <em>the user is not going to be connected to a network 98% of the time, so we made the app work offline</em>. We store all data locally on the device. The app only connects to a server when synchonising data. Typically health workers visit a sub-centre or another place with internet connectivity monthly. Recorded data is reported to the hospitals as part of the synchronisation.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*MZeH0coiPC7ZQ9_UCDR__w.jpeg" /><figcaption>Image 1 — sync status notification | Image 2 — sync finished 50%</figcaption></figure><h4><strong>Decision Support</strong>:</h4><p>The application provides decision support based on the recorded data and suggests treatment. We built our algorithm in collaboration with medical practitioners and took into account common health procedures. The algorithm even helps the health worker identify emergencies and provide appropriate medical care. When a patient needs medical attention from a trained medical professional, the application suggests them to inform the patients of the details and visit a hospital.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*OmjtGwXuvfp2xf7KsJy7rw.jpeg" /><figcaption>Image 1 — Patient profile and history | Image 2 — Treatment result after consultation</figcaption></figure><h4><strong>Localisation and Multi-lingual Support</strong>:</h4><p>The application will be implemented with multi-lingual support. For each implementation, there will be localisation for specialised medical terminology used by the residents of the villages. Currently, we have an implementation in Marathi, which can be downloaded from <a href="http://www.openchs.org/"><em>here</em></a>.</p><h4><strong>Ease of Use:</strong></h4><p>Ease of use was our major focus while designing this application.</p><ul><li><strong><em>Keep it simple, focused</em></strong>: We tried to understand different activities that a Health Worker performs, and based on those use cases, created focus in the application, instead of going by one interface for all flows, like a dashboard.</li><li><strong><em>Attention on Iconography</em></strong>: We experimented with iconography using various styles and even with contextual icons. This quickly proved infeasible given that our users were stretched through rural India. <br>We followed these simple rules of iconography: <br>-<em> Keep it simple and schematic</em>, i.e. avoid details<br>- <em>5 second rule,</em> if you can’t think of that icon in five seconds then that icon probably is not a good choice<br>- <em>Memorability</em>, making the icons distinct enough that they are remembered even after prolonged usage.</li></ul><figure><img alt="" src="https://cdn-images-1.medium.com/max/813/1*hhFllilpRP6Jol7Sm-J-cQ.png" /><figcaption>Few options of icons we considered for patient profile ; we finally picked the last one</figcaption></figure><ul><li><strong><em>Understand Behaviour</em></strong>: We tested an alpha version of the application with Health Workers to see if they are comfortable with data entry and understand input fields as concepts. To our surprise, the first thing the health worker did was swipe on the screen. It was most interesting because we knew that our users don’t use smart phones, so how did this come up as a first interaction in this person’s head? Perhaps media has been reaching them through means which one can’t imagine.</li></ul><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*Ic6AxjbFELdopAfpb3KKfw.png" /><figcaption>Testing of the alpha version with the health worker</figcaption></figure><h4><strong>So, What’s next?</strong></h4><p>The application is yet to be released. The plan is to implement it at one village first and then scale accordingly. <br>We are looking forward to two types of feedback. After the implementation of the application, the health workers will be trained. At this stage will be able to get quick feedback about usability and other challenges.</p><p>The second feedback will have a rather longer loop, where the health workers will be using it in the field and on their return we will learn about how it went and get more qualitative feedback. <a href="http://www.openchs.org/"><em>Here</em></a> is all the documentation, including designs of the project so far.</p><h4>Want to know more?</h4><p>There has been much discussion about each flow and decision, in multiple small and large sessions that we will be sharing in detail shortly so that you can better understand our efforts. Keep on the lookout :)</p><p><em>Thanks to </em><a href="http://nilenso.com"><em>nilenso</em></a><em> and </em><a href="http://samanvayfoundation.org/"><em>Samanvay</em></a><em> team for the opportunity to work on this interesting problem. I also appreciate the feedback from Kenneth &amp; Trouble in better articulating this post.<br>Do get in touch with me (<a href="&#109;&#97;&#x69;&#108;&#116;&#111;&#x3a;&#110;&#111;&#x6f;&#x70;&#117;&#114;&#64;&#110;&#105;&#108;&#101;&#110;&#x73;&#111;&#46;&#99;&#111;&#109;">&#x6e;&#x6f;&#x6f;&#112;&#117;&#114;&#64;&#110;&#x69;&#108;&#101;&#110;&#x73;&#111;&#46;&#99;&#x6f;&#109;</a>) for any further questions or details. Any feedback will be highly appreciated.</em></p><figure><img alt="" src="https://cdn-images-1.medium.com/max/700/1*aNPBhln7iDMY8qRcmoyCfA.jpeg" /></figure><p><em>Noopur wrote this story to share knowledge and to help nurture the design community. All articles published on uxdesign.cc follow that same </em><a href="https://uxdesign.cc/the-design-community-we-believe-in-369d35626f2f"><em>philosophy</em></a><em>.</em></p><figure><img alt="" src="https://cdn-images-1.medium.com/max/700/1*aNPBhln7iDMY8qRcmoyCfA.jpeg" /></figure><iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fupscri.be%2F50d69a%3Fas_embed%3Dtrue&amp;url=https%3A%2F%2Fupscri.be%2F50d69a%2F&amp;image=https%3A%2F%2Fupscri.be%2Fmedia%2Fform.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=upscri" width="800" height="400" frameborder="0" scrolling="no"><a href="https://medium.com/media/05d5fd32eda31cbd1b83287606744532/href"><a href="https://medium.com/media/05d5fd32eda31cbd1b83287606744532/href">https://medium.com/media/05d5fd32eda31cbd1b83287606744532/href</a></a></iframe><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=a0700e705400" width="1" height="1"><hr><p><a href="https://uxdesign.cc/designing-for-rural-india-part-1-a0700e705400">Designing for Rural India — Part 1</a> was originally published in <a href="https://uxdesign.cc">uxdesign.cc</a> on Medium, where people are continuing the conversation by highlighting and responding to this story.</p><div class="author">
-  <img src="https://nilenso.com/images/people/noopur-200.png" style="width: 96px; height: 96;">
-  <span style="position: absolute; padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/9porcupine">Noopur Varma</a> - check out <a href="https://medium.com/@noopurvarma?source=rss-36e1e2d4204c------2">Stories by Noopur Varma on Medium</a></i>
-  </span>
-</div></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  <div class="pagination">
-    
-      <a class="prev" href="/blog/page/2">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
-<aside class="sidebar">
-  
-    <section>
-  <h1>About Me</h1>
-  <p>A little something about me.</p>
-</section>
-Included file 'custom/asides/subscribe.html' not found in _includes directory<section>
-  <h1>Popular Posts</h1>
-  <ul id="recent_posts">
-    
-  </ul>
-</section>
-<section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2017/09/29/writing-a-simple-rest-service-in-purescript/">Writing a Simple REST Service in Purescript</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2017/09/12/gunak-designing-with-the-indian-government/">Gunak — Designing with the Indian Government</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2017/05/05/designing-for-rural-india-part-1/">Designing for Rural India — Part 1</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2017/04/06/black-mirror-or-a-review-of-the-review-process-at/">Black Mirror*, or a review of the review process at a software co-operative</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2017/02/14/nilenso-policies-by-the-people-for-the-people/">nilenso policies: by the people, for the people</a>
-      </li>
-    
-  </ul>
-</section>
-
-<section>
-  <h1>GitHub Repos</h1>
-  <ul id="gh_repos">
-    <li class="loading">Status updating...</li>
-  </ul>
-  
-  <a href="https://github.com/nilenso">@nilenso</a> on GitHub
-  
-  <script type="text/javascript">
-    $(document).ready(function(){
-        if (!window.jXHR){
-            var jxhr = document.createElement('script');
-            jxhr.type = 'text/javascript';
-            jxhr.src = '/javascripts/libs/jXHR.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(jxhr, s);
-        }
-
-        github.showRepos({
-            user: 'nilenso',
-            count: 0,
-            skip_forks: true,
-            target: '#gh_repos'
-        });
-    });
-  </script>
-  <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
-
-
-<section id="twitter">
-  <h1 class="tweets">Tweets</h1>
-  <ul id="tweets">
-    <li class="loading">Status updating...</li>
-  </ul>
-  <script type="text/javascript">
-    $.domReady(function(){
-      getTwitterFeed("nilenso", , );
-    });
-  </script>
-  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
-  
-    <p>Follow <a href="http://twitter.com/nilenso">@nilenso</a></p>
-  
-</section>
-
-
-
-
-
-  
-</aside>
-
-    </div>
-  </div>
-  <div class="sidebar">
-    <p class="sidebar-content">
-      <a href="http://nilenso.com">nilenso</a> is an employee-owned software cooperative based out of Bangalore, India.
-    </p>
-    <p class="sidebar-content">
-      We practice test driven development and continuous delivery, and love working with Clojure and Ruby on Rails.
-    </p>
-    <p class="sidebar-content">
-      This blog is a showcase of our growth as a consultancy, a product company and generally curious beings.
-      Get in touch with us at <a href="mailto:hello@nilenso.com">hello@nilenso.com</a>.
-    </p>
-  </div>
-</body>
-<div class="footer">
-  <div class="section-content contact-info">
-    <p class="contact-phone-number">
-      <a class="contact-link email-link" href="mailto:hello@nilenso.com">hello@nilenso.com</a>
-      <a class="contact-link contact-social-link" href="http://twitter.com/nilenso">@nilenso</a>
-      <a class="contact-link contact-social-link" href="http://github.com/nilenso">github.com/nilenso</a>
-      <a class="contact-link" href="tel:+918040937123">+91 80 4093 7123</a>
-     </p>
-    <p class="contact-address">Nilenso Software LLP, #105, 10th Cross, Indiranagar Stage 1, Bangalore, India, 560038</p>
-  </div>
-</div>
-
-
-
-
-
-
-
-
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
-
-
-
-
-
-</html>

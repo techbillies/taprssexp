@@ -18,7 +18,7 @@
   
   
     
-      Using Swipe.js to swipe between pages of a web app
+      Use Lambdas for Date-based Rails Scopes
       
       
     
@@ -35,7 +35,9 @@
 
 
         
-   ...">
+      
+    
+  ...">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -101,6 +103,110 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/04/07/use-lambdas-for-date-based-rails-scopes/">Use Lambdas for Date-based Rails Scopes</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+<time datetime="2013-04-07T00:00:00+05:30" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>A scope allows you to specify an ARel query that can be used as a method call to the model (or association objects).</p>
+
+
+<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Item</span>
+</span><span class='line'>  <span class="n">scope</span> <span class="ss">:delivered</span><span class="p">,</span> <span class="n">where</span><span class="p">(</span><span class="ss">delivered</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Item</span><span class="o">.</span><span class="n">delivered</span><span class="o">.</span><span class="n">to_sql</span>                     <span class="c1"># SELECT &quot;items&quot;.<em> FROM &quot;items&quot;  WHERE &quot;items&quot;.&quot;delivered&quot; = &#39;t&#39;</span>
+</span><span class='line'><span class="no">Item</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">price</span><span class="p">:</span> <span class="mi">2000</span><span class="p">)</span><span class="o">.</span><span class="n">delivered</span><span class="o">.</span><span class="n">to_sql</span>  <span class="c1"># SELECT &quot;items&quot;.</em> FROM &quot;items&quot;  WHERE &quot;items&quot;.&quot;price&quot; = 2000 AND &quot;items&quot;.&quot;delivered&quot; = &#39;t&#39;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>There&#8217;s a problem if we try using a scope for a relative date, though.</p>
+
+
+<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Item</span>
+</span><span class='line'>  <span class="n">scope</span> <span class="ss">:expired</span><span class="p">,</span> <span class="n">where</span><span class="p">(</span><span class="s2">&quot;expiry_date &lt; ?&quot;</span><span class="p">,</span> <span class="no">Date</span><span class="o">.</span><span class="n">today</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>This code gets evaluated when the server is started, and the <em>output</em> of <code>Date.today</code> is stored in the scope.</p>
+
+
+
+
+<p>That scope is equivalent to the following:</p>
+
+
+<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Item</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">expired</span>
+</span><span class='line'>    <span class="n">where</span><span class="p">(</span><span class="s2">&quot;expiry_date &lt; ?&quot;</span><span class="p">,</span> <span class="s2">&quot;2013-04-01&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>The date is hardcoded in there, and will not be changed until the scope is re-evaluated.
+This typically happens only when the server is restarted.</p>
+
+
+
+
+<p>To get around this problem, use a lambda when defining date (or time) based scopes. This will force the evaluation of the scope each time it is <em>called</em>.</p>
+
+
+<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Item</span>
+</span><span class='line'>  <span class="n">scope</span> <span class="ss">:expired</span><span class="p">,</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="n">where</span><span class="p">(</span><span class="s2">&quot;expiry_date &lt; ?&quot;</span><span class="p">,</span> <span class="no">Date</span><span class="o">.</span><span class="n">today</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure><div class="author">
+  <img src="http://nilenso.com/images/people/tim-200.png" style="width: 96px; height: 96;">
+  <span style="position: absolute; padding: 32px 15px;">
+    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
+  </span>
+</div></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -618,51 +724,6 @@ On a desktop, though, there&#8217;s no way to switch between pages.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/02/13/an-atheist-s-glimpse-of-god/">An Atheist&#39;s Glimpse of God</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-<time datetime="2013-02-13T00:00:00+05:30" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><div dir="ltr" style="text-align: left;" trbidi="on">One of the benefits of working for a startup like <a href="http://www.c42.in/" target="_blank">C42 Engineering</a> (where I help build <a href="http://rubymonk.com/" target="_blank">rubymonk.com</a> -- the name is a coincidence) is the broad range of experiences available, both in and out of the office. Thanks to our flexible work environment, I was able to travel to Himachal Pradesh for a couple weeks of experimenting on myself as a break from experimenting with software. I know not everyone enjoys such benefits, so let me start by saying this: <i>I am thankful</i>.<br /><br />An introductory course in Vipassana meditation is 100 hours of meditation practiced over 10 days. I took this course in late 2012 and it was simultaneously the hardest and most interesting thing I've ever done. In the months since I took the course, I've tried dozens of times to explain the experience in print and in person. I've consistently failed.<br /><br />With that in mind, let's all just agree this article will also be a failure. Low expectations will prevent us from taking things too seriously and prevent me from talking too much. Hopefully.<br /><div><br /></div><h3 style="text-align: left;">The Problem</h3><div><div>I haven't identified with atheism since I was an angry teenager but in 31 years on Earth, I've never put faith in something greater than myself. That's fine. I've never had much faith in myself, either. The bigger things aren't missing out on much. I've called out this fact because I expect my retelling of my experience to sound considerably religious, even though I am not.</div><div><br /></div><div>I ask the same questions we all ask. Who am I? Who are we? Where are we from? What is our purpose? What is my purpose? How can I help? Usually my answers come in the form of pithy quotes from scientists whose attractive wisdom I've come to wish was my own. Other answers I've found in secular interpretation of religious and philosophical tomes: the bible, the torah, the quran, the tao te ching, the writings of chuang tzu, calvin and hobbes, dr. seuss. And though many of these answers are momentarily comforting, I've spent the majority of my life in a state of philosophical discontent.</div><div><br /></div><div>I'm a middle-class kid from Western Canada. I have a loving, supportive family. I couldn't ask for better friends. Ninety percent of Maslow's pyramid has been taken care of for as long as I could remember, leaving me to arrogantly believe it's my responsibility to improve this world, even if I have no idea how to do so.</div></div><div><br /></div><h3>Enter Meditation</h3><div><div>I didn't start meditating for some spiritual or mystical purpose. I started out of arrogance: "Sit there and think about <i>breathing</i>." Yeah. That sounds pretty easy and relaxing. I bet I'll be good at it.</div><div><br /></div><div>Once I realized that meditation is incredibly difficult, arrogance transformed from my reason for attempting meditation into my reason for continuing to try: After a while, I noticed that it did start to relax me. Not during meditation, of course: the meditating part was still insanely difficult. But if I meditated for half an hour before work, I found myself occasionally enjoying the unpleasant bus commute. Sometimes there was a marked change in my behaviour for the first few hours of the day. I was less arrogant. I was less of a jerk in general.</div><div><br /></div><div>Anyway, that's pretty boring. The point is: meditation is hard. To make this point clearer, I've set up an interlude so you can meditate if you've never tried it before. It will only take 10 minutes, which is relatively short compared to the 6000 minutes of an introductory vipassana course.</div><div><br /></div><div>Meditation isn't usually very complicated. Try this for ten minutes:</div><div><ul style="text-align: left;"><li>put your hands on your lap, close your eyes -- don't move or open your eyes until you hear the 10-minute gong.</li><li>focus on your breath; feel it wherever you can -- in your nose, in your throat, in your lungs, in your diaphragm.</li><li>distracting thoughts will come up; just ignore them. when you notice you've been distracted, gently let go of the thought and focus on your breath again.</li><li>if you get really distracted, breathe hard a few times so your breath is easier to focus on.</li><li>don't feel disappointed or defeated when your mind wanders... it's just what happens.</li><li>make sure you hear a gong sound when you click "Start"; the timer only works in modern browsers (HTML5).</li></ul></div></div><div><br /></div><script language="javascript" src="http://deobald.ca/c42/timer/timer.js"></script><script language="javascript">  var bell = new Audio("http://deobald.ca/c42/timer/zen-bell.mp3"); </script>   <br /><div style="border-radius: 5px; border-style: solid; border-width: 2px; text-align: center;"><div id="timer1" style="font-size: 96px; margin: 1em;">00:00</div></div><script language="javascript">    var timer1 = new Timer("timer1", 10, 0);     timer1.callback = function() { bell.play(); }   </script>  <br /><div><button onclick="javascript:bell.play();timer1.start();" style="font-size: 32px;">Start</button></div><br /><div><br /></div><div><div>How did that go? Was it difficult? If you found it easy, try this twenty minute timer.</div></div><div><br /></div><div style="border-radius: 5px; border-style: solid; border-width: 2px; text-align: center;"><div id="timer2" style="font-size: 96px; margin: 1em;">00:00</div></div><script language="javascript">    var timer2 = new Timer("timer2", 20, 0);     timer2.callback = function() { bell.play(); }   </script>  <br /><div><button onclick="javascript:bell.play();timer2.start();" style="font-size: 32px;">Start</button></div><br /><div><br /></div><div>You are amazing.</div><div><br /></div><h3 style="text-align: left;">The Material</h3><div><div>The course is completely free of charge. The course center is spartan. The stone buildings have no ornamentation. There is no text beyond the essential. ("Breakfast is served at 6:30AM.", "Toilets this way.") There is no imagery whatsoever, not even a little stone buddha statue. Males sleep in little huts on one side of Camp Goenka and eat on the male side of the kitchen. Females sleep on the other side of Camp Goenka and eat on the female side of the kitchen. Everyone meditates together in a big hall.</div><div><br /></div><div>The course is taught by recorded video and audio, which gives the drab surroundings an extra-culty feel. All vipassana centres worldwide use the same video, so one hopes Mr. Goenka records a new one in high-definition before he dies. The DVD used for the course already looks dated; in a couple decades it will resemble Scientology recruitment videos from the 1970s... in medium, if not in content. Some of the instructional audio involves chanting. I'm not a fan but by the end of the course I was accustomed to it. The chanting, as it turns out, is little more than the instruction repeated in <a href="http://en.wikipedia.org/wiki/Pali" target="_blank">Pali</a>.</div><div><br /></div><div>What happens on a vipassana course is very simple: You meditate. There are breaks in the day to eat, sleep, poop, shower, and walk around. Sometimes a dog would wander through the course centre and we could pet him. That was exciting. Sunset was the only daily sensory event of note.</div><div><br /></div><div>What doesn't happen on a vipassana course? Everything else. Just in case you were wondering, you can't: talk, read, write, exercise, eat your own food, &nbsp;use the internet, use a phone, or look anyone in the eye. Some monastic rules (precepts) also apply: No killing (even mosquitoes), no stealing, no sex, no masturbation, no lying, no smoking, no drinking, no drugs. Thankfully, when so much is forbidden, some rules cancel each other out! It's easy to avoid telling lies when you can't speak. Though you can speak to the instructor and the volunteers, so there are one or two daily opportunities if you're really jonesing to tell a delicious lie.</div><div><br /></div><div>Every day follows the same format. Vipassana centers exist in most countries across the globe and the course is run identically in each one:</div></div><div><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-xQJkds9IO28/URvEM24tujI/AAAAAAAAERY/WMOzL5fGcqQ/s1600/daily-schedule-color-01.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://4.bp.blogspot.com/-xQJkds9IO28/URvEM24tujI/AAAAAAAAERY/WMOzL5fGcqQ/s1600/daily-schedule-color-01.png" /></a></div><div><br /></div><div><div><br /></div><div>Though it's never explicitly mentioned, the course is effectively broken up into three equal parts:</div><div><br /></div><div><b>Days 1 - 3: Anapana (breathing) Meditation.</b> These first three days are spent mentally staring at your nose. It's not as boring as it sounds because it's excruciatingly painful. Sitting still for ten hours a day <i>hurts</i>. "It will be painful." was the forewarning of the instructor when I complained about my knees. He was right. By the third day, I had experienced the greatest physical pain of my life.</div><div><br /></div><div><b>Days 4 - 6: Vipassana (insight) Meditation.</b> These next three days are spent learning and practicing vipassana. It's basically an extension of Anapana: rather than focusing explicitly on the skin beneath the nostrils, scan every bit of skin over the entire surface of the body. Over and over and over. Somehow, this actually calms the pain caused by sitting still for ten hours a day. The pain is not eliminated but it becomes much less significant.</div><div><br /></div><div><b>Days 7 - 9: Deep Vipassana Meditation.</b> The last three days of "serious" meditation are where things get weird. Surface scanning gives way to deeper penetration of the body. Physical pain takes a back seat to the volcano of emotion and memory one opens up after six days of attention turned inward. On Day 7, one girl ran out of the hall to sob and howl loudly in the courtyard. After the morning meditation on the ninth day, I broke down and cried in a way I haven't felt myself do since childhood. The meditation hall was so utterly silent on this ninth day it was almost impossible to believe this was the same crowd that was shuffling and burping and grunting and coughing and farting their way through the beginning of the course.</div><div><br /></div><div><b>Day 10: Vipassana and Metta Bhavana.</b> Noble silence is broken: we can talk and look each other in the eye again. The businessmen of the crowd are back on their Blackberries. Writing utensils emerge and some return to the book they abandoned nine days prior. As senses return and the intensity of meditation is visibly dulled, the world becomes real again. Each meditation ends with a few minutes of Metta Bhavana (loving-kindness) meditation.</div><div><br /></div><div>For the following week, I also meditated twice a day at the vipassana centre. Everyone seemed to experience strange physical effects during the course but most of mine appeared during this period. Toni (a friend I'd met just before the course) found her hearing was so sensitive in the days following the course that the sound of a crowded restaurant was deafening. Pieter (a friend I met just after the course) found his sight was increasingly crisp each day until the tenth.&nbsp;</div><div><br /></div><div>The most peculiar physical reaction I had during this period was that as long as I was meditating twice a day, I slept comfortably on my back. I have never slept on my back in my entire life. I woke with no lower back pain for the first time as an adult.</div><div><br /></div><div>The most surreal physical observation I made during this period was twofold: I started to feel deep <i>into my body</i>, on occasion. Once, into my bronchial tubes and the tops of my lungs. Another time, while lying down, I could feel the blood coursing through my cardiovascular system with unnerving clarity. I am a fragile little blood sack.</div></div><div><br /></div><h3 style="text-align: left;">The Immaterial</h3><div><div>Those concepts outside the realm of the physical are, out of interest, those which I tried to impress upon others in the months following my course. This is the section where I will fail, in case you thought I was doing a good job of explaining the experience thus far. I'll do my best but in the end I can only suggest that, if you are at all curious, you could try an introductory course yourself.</div><div><br /></div><blockquote class="tr_bq">"It's strange that the very act of thinking about something makes it impossible to see it." -- Pieter Jan Visser</blockquote><div><br /></div><div>I didn't have words to describe this until my conversation with Pieter. In the last three or four days of the course, I started to see things. My eyes were closed, of course... and the "things" weren't really visual. However, far in the distance, on the horizon of comprehension, I saw -- briefly and for the first time -- something which resembled my beginnings. I don't know much about this thing beyond what Pieter said. To know it, to think about it, to try to understand it... was for it to disappear. I think it may have been recursive: defined in terms of itself. I can't tell you why or how.</div><div><br /></div><div>Such a thing... this non-thing, born of nothing, apropos of nothing, ceasing to exist in the presence of anything else, is the closest I've ever come to experiencing anything religious or spiritual in my life. And yet, the process of discovery felt more scientific than anything else. Through sheer observation -- in the necessary absence of effort, suggestion, idea, word, colour, sound, smell, or taste -- an unadulterated reality appeared. It was strange and new but somehow it made sense.</div><div><br /></div><div>Where this non-thing was very small and very hard to relate, the other idea which appeared toward the end of the course was much clearer: the meditation became an allegory, a microcosm, for the world around me. The past is immutable; why worry about it? The future is unknown and impossible to predict; why worry about it? Planning is not worrying, mind you. Just make plans with these two truths in mind. Meditation is terrific practice since there's no need to plan -- I just get to try my hand at avoiding worry. As an incredibly anxious person, this can be surprisingly informative.</div><div><br /></div><div>A second microcosm becomes obvious after some time: After eight or nine days of internal monologue, I noticed that the way I treat myself is much like the way I treat others. Distraction was frustrating, my frustration with distraction was frustration with myself, if I was angry at the distraction I was angry with myself, and the anger never helped. Calmness and rationality prevailed every time. Gentleness. I had to be gentle with myself or I did more harm than good. I'm not certain, but I suspect it's true of my interactions with the world I live in as well.</div><div><br /></div><div>And with that, my failure to explain my experience is almost complete. There's much I've missed. The hours of the course I spent doubting the motives of the instructors, the meditation itself, and my own sanity in signing up for such a thing -- all these doubts were quenched. My unexpected reaction to intoxicants when I returned home -- I still enjoyed them. My seeming inability to lie to myself by the end of the course -- I ask myself hard questions all the time but I apparently don't always answer from the heart. My frustration with the inclusion of Buddhist beliefs such as reincarnation, kalapas, and omniscience -- we were told to ignore these beliefs if we so chose; I ignored them. And still more remains.</div><div><br /></div><div>Rather than exhaustively discussing every aspect of the experience, I'll leave you with what attracts me most to this bizarre practice: It is ordinary. There are no tools: Just sit down. There is nothing to see: Just close your eyes. There is nothing to believe in, nothing to talk about, nothing to do... yet it was more informative than any conversation I've had or book I've read. There is no literature to read, no philosophy to ponder, no behaviour expected of you. There are no gods, there are no drugs, there is no magic... yet it was more intense and revelatory than any acid trip.</div><div><br /></div><div>As the Zen kids say: "Just sit."</div></div><div><br /></div><div><br /></div></div>
-
-
-<div class="author">
-  <img src="http://nilenso.com/images/people/steven-200.png" style="width: 96px; height: 96;">
-  <span style="position: absolute; padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/deobald">Steven Deobald</a> - check out <a href="http://blog.deobald.ca/">Hungry, horny, sleepy, curious.</a></i>
-  </span>
-</div>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/13">&larr; Older</a>
@@ -690,6 +751,10 @@ Included file 'custom/asides/subscribe.html' not found in _includes directory<se
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/09/29/writing-a-simple-rest-service-in-purescript/">Writing a Simple REST Service in Purescript</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2017/09/12/gunak-designing-with-the-indian-government/">Gunak — Designing with the Indian Government</a>
       </li>
     
@@ -703,10 +768,6 @@ Included file 'custom/asides/subscribe.html' not found in _includes directory<se
     
       <li class="post">
         <a href="/blog/2017/02/14/nilenso-policies-by-the-people-for-the-people/">nilenso policies: by the people, for the people</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/05/16/i-have-cramps/">&quot;I have cramps.&quot;</a>
       </li>
     
   </ul>
