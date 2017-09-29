@@ -24,6 +24,8 @@ bundle install
 
 ## Generating + Publishing
 
+First, make your changes to `planet.yml` in the root directory. Then,
+
 ```
 make clean && make
 ```
