@@ -8,7 +8,7 @@ layout: post
 <div class="ert">
 21 minute read
 </div>
-<p>To recap, in the <a href="/posts/ps-simple-rest-service/">first</a> part of this two-part tutorial, we built a simple JSON <a href="https://en.wikipedia.org/wiki/REST" target="_blank" rel="noopener">REST</a> web service in <a href="http://purescript.org" target="_blank" rel="noopener">Purescript</a> to create, update, get, list and delete users, backed by a Postgres database. In this part we’ll work on the rest of the requirements:</p>
+<p>To recap, in the <a href="https://abhinavsarkar.net/posts/ps-simple-rest-service/">first</a> part of this two-part tutorial, we built a simple JSON <a href="https://en.wikipedia.org/wiki/REST" target="_blank" rel="noopener">REST</a> web service in <a href="http://purescript.org" target="_blank" rel="noopener">Purescript</a> to create, update, get, list and delete users, backed by a Postgres database. In this part we’ll work on the rest of the requirements:</p>
 <ol type="1">
 <li>validation of API requests.</li>
 <li>reading the server and database configs from environment variables.</li>
@@ -24,7 +24,7 @@ layout: post
 HTTP/1.1 404 Not Found
 Connection: keep-alive
 Content-Length: 148
-Content-Security-Policy: default-src &#39;self&#39;
+Content-Security-Policy: default-src 'self'
 Content-Type: text/html; charset=utf-8
 Date: Sat, 30 Sep 2017 08:23:20 GMT
 X-Content-Type-Options: nosniff
@@ -87,7 +87,7 @@ X-Powered-By: Express
 HTTP/1.1 500 Internal Server Error
 Connection: keep-alive
 Content-Length: 372
-Content-Security-Policy: default-src &#39;self&#39;
+Content-Security-Policy: default-src 'self'
 Content-Type: text/html; charset=utf-8
 Date: Sat, 30 Sep 2017 08:53:40 GMT
 X-Content-Type-Options: nosniff
@@ -149,9 +149,9 @@ updateUser pool <span class="fu">=</span> getRouteParam <span class="st">&quot;i
               P.findUser conn userId <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
                 <span class="dt">Nothing</span> <span class="ot">-&gt;</span> pure <span class="dt">Nothing</span>
                 <span class="dt">Just</span> (<span class="dt">User</span> user) <span class="ot">-&gt;</span> <span class="kw">do</span>
-                  <span class="kw">let</span> user&#39; <span class="fu">=</span> <span class="dt">User</span> (user { name <span class="fu">=</span> userName })
-                  P.updateUser conn user&#39;
-                  pure <span class="fu">$</span> <span class="dt">Just</span> user&#39;
+                  <span class="kw">let</span> user' <span class="fu">=</span> <span class="dt">User</span> (user { name <span class="fu">=</span> userName })
+                  P.updateUser conn user'
+                  pure <span class="fu">$</span> <span class="dt">Just</span> user'
             <span class="kw">case</span> savedUser <span class="kw">of</span>
               <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respond <span class="dv">404</span> { error<span class="fu">:</span> <span class="st">&quot;User not found with id: &quot;</span> <span class="fu">&lt;&gt;</span> sUserId }
               <span class="dt">Just</span> user <span class="ot">-&gt;</span> respond <span class="dv">200</span> (encode user)</code></pre></div>
@@ -210,9 +210,9 @@ updateUser pool <span class="fu">=</span> V.withValidation (<span class="dt">Tup
           P.findUser conn userId <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
             <span class="dt">Nothing</span> <span class="ot">-&gt;</span> pure <span class="dt">Nothing</span>
             <span class="dt">Just</span> (<span class="dt">User</span> user) <span class="ot">-&gt;</span> <span class="kw">do</span>
-              <span class="kw">let</span> user&#39; <span class="fu">=</span> <span class="dt">User</span> (user { name <span class="fu">=</span> userName })
-              P.updateUser conn user&#39;
-              pure <span class="fu">$</span> <span class="dt">Just</span> user&#39;
+              <span class="kw">let</span> user' <span class="fu">=</span> <span class="dt">User</span> (user { name <span class="fu">=</span> userName })
+              P.updateUser conn user'
+              pure <span class="fu">$</span> <span class="dt">Just</span> user'
         <span class="kw">case</span> savedUser <span class="kw">of</span>
           <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respond <span class="dv">404</span> { error<span class="fu">:</span> <span class="st">&quot;User not found with id: &quot;</span> <span class="fu">&lt;&gt;</span> show userId }
           <span class="dt">Just</span> user <span class="ot">-&gt;</span> respond <span class="dv">200</span> (encode user)
@@ -288,9 +288,9 @@ updateUser pool <span class="fu">=</span> V.withValidation (<span class="dt">Tup
           P.findUser conn userId <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
             <span class="dt">Nothing</span> <span class="ot">-&gt;</span> pure <span class="dt">Nothing</span>
             <span class="dt">Just</span> (<span class="dt">User</span> user) <span class="ot">-&gt;</span> <span class="kw">do</span>
-              <span class="kw">let</span> user&#39; <span class="fu">=</span> <span class="dt">User</span> (user { name <span class="fu">=</span> userName })
-              P.updateUser conn user&#39;
-              pure <span class="fu">$</span> <span class="dt">Just</span> user&#39;
+              <span class="kw">let</span> user' <span class="fu">=</span> <span class="dt">User</span> (user { name <span class="fu">=</span> userName })
+              P.updateUser conn user'
+              pure <span class="fu">$</span> <span class="dt">Just</span> user'
         <span class="kw">case</span> savedUser <span class="kw">of</span>
           <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respond <span class="dv">404</span> { error<span class="fu">:</span> <span class="st">&quot;User not found with id: &quot;</span> <span class="fu">&lt;&gt;</span> show userId }
           <span class="dt">Just</span> user <span class="ot">-&gt;</span> respond <span class="dv">200</span> (encode user)
@@ -617,7 +617,7 @@ app pool <span class="fu">=</span> <span class="kw">do</span>
 [<span class="ex">2017-09-30</span> 16:03:46.635] DEBUG Deleted user 3
 [<span class="ex">2017-09-30</span> 16:05:03.805] DEBUG HTTP: GET /v1/users</code></pre></div>
 <h2 id="conclusion">Conclusion<a href="#conclusion" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h2>
-<p>In this tutorial we learned how to create a simple JSON REST web service written in Purescript with persistence, validation, configuration and logging. The complete code for this tutorial can be found in <a href="https://github.com/abhin4v/ps-simple-rest-service" target="_blank" rel="noopener">github</a>. This post can be discussed on <a href="https://www.reddit.com/r/purescript/comments/73gc9g/writing_a_simple_rest_service_in_purescript_part/" target="_blank" rel="noopener">r/purescript</a>.</p><div class="author">
+<p>In this tutorial we learned how to create a simple JSON REST web service written in Purescript with persistence, validation, configuration and logging. The complete code for this tutorial can be found in <a href="https://github.com/abhin4v/ps-simple-rest-service" target="_blank" rel="noopener">github</a>. This post can be discussed on <a href="https://www.reddit.com/r/purescript/comments/73gc9g/writing_a_simple_rest_service_in_purescript_part/" target="_blank" rel="noopener">r/purescript</a>.</p><p>If you liked this post, please <a href="https://abhinavsarkar.net/posts/ps-simple-rest-service-2/#comment-container">leave a comment</a>.</p><div class="author">
   <img src="https://nilenso.com/images/people/abhinav-200.png" style="width: 96px; height: 96;">
   <span style="position: absolute; padding: 32px 15px;">
     <i>Original post by <a href="http://twitter.com/abhin4v">Abhinav Sarkar</a> - check out <a href="https://abhinavsarkar.net">All posts on abhinavsarkar.net</a></i>
