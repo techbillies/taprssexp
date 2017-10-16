@@ -3,7 +3,7 @@ title: "Writing a Simple REST Web Service in PureScript - Part 1"
 kind: article
 created_at: 2017-09-29 00:00:00 UTC
 author: Abhinav Sarkar
-post_url: "https://abhinavsarkar.net/posts/ps-simple-rest-service/index.html"
+post_url: "https://abhinavsarkar.net/posts/ps-simple-rest-service/"
 layout: post
 ---
 <div class="ert">
