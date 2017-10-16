@@ -3,6 +3,7 @@ title: "Using RoboGuice to Inject Views Into a POJO"
 kind: article
 created_at: 2013-07-10 05:20:00 UTC
 author: Timothy Andrew
+post_url: "http://blog.timothyandrew.net/blog/2013/07/10/using-roboguice-to-inject-views-into-a-pojo/"
 layout: post
 ---
 <p><a href="https://github.com/roboguice/roboguice">RoboGuice</a> is great. It lets you get rid of code like:</p>

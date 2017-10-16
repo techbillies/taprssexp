@@ -17,10 +17,9 @@ planet:
 
 blogs:
   - author: "Abhinav Sarkar"
-    feed: "http://abhinavsarkar.net/feed.xml"
+    feed: "https://abhinavsarkar.net/feed.xml"
     image: "https://nilenso.com/images/people/abhinav-200.png"
     twitter: "abhin4v"
-    tags: "nilenso"
 
   - author: "Akshay Gupta"
     feed: "http://blog.kitallis.in/feeds/posts/default"

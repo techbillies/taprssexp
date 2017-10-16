@@ -3,6 +3,7 @@ title: "YAML Serialization for Delayed Job"
 kind: article
 created_at: 2013-04-28 02:38:00 UTC
 author: Timothy Andrew
+post_url: "http://blog.timothyandrew.net/blog/2013/04/28/yaml-serialization-for-delayed-job/"
 layout: post
 ---
 <p>When we first moved excel generation off to a delayed job on <a href="http://github.com/c42/survey-web">survey-web</a>, we had code that looked like this:</p>

@@ -3,6 +3,7 @@ title: "Changing the Server Timeout on EngineYard"
 kind: article
 created_at: 2013-04-12 16:59:00 UTC
 author: Timothy Andrew
+post_url: "http://blog.timothyandrew.net/blog/2013/04/12/changing-the-server-timeout-on-engineyard/"
 layout: post
 ---
 <p>While working on <a href="http://github.com/c42/survey-web">survey-web</a> today, we were stuck for a really long time trying to figure out this problem.</p>

@@ -3,6 +3,7 @@ title: "Encrypt Your Emails on OS X"
 kind: article
 created_at: 2013-08-13 17:44:00 UTC
 author: Timothy Andrew
+post_url: "http://blog.timothyandrew.net/blog/2013/08/13/encrypt-your-emails-on-os-x/"
 layout: post
 ---
 <h3>Introduction</h3>

@@ -3,6 +3,7 @@ title: "You probably shouldn&#39;t be nesting your CSS"
 kind: article
 created_at: 2013-09-08 06:46:00 UTC
 author: Srihari Sriraman
+post_url: "http://sriharisriraman.in/blog/2013/09/08/dont-nest-css/"
 layout: post
 ---
 <p><strong>TL;DR:</strong>  Don&rsquo;t nest CSS. Nest class names instead. This is one of the most useful take-aways from <a href="http://smacss.com">SMACSS</a>.

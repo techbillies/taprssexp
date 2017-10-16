@@ -1,14 +1,15 @@
 ---
-title: "Writing a Simple REST Web Service in Purescript - Part 2"
+title: "Writing a Simple REST Web Service in PureScript - Part 2"
 kind: article
 created_at: 2017-10-01 00:00:00 UTC
 author: Abhinav Sarkar
+post_url: "https://abhinavsarkar.net/posts/ps-simple-rest-service-2/index.html"
 layout: post
 ---
 <div class="ert">
 21 minute read
 </div>
-<p>To recap, in the <a href="https://abhinavsarkar.net/posts/ps-simple-rest-service/">first</a> part of this two-part tutorial, we built a simple JSON <a href="https://en.wikipedia.org/wiki/REST" target="_blank" rel="noopener">REST</a> web service in <a href="http://purescript.org" target="_blank" rel="noopener">Purescript</a> to create, update, get, list and delete users, backed by a Postgres database. In this part we’ll work on the rest of the requirements:</p>
+<p>To recap, in the <a href="https://abhinavsarkar.net/posts/ps-simple-rest-service/">first</a> part of this two-part tutorial, we built a simple JSON <a href="https://en.wikipedia.org/wiki/REST" target="_blank" rel="noopener">REST</a> web service in <a href="http://purescript.org" target="_blank" rel="noopener">PureScript</a> to create, update, get, list and delete users, backed by a Postgres database. In this part we’ll work on the rest of the requirements:</p>
 <ol type="1">
 <li>validation of API requests.</li>
 <li>reading the server and database configs from environment variables.</li>
@@ -617,7 +618,7 @@ app pool <span class="fu">=</span> <span class="kw">do</span>
 [<span class="ex">2017-09-30</span> 16:03:46.635] DEBUG Deleted user 3
 [<span class="ex">2017-09-30</span> 16:05:03.805] DEBUG HTTP: GET /v1/users</code></pre></div>
 <h2 id="conclusion">Conclusion<a href="#conclusion" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h2>
-<p>In this tutorial we learned how to create a simple JSON REST web service written in Purescript with persistence, validation, configuration and logging. The complete code for this tutorial can be found in <a href="https://github.com/abhin4v/ps-simple-rest-service" target="_blank" rel="noopener">github</a>. This post can be discussed on <a href="https://www.reddit.com/r/purescript/comments/73gc9g/writing_a_simple_rest_service_in_purescript_part/" target="_blank" rel="noopener">r/purescript</a>.</p><p>If you liked this post, please <a href="https://abhinavsarkar.net/posts/ps-simple-rest-service-2/#comment-container">leave a comment</a>.</p><div class="author">
+<p>In this tutorial we learned how to create a simple JSON REST web service written in PureScript with persistence, validation, configuration and logging. The complete code for this tutorial can be found in <a href="https://github.com/abhin4v/ps-simple-rest-service" target="_blank" rel="noopener">github</a>. This post can be discussed on <a href="https://www.reddit.com/r/purescript/comments/73gc9g/writing_a_simple_rest_service_in_purescript_part/" target="_blank" rel="noopener">r/purescript</a>.</p><p>If you liked this post, please <a href="https://abhinavsarkar.net/posts/ps-simple-rest-service-2/#comment-container">leave a comment</a>.</p><div class="author">
   <img src="https://nilenso.com/images/people/abhinav-200.png" style="width: 96px; height: 96;">
   <span style="position: absolute; padding: 32px 15px;">
     <i>Original post by <a href="http://twitter.com/abhin4v">Abhinav Sarkar</a> - check out <a href="https://abhinavsarkar.net">All posts on abhinavsarkar.net</a></i>

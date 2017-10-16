@@ -3,6 +3,7 @@ title: "Use Lambdas for Date-based Rails Scopes"
 kind: article
 created_at: 2013-04-07 18:56:00 UTC
 author: Timothy Andrew
+post_url: "http://blog.timothyandrew.net/blog/2013/04/08/use-lambdas-for-date-based-rails-scopes/"
 layout: post
 ---
 <p>A scope allows you to specify an ARel query that can be used as a method call to the model (or association objects).</p>

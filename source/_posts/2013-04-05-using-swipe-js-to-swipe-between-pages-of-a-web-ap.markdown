@@ -3,6 +3,7 @@ title: "Using Swipe.js to swipe between pages of a web app"
 kind: article
 created_at: 2013-04-05 16:15:00 UTC
 author: Timothy Andrew
+post_url: "http://blog.timothyandrew.net/blog/2013/04/05/using-swipe-dot-js-to-swipe-between-pages-of-a-web-app/"
 layout: post
 ---
 <p>I was working with <a href="http://deobald.ca/">Steven</a> on <a href="http://github.com/deobald/jok">Jok</a> today.</p>
@@ -193,8 +194,8 @@ On a desktop, though, there&#8217;s no way to switch between pages.</p>
 </span><span class='line'><span class="kd">var</span> <span class="nx">mySwipe</span> <span class="o">=</span> <span class="nx">Swipe</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;slider&#39;</span><span class="p">),</span> <span class="p">{</span> <span class="nx">callback</span><span class="o">:</span> <span class="nx">cb</span> <span class="p">});</span>
 </span><span class='line'><span class="nx">mySwipe</span><span class="p">.</span><span class="nx">setup</span><span class="p">();</span>
 </span></code></pre></td></tr></table></div></figure><div class="author">
-  <img src="http://nilenso.com/people/timothy-200.jpg" style="width: 96px; height: 96;">
+  <img src="http://nilenso.com/images/people/tim-200.png" style="width: 96px; height: 96;">
   <span style="position: absolute; padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy's Blog</a></i>
+    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
   </span>
 </div>

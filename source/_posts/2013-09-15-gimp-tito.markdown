@@ -3,6 +3,7 @@ title: "gimp tito"
 kind: article
 created_at: 2013-09-15 14:57:00 UTC
 author: Srihari Sriraman
+post_url: "http://sriharisriraman.in/blog/2013/09/15/gimp-tito/"
 layout: post
 ---
 <p>&lsquo;Tito&rsquo; is like Quicksilver inside GIMP. You bring up tito and enter something, it gives a dropdown of possible actions. You hit enter to execute that action. <a href="https://plus.google.com/116053365635940402074">Michael Natterer</a> (maintainer) told me on IRC about a year ago that it can go upstream with a few changes. Quite sadly, I haven&rsquo;t had the time to make those changes.</p>
