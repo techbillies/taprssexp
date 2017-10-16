@@ -31,7 +31,7 @@ planet:
 Another issue with planet.rb was that it quit abruptly when it failed to parse a blog because the blog was unreacheable. We fixed that and then it was good to go. Here's how it looks now when we run `planet generate`:
 
 {% codeblock $planet generate lang:bash %}
-planet-nilenso|master ⇒ planet generate
+planet-nilenso|master $ planet generate
 => Parsing http://blog.kitallis.in/feeds/posts/default
 => Found post titled GSoC - 1 & 2 - by Akshay Gupta
         => Ignored post titled: Computers with categories: [personal]
