@@ -31,6 +31,11 @@ blogs:
     image:  "http://nilenso.com/images/people/steven-200.png"
     twitter: "deobald"
 
+  - author: "Steven Deobald"
+    feed: "https://medium.com/feed/@deobald"
+    image:  "http://nilenso.com/images/people/steven-200.png"
+    twitter: "deobald"
+
   - author: "Srihari Sriraman"
     feed: "http://sriharisriraman.in/atom.xml"
     image:  "http://nilenso.com/images/people/srihari-200.png"
