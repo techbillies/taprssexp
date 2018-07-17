@@ -18,7 +18,7 @@
   
   
     
-      Writing a Simple REST Web Service in Purescript - Part 2
+      Finances in an Employee-Owned Technology Co-operative
       
       
     
@@ -34,7 +34,8 @@
 
 
 
-      ...">
+        
+...">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -107,7 +108,7 @@
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2017/10/01/writing-a-simple-rest-web-service-in-purescript-p/">Writing a Simple REST Web Service in Purescript - Part 2</a></h1>
+      <h1 class="entry-title"><a href="/blog/2018/05/23/finances-in-an-employee-owned-technology-co-opera/">Finances in an Employee-Owned Technology Co-operative</a></h1>
       
       
     
@@ -122,775 +123,205 @@
 
 
 
-<time datetime="2017-10-01T00:00:00+05:30" pubdate data-updated="true"></time>
+<time datetime="2018-05-23T00:00:00+05:30" pubdate data-updated="true"></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><div class="ert">
-21 minute read
-</div>
+  <div class="entry-content"><p>If you are not already familiar with <a href="https://nilenso.com">nilenso</a>, I apologize. This article may not make any sense to you. Requested as an opinion piece in reply to an internal email on salaries, it hinges on a lot of context.</p>
 
 
-<p>To recap, in the <a href="https://abhinavsarkar.net/posts/ps-simple-rest-service/">first</a> part of this two-part tutorial, we built a simple JSON <a href="https://en.wikipedia.org/wiki/REST" target="_blank" rel="noopener">REST</a> web service in <a href="http://purescript.org" target="_blank" rel="noopener">Purescript</a> to create, update, get, list and delete users, backed by a Postgres database. In this part we’ll work on the rest of the requirements:</p>
+<p>You may find that context interesting.</p>
 
 
-<ol type="1">
-<li>validation of API requests.</li>
-<li>reading the server and database configs from environment variables.</li>
-<li>logging HTTP requests and debugging info.</li>
-</ol>
+<ul><li>YourStory: <a href="https://yourstory.com/2017/02/nilenso-sofware-cooperative/">India’s first software co-operative</a></li><li><a href="https://yourstory.com/2017/02/nilenso-sofware-cooperative/">Huh? A Software Cooperative?</a> — an introduction</li><li><a href="https://blog.nilenso.com/blog/2015/06/30/how-to-co-op-salaries-reviews/">How to Co-op: Salaries and Reviews</a></li><li><a href="https://blog.nilenso.com/blog/2016/05/16/i-have-cramps/">“I have cramps.”</a> — introducing our menstrual leave policy</li><li><a href="https://blog.nilenso.com/blog/2017/02/14/nilenso-policies-by-the-people-for-the-people/">nilenso policies</a> — democratic corporate benefits</li><li><a href="https://blog.nilenso.com/blog/2017/04/06/black-mirror-or-a-review-of-the-review-process-at/">nilenso reviews</a> — how do we evaluate one another?</li><li><a href="https://blog.nilenso.com/blog/archives/">blog archive</a> — the rest of the articles we’ve written</li></ul>
 
 
-<!--more-->
+<p>The email which spawned this discussion was from a new employee, suggesting that we raise salaries. We discuss such organizational and infrastructural changes on occasion (not often) and an open conversation is welcome.</p>
 
 
-<p><nav id="toc" class="right-toc"><h3>Contents</h3><ol><li><a href="#bugs">Bugs!</a></li><li><a href="#validation">Validation</a></li><li><a href="#configuration">Configuration</a></li><li><a href="#logging">Logging</a></li><li><a href="#conclusion">Conclusion</a></li></ol></nav></p>
+<p>However, as I’m leaving nilenso in July, it felt worthwhile to capture what would otherwise be a one-time, long-winded email to nilenso’s <em>existing</em> staff and transform that into an article which could capture one founding member’s opinion of what nilenso is, for all future staff — and other fans of Employee-owned Co-operatives—who would care to read it.</p>
 
-<p>But first,</p>
 
+<h3>On Salaries</h3>
 
-<h2 id="bugs">Bugs!<a href="#bugs" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h2>
 
+<p>The original email had a fairly simple 3-part structure.</p>
 
-<p>What happens if we hit a URL on our server which does not exist? Let’s fire up the server and test it:</p>
 
+<p><strong>First: How much can we pay?</strong> …without compromising on organizational goals like maintaining a rainy-day cash buffer and financing experimental new ventures?</p>
 
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">pulp</span> --watch run</code></pre></div>
 
+<p><strong>Second, a declaration of our rates &amp; salaries.</strong> Highlighted is the delta between the two. Our rates vary a lot from project to project, but for the sake of example, imagine our rates average to $100/hour. (100 is a nice round number.) At $100/hour, our rates were high for Indian software consultancies, but not astronomical. A napkin calculation roughs $100/hour to over $100,000/year in revenue. Historically, very senior people at nilenso made about half this revenue figure as salary.</p>
 
-<pre class="http"><code>$ http GET http://localhost:4000/v1/random
-HTTP/1.1 404 Not Found
-Connection: keep-alive
-Content-Length: 148
-Content-Security-Policy: default-src 'self'
-Content-Type: text/html; charset=utf-8
-Date: Sat, 30 Sep 2017 08:23:20 GMT
-X-Content-Type-Options: nosniff
-X-Powered-By: Express
 
-&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-&lt;head&gt;
-&lt;meta charset=&quot;utf-8&quot;&gt;
-&lt;title&gt;Error&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;pre&gt;Cannot GET /v1/random&lt;/pre&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
+<blockquote>[F]or people with more experience and established reputation, there is an incentive to break away and start their own business so that they can pocket the difference.</blockquote>
 
 
-<p>We get back a default HTML response with a 404 status from <a href="https://expressjs.com" target="_blank" rel="noopener">Express</a>. Since we are writing a JSON API, we should return a JSON response in this case too. We add the following code in the <code>src/SimpleService/Server.purs</code> file to add a catch-all route and send a 404 status with a JSON error message:</p>
+<p>(All quotes are from the aforementioned email.)</p>
 
 
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- previous code</span>
-<span class="kw">import </span><span class="dt">Data.Either</span> (fromRight)
-<span class="kw">import </span><span class="dt">Data.String.Regex</span> (<span class="dt">Regex</span>, regex) <span class="kw">as</span> <span class="dt">Re</span>
-<span class="kw">import </span><span class="dt">Data.String.Regex.Flags</span> (noFlags) <span class="kw">as</span> <span class="dt">Re</span>
-<span class="kw">import </span><span class="dt">Node.Express.App</span> (<span class="dt">App</span>, all, delete, get, http, listenHttp, post, useExternal)
-<span class="kw">import </span><span class="dt">Node.Express.Response</span> (sendJson, setStatus)
-<span class="kw">import </span><span class="dt">Partial.Unsafe</span> (unsafePartial)
-<span class="co">-- previous code</span>
+<p><strong>Third and last, a spectrum of starting salaries.</strong> These were listed for college grads of reputable Indian universities, such as NIT and IIT. Paymasters near the top included Uber and Goldman Sachs. Near the bottom were Samsung and American Express.</p>
 
-<span class="ot">allRoutePattern ::</span> <span class="dt">Re.Regex</span>
-allRoutePattern <span class="fu">=</span> unsafePartial <span class="fu">$</span> fromRight <span class="fu">$</span> Re.regex <span class="st">&quot;/.*&quot;</span> Re.noFlags
 
-<span class="ot">app ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">App</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
-app pool <span class="fu">=</span> <span class="kw">do</span>
-  useExternal jsonBodyParser
+<blockquote>Some of the people I know from college are very good programmers and I’ll have a very hard [time] convincing them to join Nilenso [sic], because the difference between our salaries and the industry “standard” is too large.</blockquote>
 
-  get <span class="st">&quot;/v1/user/:id&quot;</span>    <span class="fu">$</span> getUser pool
-  delete <span class="st">&quot;/v1/user/:id&quot;</span> <span class="fu">$</span> deleteUser pool
-  post <span class="st">&quot;/v1/users&quot;</span>      <span class="fu">$</span> createUser pool
-  patch <span class="st">&quot;/v1/user/:id&quot;</span>  <span class="fu">$</span> updateUser pool
-  get <span class="st">&quot;/v1/users&quot;</span>       <span class="fu">$</span> listUsers pool
 
-  all allRoutePattern <span class="kw">do</span>
-    setStatus <span class="dv">404</span>
-    sendJson {error<span class="fu">:</span> <span class="st">&quot;Route not found&quot;</span>}
-  <span class="kw">where</span>
-    patch <span class="fu">=</span> http (<span class="dt">CustomMethod</span> <span class="st">&quot;patch&quot;</span>)</code></pre></div>
+<p>….</p>
 
 
-<p><code>allRoutePattern</code> matches all routes because it uses a <code>&quot;/.*&quot;</code> <a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank" rel="noopener">regular expression</a>. We place it as the last route to match all the otherwise unrouted requests. Let’s see what is the result:</p>
+<blockquote>[M]ost of our clients can pay pretty high salaries. From their perspective it isn’t an unreasonable strategy to hire a bunch of folks from nilenso instead of negotiating our high rates</blockquote>
 
 
-<pre class="http"><code>$ http GET http://localhost:4000/v1/random
-HTTP/1.1 404 Not Found
-Connection: keep-alive
-Content-Length: 27
-Content-Type: application/json; charset=utf-8
-Date: Sat, 30 Sep 2017 08:46:46 GMT
-ETag: W/&quot;1b-772e0u4nrE48ogbR0KmKfSvrHUE&quot;
-X-Powered-By: Express
+<p>It is possible this argument doesn’t seem irrational in isolation, so let’s break it down part by part. From hereon out, please automatically prefix any declaration I make with “as of this writing.”</p>
 
-{
-    &quot;error&quot;: &quot;Route not found&quot;
-}</code></pre>
 
+<h3>Part 3: A unicorn pissing contest</h3>
 
-<p>Now we get a nicely formatted JSON response.</p>
 
+<p>Let’s start from the end, since—tellingly—the actionable question was actually posed first.</p>
 
-<p>Another scenario is when our application throws some uncaught error. To simulate this, we shut down our postgres database and hit the server for listing users:</p>
 
+<p>There are a number of reasons our clients have not frequently hired our staff away. First, and most strictly, some contracts we sign have a two-way no-hire clause. In these cases, our clients cannot hire our employees and we cannot hire theirs. However, just because the contract does not forbid poaching does not make it a good idea. Our preferred engagement model is a long-term, cooperative and collaborative relationship; if either side starts yanking the other entity’s employees, that’s a great way to either poison the engagement.</p>
 
-<pre class="http"><code>$ http GET http://localhost:4000/v1/users
-HTTP/1.1 500 Internal Server Error
-Connection: keep-alive
-Content-Length: 372
-Content-Security-Policy: default-src 'self'
-Content-Type: text/html; charset=utf-8
-Date: Sat, 30 Sep 2017 08:53:40 GMT
-X-Content-Type-Options: nosniff
-X-Powered-By: Express
 
-&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-&lt;head&gt;
-&lt;meta charset=&quot;utf-8&quot;&gt;
-&lt;title&gt;Error&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;pre&gt;Error: connect ECONNREFUSED 127.0.0.1:5432&lt;br&gt; &amp;nbsp; &amp;nbsp;at Object._errnoException (util.js:1026:11)&lt;br&gt; &amp;nbsp; &amp;nbsp;at _exceptionWithHostPort (util.js:1049:20)&lt;br&gt; &amp;nbsp; &amp;nbsp;at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1174:14)&lt;/pre&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
+<p>In addition to all of this, however, there is sustainability at stake. As global consultancies go, nilenso is very small and very good. The author of the email is our 20th co-op member. Unless a client is very comfortable burning bridges, hiring two of our staff today trims our numbers by a non-trivial 10%. We don’t work with cannibal business owners.</p>
 
 
-<p>We get another default HTML response from Express with a 500 status. Again, in this case we’d like to return a JSON response. We add the following code to the <code>src/SimpleService/Server.purs</code> file:</p>
+<p>That isn’t to say no one has ever left nilenso this way. If it happens, we simply hope that person takes their decision very seriously. Some of our alumni left to join past clients — and we wished them well.</p>
 
 
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- previous code</span>
-<span class="kw">import </span><span class="dt">Control.Monad.Eff.Exception</span> (message)
-<span class="kw">import </span><span class="dt">Node.Express.App</span> (<span class="dt">App</span>, all, delete, get, http, listenHttp, post, useExternal, useOnError)
-<span class="co">-- previous code</span>
+<p>People do not work at nilenso to get rich.</p>
 
-<span class="ot">app ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">App</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
-app pool <span class="fu">=</span> <span class="kw">do</span>
-  <span class="co">-- previous code</span>
-  useOnError \err <span class="ot">-&gt;</span> <span class="kw">do</span>
-    setStatus <span class="dv">500</span>
-    sendJson {error<span class="fu">:</span> message err}
-  <span class="kw">where</span>
-    patch <span class="fu">=</span> http (<span class="dt">CustomMethod</span> <span class="st">&quot;patch&quot;</span>)</code></pre></div>
 
+<p>People work here because they believe in something. As we’ll see, “something” isn’t defined by some manifesto or mission statement. The “something” isn’t likely to be found elsewhere and it’s even less likely to be the same for two different people at nilenso. “Something” probably isn’t a single thing within the mind of a single person. “Something” is fractured and ever-changing. Each fractured shard is at any given time either a hallucination manifesting in action or a miscalculation fading to black.</p>
 
-<p>We add the <code>useOnError</code> handler which comes with <a href="https://pursuit.purescript.org/packages/purescript-express" target="_blank" rel="noopener"><code>purescript-express</code></a> to return the error message as a JSON response. Back on the command-line:</p>
 
+<p>As complex as The Somethings are, there has thus far been a few consistent threads. One? T<strong>echnical excellence</strong>. A potential client from Vietnam recently asked “<em>what is the ratio of fresh grads you hire to senior developers?</em>” Though it may not appear so on the surface, the idea that “<em>I’ll have a very hard [time] convincing [people I know from college] to join</em>” stems from the very same misconception.</p>
 
-<pre class="http"><code>$ http GET http://localhost:4000/v1/users
-HTTP/1.1 500 Internal Server Error
-Connection: keep-alive
-Content-Length: 47
-Content-Type: application/json; charset=utf-8
-Date: Sat, 30 Sep 2017 09:01:37 GMT
-ETag: W/&quot;2f-cJuIW6961YCpo9TWDSZ9VWHLGHE&quot;
-X-Powered-By: Express
 
-{
-    &quot;error&quot;: &quot;connect ECONNREFUSED 127.0.0.1:5432&quot;
-}</code></pre>
+<p>nilenso is not a leveraged consultancy.</p>
 
 
-<p>It works! Bugs are fixed now. We proceed to add next features.</p>
+<p>The misconception is that nilenso desires to behave as other consultancies by “leveraging”** their weakest employees (read: fresh grads) and charging the highest possible rate by inflating them with as few “senior”** developers as possible. The misconception is not unfounded. Most consultancies operate this way. We do not.</p>
 
 
-<h2 id="validation">Validation<a href="#validation" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h2>
+<p>**<em> industry terminology, not mine</em></p>
 
 
-<p>Let’s recall the code to update a user from the <code>src/SimpleService/Handler.purs</code> file:</p>
+<p>Convincing college grads to apply to nilenso is not a problem we’d like to solve. We have college grads begging us for internships and offering to work for free.</p>
 
 
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">updateUser ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">Handler</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
-updateUser pool <span class="fu">=</span> getRouteParam <span class="st">&quot;id&quot;</span> <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
-  <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respond <span class="dv">422</span> { error<span class="fu">:</span> <span class="st">&quot;User ID is required&quot;</span> }
-  <span class="dt">Just</span> sUserId <span class="ot">-&gt;</span> <span class="kw">case</span> fromString sUserId <span class="kw">of</span>
-    <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respond <span class="dv">422</span> { error<span class="fu">:</span> <span class="st">&quot;User ID must be positive: &quot;</span> <span class="fu">&lt;&gt;</span> sUserId }
-    <span class="dt">Just</span> userId <span class="ot">-&gt;</span> getBody <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
-      <span class="dt">Left</span> errs <span class="ot">-&gt;</span> respond <span class="dv">422</span> { error<span class="fu">:</span> intercalate <span class="st">&quot;, &quot;</span> <span class="fu">$</span> map renderForeignError errs}
-      <span class="dt">Right</span> (<span class="dt">UserPatch</span> userPatch) <span class="ot">-&gt;</span> <span class="kw">case</span> unNullOrUndefined userPatch<span class="fu">.</span>name <span class="kw">of</span>
-        <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respondNoContent <span class="dv">204</span>
-        <span class="dt">Just</span> userName <span class="ot">-&gt;</span> <span class="kw">if</span> userName <span class="fu">==</span> <span class="st">&quot;&quot;</span>
-          <span class="kw">then</span> respond <span class="dv">422</span> { error<span class="fu">:</span> <span class="st">&quot;User name must not be empty&quot;</span> }
-          <span class="kw">else</span> <span class="kw">do</span>
-            savedUser <span class="ot">&lt;-</span> liftAff <span class="fu">$</span> PG.withConnection pool \conn <span class="ot">-&gt;</span> PG.withTransaction conn <span class="kw">do</span>
-              P.findUser conn userId <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
-                <span class="dt">Nothing</span> <span class="ot">-&gt;</span> pure <span class="dt">Nothing</span>
-                <span class="dt">Just</span> (<span class="dt">User</span> user) <span class="ot">-&gt;</span> <span class="kw">do</span>
-                  <span class="kw">let</span> user' <span class="fu">=</span> <span class="dt">User</span> (user { name <span class="fu">=</span> userName })
-                  P.updateUser conn user'
-                  pure <span class="fu">$</span> <span class="dt">Just</span> user'
-            <span class="kw">case</span> savedUser <span class="kw">of</span>
-              <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respond <span class="dv">404</span> { error<span class="fu">:</span> <span class="st">&quot;User not found with id: &quot;</span> <span class="fu">&lt;&gt;</span> sUserId }
-              <span class="dt">Just</span> user <span class="ot">-&gt;</span> respond <span class="dv">200</span> (encode user)</code></pre></div>
+<p><strong>We do not want to hire college grads.</strong></p>
 
 
-<p>As we can see, the actual request handling logic is obfuscated by the request validation logic for the user id and the user name patch parameters. We also notice that we are using three constructs for validation here: <code>Maybe</code>, <code>Either</code> and <code>if-then-else</code>. However, we can use just <code>Either</code> to subsume all these cases as it can “carry” a failure as well as a success case. <code>Either</code> also comes with a nice monad transformer <a href="https://pursuit.purescript.org/packages/purescript-transformers/3.4.0/docs/Control.Monad.Except.Trans#t:ExceptT" target="_blank" rel="noopener"><code>ExceptT</code></a> which provides the <code>do</code> syntax for failure propagation. So we choose <code>ExceptT</code> as the base construct for our validation framework and write functions to upgrade <code>Maybe</code> and <code>if-then-else</code> to it. We add the following code to the <code>src/SimpleService/Validation.purs</code> file:</p>
+<p>When our clients hire nilenso, we don’t want them satisfied. <em>We want them elated</em>. With one or two exceptions, our most junior developers always have multiple years of experience. They joined us because they couldn’t find their Something anywhere else in the industry. Not only has a college grad not, by definition, owned her own software in production — she hasn’t had an opportunity to go look for Something yet. <em>Go searching first—and learn to build and deploy software while you’re at it. </em>Maybe she’ll find her Something. If she doesn’t, she can join a company like ours.</p>
 
 
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">SimpleService.Validation</span>
-  (<span class="kw">module</span> <span class="dt">MoreExports</span>, <span class="kw">module</span> <span class="dt">SimpleService.Validation</span>) <span class="kw">where</span>
+<p>We are not Uber or Goldman Sachs. We don’t <a href="https://en.wikipedia.org/wiki/Uber#Sexual_harassment_allegations_and_management_shakeup_(2017)">treat our female colleagues like shit</a>, we don’t have an <a href="https://en.wikipedia.org/wiki/Uber#Workplace_culture">“asshole culture”</a>, we haven’t <a href="https://en.wikipedia.org/wiki/Uber#2014_reviews_by_the_Better_Business_Bureau">received a failing grade from the Better Business Bureau</a>, nor do we have a list of “controversies and legal issues” <a href="https://en.wikipedia.org/wiki/Goldman_Sachs#Controversies_and_legal_issues">as long as your arm</a>.</p>
 
-<span class="kw">import </span><span class="dt">Prelude</span>
 
-<span class="kw">import </span><span class="dt">Control.Monad.Except</span> (<span class="dt">ExceptT</span>, except, runExceptT)
-<span class="kw">import </span><span class="dt">Data.Either</span> (<span class="dt">Either</span>(..))
-<span class="kw">import </span><span class="dt">Data.Maybe</span> (<span class="dt">Maybe</span>(..))
-<span class="kw">import </span><span class="dt">Node.Express.Handler</span> (<span class="dt">HandlerM</span>, <span class="dt">Handler</span>)
-<span class="kw">import </span><span class="dt">Node.Express.Response</span> (sendJson, setStatus)
-<span class="kw">import </span><span class="dt">Node.Express.Types</span> (<span class="dt">EXPRESS</span>)
-<span class="kw">import </span><span class="dt">Control.Monad.Except</span> (except) <span class="kw">as</span> <span class="dt">MoreExports</span>
-
-<span class="kw">type</span> <span class="dt">Validation</span> eff a <span class="fu">=</span> <span class="dt">ExceptT</span> <span class="dt">String</span> (<span class="dt">HandlerM</span> (<span class="ot">express ::</span> <span class="dt">EXPRESS</span> <span class="fu">|</span> eff)) a
-
-<span class="ot">exceptMaybe ::</span> forall e m a<span class="fu">.</span> <span class="dt">Applicative</span> m <span class="ot">=&gt;</span> e <span class="ot">-&gt;</span> <span class="dt">Maybe</span> a <span class="ot">-&gt;</span> <span class="dt">ExceptT</span> e m a
-exceptMaybe e a <span class="fu">=</span> except <span class="fu">$</span> <span class="kw">case</span> a <span class="kw">of</span>
-  <span class="dt">Just</span> x  <span class="ot">-&gt;</span> <span class="dt">Right</span> x
-  <span class="dt">Nothing</span> <span class="ot">-&gt;</span> <span class="dt">Left</span> e
-
-<span class="ot">exceptCond ::</span> forall e m a<span class="fu">.</span> <span class="dt">Applicative</span> m <span class="ot">=&gt;</span> e <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> <span class="dt">Boolean</span>) <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">ExceptT</span> e m a
-exceptCond e cond a <span class="fu">=</span> except <span class="fu">$</span> <span class="kw">if</span> cond a <span class="kw">then</span> <span class="dt">Right</span> a <span class="kw">else</span> <span class="dt">Left</span> e
-
-<span class="ot">withValidation ::</span> forall eff a<span class="fu">.</span> <span class="dt">Validation</span> eff a <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> <span class="dt">Handler</span> eff) <span class="ot">-&gt;</span> <span class="dt">Handler</span> eff
-withValidation action handler <span class="fu">=</span> runExceptT action <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
-  <span class="dt">Left</span> err <span class="ot">-&gt;</span> <span class="kw">do</span>
-    setStatus <span class="dv">422</span>
-    sendJson {error<span class="fu">:</span> err}
-  <span class="dt">Right</span> x  <span class="ot">-&gt;</span> handler x</code></pre></div>
-
-
-<p>We re-export <code>except</code> from the <code>Control.Monad.Except</code> module. We also add a <code>withValidation</code> function which runs an <code>ExceptT</code> based validation and either returns an error response with a 422 status in case of a failed validation or runs the given action with the valid value in case of a successful validation.</p>
-
-
-<p>Using these functions, we now write <code>updateUser</code> in the <code>src/SimpleService/Handler.purs</code> file as:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- previous code</span>
-<span class="kw">import </span><span class="dt">Control.Monad.Trans.Class</span> (lift)
-<span class="kw">import </span><span class="dt">Data.Bifunctor</span> (lmap)
-<span class="kw">import </span><span class="dt">Data.Foreign</span> (<span class="dt">ForeignError</span>, renderForeignError)
-<span class="kw">import </span><span class="dt">Data.List.NonEmpty</span> (toList)
-<span class="kw">import </span><span class="dt">Data.List.Types</span> (<span class="dt">NonEmptyList</span>)
-<span class="kw">import </span><span class="dt">Data.Tuple</span> (<span class="dt">Tuple</span>(..))
-<span class="kw">import </span><span class="dt">SimpleService.Validation</span> <span class="kw">as</span> <span class="dt">V</span>
-<span class="co">-- previous code</span>
-
-<span class="ot">renderForeignErrors ::</span> forall a<span class="fu">.</span> <span class="dt">Either</span> (<span class="dt">NonEmptyList</span> <span class="dt">ForeignError</span>) a <span class="ot">-&gt;</span> <span class="dt">Either</span> <span class="dt">String</span> a
-renderForeignErrors <span class="fu">=</span> lmap (toList <span class="fu">&gt;&gt;&gt;</span> map renderForeignError <span class="fu">&gt;&gt;&gt;</span> intercalate <span class="st">&quot;, &quot;</span>)
-
-<span class="ot">updateUser ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">Handler</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
-updateUser pool <span class="fu">=</span> V.withValidation (<span class="dt">Tuple</span> <span class="fu">&lt;$&gt;</span> getUserId <span class="fu">&lt;*&gt;</span> getUserPatch)
-                                   \(<span class="dt">Tuple</span> userId (<span class="dt">UserPatch</span> userPatch)) <span class="ot">-&gt;</span>
-    <span class="kw">case</span> unNullOrUndefined userPatch<span class="fu">.</span>name <span class="kw">of</span>
-      <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respondNoContent <span class="dv">204</span>
-      <span class="dt">Just</span> uName <span class="ot">-&gt;</span> V.withValidation (getUserName uName) \userName <span class="ot">-&gt;</span> <span class="kw">do</span>
-        savedUser <span class="ot">&lt;-</span> liftAff <span class="fu">$</span> PG.withConnection pool \conn <span class="ot">-&gt;</span> PG.withTransaction conn <span class="kw">do</span>
-          P.findUser conn userId <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
-            <span class="dt">Nothing</span> <span class="ot">-&gt;</span> pure <span class="dt">Nothing</span>
-            <span class="dt">Just</span> (<span class="dt">User</span> user) <span class="ot">-&gt;</span> <span class="kw">do</span>
-              <span class="kw">let</span> user' <span class="fu">=</span> <span class="dt">User</span> (user { name <span class="fu">=</span> userName })
-              P.updateUser conn user'
-              pure <span class="fu">$</span> <span class="dt">Just</span> user'
-        <span class="kw">case</span> savedUser <span class="kw">of</span>
-          <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respond <span class="dv">404</span> { error<span class="fu">:</span> <span class="st">&quot;User not found with id: &quot;</span> <span class="fu">&lt;&gt;</span> show userId }
-          <span class="dt">Just</span> user <span class="ot">-&gt;</span> respond <span class="dv">200</span> (encode user)
-  <span class="kw">where</span>
-    getUserId <span class="fu">=</span> lift (getRouteParam <span class="st">&quot;id&quot;</span>)
-      <span class="fu">&gt;&gt;=</span> V.exceptMaybe <span class="st">&quot;User ID is required&quot;</span>
-      <span class="fu">&gt;&gt;=</span> fromString <span class="fu">&gt;&gt;&gt;</span> V.exceptMaybe <span class="st">&quot;User ID must be positive&quot;</span>
-
-    getUserPatch <span class="fu">=</span> lift getBody <span class="fu">&gt;&gt;=</span> V.except <span class="fu">&lt;&lt;&lt;</span> renderForeignErrors
-
-    getUserName <span class="fu">=</span> V.exceptCond <span class="st">&quot;User name must not be empty&quot;</span> (_ <span class="fu">==</span> <span class="st">&quot;&quot;</span>)</code></pre></div>
-
-
-<p>The validation logic has been extracted out in separate functions now which are composed using <a href="https://pursuit.purescript.org/packages/purescript-prelude/3.0.0/docs/Control.Applicative#t:Applicative" target="_blank" rel="noopener">Applicative</a>. The validation steps are composed using the <code>ExceptT</code> monad. We are now free to express the core logic of the function clearly. We rewrite the <code>src/SimpleService/Handler.purs</code> file using the validations:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">SimpleService.Handler</span> <span class="kw">where</span>
-
-<span class="kw">import </span><span class="dt">Prelude</span>
-
-<span class="kw">import </span><span class="dt">Control.Monad.Aff.Class</span> (liftAff)
-<span class="kw">import </span><span class="dt">Control.Monad.Trans.Class</span> (lift)
-<span class="kw">import </span><span class="dt">Data.Bifunctor</span> (lmap)
-<span class="kw">import </span><span class="dt">Data.Either</span> (<span class="dt">Either</span>)
-<span class="kw">import </span><span class="dt">Data.Foldable</span> (intercalate)
-<span class="kw">import </span><span class="dt">Data.Foreign</span> (<span class="dt">ForeignError</span>, renderForeignError)
-<span class="kw">import </span><span class="dt">Data.Foreign.Class</span> (encode)
-<span class="kw">import </span><span class="dt">Data.Foreign.NullOrUndefined</span> (unNullOrUndefined)
-<span class="kw">import </span><span class="dt">Data.Int</span> (fromString)
-<span class="kw">import </span><span class="dt">Data.List.NonEmpty</span> (toList)
-<span class="kw">import </span><span class="dt">Data.List.Types</span> (<span class="dt">NonEmptyList</span>)
-<span class="kw">import </span><span class="dt">Data.Maybe</span> (<span class="dt">Maybe</span>(..))
-<span class="kw">import </span><span class="dt">Data.Tuple</span> (<span class="dt">Tuple</span>(..))
-<span class="kw">import </span><span class="dt">Database.PostgreSQL</span> <span class="kw">as</span> <span class="dt">PG</span>
-<span class="kw">import </span><span class="dt">Node.Express.Handler</span> (<span class="dt">Handler</span>)
-<span class="kw">import </span><span class="dt">Node.Express.Request</span> (getBody, getRouteParam)
-<span class="kw">import </span><span class="dt">Node.Express.Response</span> (end, sendJson, setStatus)
-<span class="kw">import </span><span class="dt">SimpleService.Persistence</span> <span class="kw">as</span> <span class="dt">P</span>
-<span class="kw">import </span><span class="dt">SimpleService.Validation</span> <span class="kw">as</span> <span class="dt">V</span>
-<span class="kw">import </span><span class="dt">SimpleService.Types</span>
-
-<span class="ot">getUser ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">Handler</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
-getUser pool <span class="fu">=</span> V.withValidation getUserId \userId <span class="ot">-&gt;</span>
-  liftAff (PG.withConnection pool <span class="fu">$</span> flip P.findUser userId) <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
-    <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respond <span class="dv">404</span> { error<span class="fu">:</span> <span class="st">&quot;User not found with id: &quot;</span> <span class="fu">&lt;&gt;</span> show userId }
-    <span class="dt">Just</span> user <span class="ot">-&gt;</span> respond <span class="dv">200</span> (encode user)
-
-<span class="ot">deleteUser ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">Handler</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
-deleteUser pool <span class="fu">=</span> V.withValidation getUserId \userId <span class="ot">-&gt;</span> <span class="kw">do</span>
-  found <span class="ot">&lt;-</span> liftAff <span class="fu">$</span> PG.withConnection pool \conn <span class="ot">-&gt;</span> PG.withTransaction conn <span class="kw">do</span>
-    P.findUser conn userId <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
-      <span class="dt">Nothing</span> <span class="ot">-&gt;</span> pure false
-      <span class="dt">Just</span> _  <span class="ot">-&gt;</span> <span class="kw">do</span>
-        P.deleteUser conn userId
-        pure true
-  <span class="kw">if</span> found
-    <span class="kw">then</span> respondNoContent <span class="dv">204</span>
-    <span class="kw">else</span> respond <span class="dv">404</span> { error<span class="fu">:</span> <span class="st">&quot;User not found with id: &quot;</span> <span class="fu">&lt;&gt;</span> show userId }
-
-<span class="ot">createUser ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">Handler</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
-createUser pool <span class="fu">=</span> V.withValidation getUser \user<span class="fu">@</span>(<span class="dt">User</span> _) <span class="ot">-&gt;</span> <span class="kw">do</span>
-  liftAff (PG.withConnection pool <span class="fu">$</span> flip P.insertUser user)
-  respondNoContent <span class="dv">201</span>
-  <span class="kw">where</span>
-    getUser <span class="fu">=</span> lift getBody
-      <span class="fu">&gt;&gt;=</span> V.except <span class="fu">&lt;&lt;&lt;</span> renderForeignErrors
-      <span class="fu">&gt;&gt;=</span> V.exceptCond <span class="st">&quot;User ID must be positive&quot;</span> (\(<span class="dt">User</span> user) <span class="ot">-&gt;</span> user<span class="fu">.</span>id <span class="fu">&gt;</span> <span class="dv">0</span>)
-      <span class="fu">&gt;&gt;=</span> V.exceptCond <span class="st">&quot;User name must not be empty&quot;</span> (\(<span class="dt">User</span> user) <span class="ot">-&gt;</span> user<span class="fu">.</span>name <span class="fu">/=</span> <span class="st">&quot;&quot;</span>)
-
-<span class="ot">updateUser ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">Handler</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
-updateUser pool <span class="fu">=</span> V.withValidation (<span class="dt">Tuple</span> <span class="fu">&lt;$&gt;</span> getUserId <span class="fu">&lt;*&gt;</span> getUserPatch)
-                                   \(<span class="dt">Tuple</span> userId (<span class="dt">UserPatch</span> userPatch)) <span class="ot">-&gt;</span>
-    <span class="kw">case</span> unNullOrUndefined userPatch<span class="fu">.</span>name <span class="kw">of</span>
-      <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respondNoContent <span class="dv">204</span>
-      <span class="dt">Just</span> uName <span class="ot">-&gt;</span> V.withValidation (getUserName uName) \userName <span class="ot">-&gt;</span> <span class="kw">do</span>
-        savedUser <span class="ot">&lt;-</span> liftAff <span class="fu">$</span> PG.withConnection pool \conn <span class="ot">-&gt;</span> PG.withTransaction conn <span class="kw">do</span>
-          P.findUser conn userId <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
-            <span class="dt">Nothing</span> <span class="ot">-&gt;</span> pure <span class="dt">Nothing</span>
-            <span class="dt">Just</span> (<span class="dt">User</span> user) <span class="ot">-&gt;</span> <span class="kw">do</span>
-              <span class="kw">let</span> user' <span class="fu">=</span> <span class="dt">User</span> (user { name <span class="fu">=</span> userName })
-              P.updateUser conn user'
-              pure <span class="fu">$</span> <span class="dt">Just</span> user'
-        <span class="kw">case</span> savedUser <span class="kw">of</span>
-          <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respond <span class="dv">404</span> { error<span class="fu">:</span> <span class="st">&quot;User not found with id: &quot;</span> <span class="fu">&lt;&gt;</span> show userId }
-          <span class="dt">Just</span> user <span class="ot">-&gt;</span> respond <span class="dv">200</span> (encode user)
-  <span class="kw">where</span>
-    getUserPatch <span class="fu">=</span> lift getBody <span class="fu">&gt;&gt;=</span> V.except <span class="fu">&lt;&lt;&lt;</span> renderForeignErrors
-    getUserName <span class="fu">=</span> V.exceptCond <span class="st">&quot;User name must not be empty&quot;</span> (_ <span class="fu">/=</span> <span class="st">&quot;&quot;</span>)
-
-<span class="ot">listUsers ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">Handler</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
-listUsers pool <span class="fu">=</span> liftAff (PG.withConnection pool P.listUsers) <span class="fu">&gt;&gt;=</span> encode <span class="fu">&gt;&gt;&gt;</span> respond <span class="dv">200</span>
-
-<span class="ot">getUserId ::</span> forall eff<span class="fu">.</span> <span class="dt">V.Validation</span> eff <span class="dt">Int</span>
-getUserId <span class="fu">=</span> lift (getRouteParam <span class="st">&quot;id&quot;</span>)
-  <span class="fu">&gt;&gt;=</span> V.exceptMaybe <span class="st">&quot;User ID is required&quot;</span>
-  <span class="fu">&gt;&gt;=</span> fromString <span class="fu">&gt;&gt;&gt;</span> V.exceptMaybe <span class="st">&quot;User ID must be an integer&quot;</span>
-  <span class="fu">&gt;&gt;=</span> V.exceptCond <span class="st">&quot;User ID must be positive&quot;</span> (_ <span class="fu">&gt;</span> <span class="dv">0</span>)
-
-<span class="ot">renderForeignErrors ::</span> forall a<span class="fu">.</span> <span class="dt">Either</span> (<span class="dt">NonEmptyList</span> <span class="dt">ForeignError</span>) a <span class="ot">-&gt;</span> <span class="dt">Either</span> <span class="dt">String</span> a
-renderForeignErrors <span class="fu">=</span> lmap (toList <span class="fu">&gt;&gt;&gt;</span> map renderForeignError <span class="fu">&gt;&gt;&gt;</span> intercalate <span class="st">&quot;, &quot;</span>)
-
-<span class="ot">respond ::</span> forall eff a<span class="fu">.</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">Handler</span> eff
-respond status body <span class="fu">=</span> <span class="kw">do</span>
-  setStatus status
-  sendJson body
-
-<span class="ot">respondNoContent ::</span> forall eff<span class="fu">.</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Handler</span> eff
-respondNoContent status <span class="fu">=</span> <span class="kw">do</span>
-  setStatus status
-  end</code></pre></div>
-
-
-<p>The code is much cleaner now. Let’s try out a few test cases:</p>
-
-
-<pre class="http"><code>$ http POST http://localhost:4000/v1/users id:=3 name=roger
-HTTP/1.1 201 Created
-Connection: keep-alive
-Content-Length: 0
-Date: Sat, 30 Sep 2017 12:13:37 GMT
-X-Powered-By: Express</code></pre>
-
-
-<pre class="http"><code>$ http POST http://localhost:4000/v1/users id:=3
-HTTP/1.1 422 Unprocessable Entity
-Connection: keep-alive
-Content-Length: 102
-Content-Type: application/json; charset=utf-8
-Date: Sat, 30 Sep 2017 12:13:50 GMT
-ETag: W/&quot;66-/c4cfoquQZGwtDBUzHjJydJAHJ0&quot;
-X-Powered-By: Express
-
-{
-    &quot;error&quot;: &quot;Error at array index 0: (ErrorAtProperty \&quot;name\&quot; (TypeMismatch \&quot;String\&quot; \&quot;Undefined\&quot;))&quot;
-}</code></pre>
-
-
-<pre class="http"><code>$ http POST http://localhost:4000/v1/users id:=3 name=&quot;&quot;
-HTTP/1.1 422 Unprocessable Entity
-Connection: keep-alive
-Content-Length: 39
-Content-Type: application/json; charset=utf-8
-Date: Sat, 30 Sep 2017 12:14:02 GMT
-ETag: W/&quot;27-JQsh12xu/rEFdWy8REF4NMtBUB4&quot;
-X-Powered-By: Express
-
-{
-    &quot;error&quot;: &quot;User name must not be empty&quot;
-}</code></pre>
-
-
-<pre class="http"><code>$ http POST http://localhost:4000/v1/users id:=0 name=roger
-HTTP/1.1 422 Unprocessable Entity
-Connection: keep-alive
-Content-Length: 36
-Content-Type: application/json; charset=utf-8
-Date: Sat, 30 Sep 2017 12:14:14 GMT
-ETag: W/&quot;24-Pvt1L4eGilBmVtaOGHlSReJ413E&quot;
-X-Powered-By: Express
-
-{
-    &quot;error&quot;: &quot;User ID must be positive&quot;
-}</code></pre>
-
-
-<pre class="http"><code>$ http GET http://localhost:4000/v1/user/3
-HTTP/1.1 200 OK
-Connection: keep-alive
-Content-Length: 23
-Content-Type: application/json; charset=utf-8
-Date: Sat, 30 Sep 2017 12:14:28 GMT
-ETag: W/&quot;17-1scpiB1FT9DBu9s4I1gNWSjH2go&quot;
-X-Powered-By: Express
-
-{
-    &quot;id&quot;: 3,
-    &quot;name&quot;: &quot;roger&quot;
-}</code></pre>
-
-
-<pre class="http"><code>$ http GET http://localhost:4000/v1/user/asdf
-HTTP/1.1 422 Unprocessable Entity
-Connection: keep-alive
-Content-Length: 38
-Content-Type: application/json; charset=utf-8
-Date: Sat, 30 Sep 2017 12:14:40 GMT
-ETag: W/&quot;26-//tvORl1gGDUMwgSaqbEpJhuadI&quot;
-X-Powered-By: Express
-
-{
-    &quot;error&quot;: &quot;User ID must be an integer&quot;
-}</code></pre>
-
-
-<pre class="http"><code>$ http GET http://localhost:4000/v1/user/-1
-HTTP/1.1 422 Unprocessable Entity
-Connection: keep-alive
-Content-Length: 36
-Content-Type: application/json; charset=utf-8
-Date: Sat, 30 Sep 2017 12:14:45 GMT
-ETag: W/&quot;24-Pvt1L4eGilBmVtaOGHlSReJ413E&quot;
-X-Powered-By: Express
-
-{
-    &quot;error&quot;: &quot;User ID must be positive&quot;
-}</code></pre>
-
-
-<p>It works as expected.</p>
-
-
-<h2 id="configuration">Configuration<a href="#configuration" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h2>
-
-
-<p>Right now our application configuration resides in the <code>main</code> function:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">main <span class="fu">=</span> runServer port databaseConfig
-  <span class="kw">where</span>
-    port <span class="fu">=</span> <span class="dv">4000</span>
-    databaseConfig <span class="fu">=</span> { user<span class="fu">:</span> <span class="st">&quot;abhinav&quot;</span>
-                     , password<span class="fu">:</span> <span class="st">&quot;&quot;</span>
-                     , host<span class="fu">:</span> <span class="st">&quot;localhost&quot;</span>
-                     , port<span class="fu">:</span> <span class="dv">5432</span>
-                     , database<span class="fu">:</span> <span class="st">&quot;simple_service&quot;</span>
-                     , max<span class="fu">:</span> <span class="dv">10</span>
-                     , idleTimeoutMillis<span class="fu">:</span> <span class="dv">1000</span>
-                     }</code></pre></div>
-
-
-<p>We are going to extract it out of the code and read it from the environment variables using the <a href="https://pursuit.purescript.org/packages/purescript-config" target="_blank" rel="noopener"><code>purescript-config</code></a> package. First, we install the required packages using <a href="http://bower.io" target="_blank" rel="noopener">bower</a>.</p>
-
-
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">bower</span> install --save purescript-node-process purescript-config</code></pre></div>
-
-
-<p>Now, we write the following code in the <code>src/SimpleService/Config.purs</code> file:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">SimpleService.Config</span> <span class="kw">where</span>
-
-<span class="kw">import </span><span class="dt">Data.Config</span>
-<span class="kw">import </span><span class="dt">Prelude</span>
-
-<span class="kw">import </span><span class="dt">Control.Monad.Eff</span> (<span class="dt">Eff</span>)
-<span class="kw">import </span><span class="dt">Data.Config.Node</span> (fromEnv)
-<span class="kw">import </span><span class="dt">Data.Either</span> (<span class="dt">Either</span>)
-<span class="kw">import </span><span class="dt">Data.Set</span> (<span class="dt">Set</span>)
-<span class="kw">import </span><span class="dt">Database.PostgreSQL</span> <span class="kw">as</span> <span class="dt">PG</span>
-<span class="kw">import </span><span class="dt">Node.Process</span> (<span class="dt">PROCESS</span>)
-
-<span class="kw">type</span> <span class="dt">ServerConfig</span> <span class="fu">=</span>
-  {<span class="ot"> port           ::</span> <span class="dt">Int</span>
-  ,<span class="ot"> databaseConfig ::</span> <span class="dt">PG.PoolConfiguration</span>
-  }
-
-<span class="ot">databaseConfig ::</span> <span class="dt">Config</span> {<span class="ot">name ::</span> <span class="dt">String</span>} <span class="dt">PG.PoolConfiguration</span>
-databaseConfig <span class="fu">=</span>
-  { user<span class="fu">:</span> _, password<span class="fu">:</span> _, host<span class="fu">:</span> _, port<span class="fu">:</span> _, database<span class="fu">:</span> _, max<span class="fu">:</span> _, idleTimeoutMillis<span class="fu">:</span> _ }
-  <span class="fu">&lt;$&gt;</span> string {name<span class="fu">:</span> <span class="st">&quot;user&quot;</span>}
-  <span class="fu">&lt;*&gt;</span> string {name<span class="fu">:</span> <span class="st">&quot;password&quot;</span>}
-  <span class="fu">&lt;*&gt;</span> string {name<span class="fu">:</span> <span class="st">&quot;host&quot;</span>}
-  <span class="fu">&lt;*&gt;</span> int    {name<span class="fu">:</span> <span class="st">&quot;port&quot;</span>}
-  <span class="fu">&lt;*&gt;</span> string {name<span class="fu">:</span> <span class="st">&quot;database&quot;</span>}
-  <span class="fu">&lt;*&gt;</span> int    {name<span class="fu">:</span> <span class="st">&quot;pool_size&quot;</span>}
-  <span class="fu">&lt;*&gt;</span> int    {name<span class="fu">:</span> <span class="st">&quot;idle_conn_timeout_millis&quot;</span>}
+<p>Some of us have worked for companies like these and we have done everything in our power to <em>prevent</em> nilenso from becoming such a company. We don’t need revenue in the billions to behave this way but racing to compete salaries with such companies does us zero favours in that arena.</p>
 
-<span class="ot">portConfig ::</span> <span class="dt">Config</span> {<span class="ot">name ::</span> <span class="dt">String</span>} <span class="dt">Int</span>
-portConfig <span class="fu">=</span> int {name<span class="fu">:</span> <span class="st">&quot;port&quot;</span>}
 
-<span class="ot">serverConfig ::</span> <span class="dt">Config</span> {<span class="ot">name ::</span> <span class="dt">String</span>} <span class="dt">ServerConfig</span>
-serverConfig <span class="fu">=</span>
-  { port<span class="fu">:</span> _, databaseConfig<span class="fu">:</span> _}
-  <span class="fu">&lt;$&gt;</span> portConfig
-  <span class="fu">&lt;*&gt;</span> prefix {name<span class="fu">:</span> <span class="st">&quot;db&quot;</span>} databaseConfig
+<p>There is perhaps no better way for a college kid to learn the value of a company like nilenso than to experience a cesspool like Uber firsthand for a couple years. Not that I recommend the grads start their search there, mind you.</p>
 
-<span class="ot">readServerConfig ::</span> forall eff<span class="fu">.</span>
-                    <span class="dt">Eff</span> (<span class="ot">process ::</span> <span class="dt">PROCESS</span> <span class="fu">|</span> eff) (<span class="dt">Either</span> (<span class="dt">Set</span> <span class="dt">String</span>) <span class="dt">ServerConfig</span>)
-readServerConfig <span class="fu">=</span> fromEnv <span class="st">&quot;SS&quot;</span> serverConfig</code></pre></div>
 
-
-<p>We use the applicative DSL provided in <code>Data.Config</code> module to build a description of our configuration. This description contains the keys and types of the configuration, for consumption by various interpreters. Then we use the <code>fromEnv</code> interpreter to read the config from the environment variables derived from the <code>name</code> fields in the records in the description in the <code>readServerConfig</code> function. We also write a bash script to set those environment variables in the development environment in the <code>setenv.sh</code> file:</p>
-
+<h3>Part 2: Where is all this magical money coming from?</h3>
 
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="bu">export</span> <span class="va">SS_PORT=</span>4000
-<span class="bu">export</span> <span class="va">SS_DB_USER=</span><span class="st">&quot;abhinav&quot;</span>
-<span class="bu">export</span> <span class="va">SS_DB_PASSWORD=</span><span class="st">&quot;&quot;</span>
-<span class="bu">export</span> <span class="va">SS_DB_HOST=</span><span class="st">&quot;localhost&quot;</span>
-<span class="bu">export</span> <span class="va">SS_DB_PORT=</span>5432
-<span class="bu">export</span> <span class="va">SS_DB_DATABASE=</span><span class="st">&quot;simple_service&quot;</span>
-<span class="bu">export</span> <span class="va">SS_DB_POOL_SIZE=</span>10
-<span class="bu">export</span> <span class="va">SS_DB_IDLE_CONN_TIMEOUT_MILLIS=</span>1000</code></pre></div>
 
+<p>In “Part 3”, when I say that nilenso is “very small and very good” I mean that from the bottom of my heart. We are <em>very</em> good. We don’t fantasize about our clients paying us $100/hour — our current clients pay us this because we are <em>worth it</em>. Our first month with every new client is always evaluatory (we even did a 3-month evaluation period once). This is an opportunity for our clients to fire us if they find us too expensive and for us to fire them if we find the relationship isn’t productive.</p>
 
-<p>Now we rewrite our <code>src/Main.purs</code> file to use the <code>readServerConfig</code> function:</p>
 
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">Main</span> <span class="kw">where</span>
+<p>Why are our developers worth well over $10,000 USD per month?</p>
 
-<span class="kw">import </span><span class="dt">Prelude</span>
 
-<span class="kw">import </span><span class="dt">Control.Monad.Eff</span> (<span class="dt">Eff</span>)
-<span class="kw">import </span><span class="dt">Control.Monad.Eff.Console</span> (<span class="dt">CONSOLE</span>, log)
-<span class="kw">import </span><span class="dt">Data.Either</span> (<span class="dt">Either</span>(..))
-<span class="kw">import </span><span class="dt">Data.Set</span> (toUnfoldable)
-<span class="kw">import </span><span class="dt">Data.String</span> (joinWith)
-<span class="kw">import </span><span class="dt">Database.PostgreSQL</span> <span class="kw">as</span> <span class="dt">PG</span>
-<span class="kw">import </span><span class="dt">Node.Express.Types</span> (<span class="dt">EXPRESS</span>)
-<span class="kw">import </span><span class="dt">Node.Process</span> (<span class="dt">PROCESS</span>)
-<span class="kw">import </span><span class="dt">Node.Process</span> <span class="kw">as</span> <span class="dt">Process</span>
-<span class="kw">import </span><span class="dt">SimpleService.Config</span> (readServerConfig)
-<span class="kw">import </span><span class="dt">SimpleService.Server</span> (runServer)
-
-<span class="ot">main ::</span> forall eff<span class="fu">.</span> <span class="dt">Eff</span> (<span class="ot"> console ::</span> <span class="dt">CONSOLE</span>
-                        ,<span class="ot"> express ::</span> <span class="dt">EXPRESS</span>
-                        ,<span class="ot"> postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span>
-                        ,<span class="ot"> process ::</span> <span class="dt">PROCESS</span>
-                        <span class="fu">|</span> eff ) <span class="dt">Unit</span>
-main <span class="fu">=</span> readServerConfig <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
-  <span class="dt">Left</span> missingKeys <span class="ot">-&gt;</span> <span class="kw">do</span>
-    log <span class="fu">$</span> <span class="st">&quot;Unable to start. Missing Env keys: &quot;</span> <span class="fu">&lt;&gt;</span> joinWith <span class="st">&quot;, &quot;</span> (toUnfoldable missingKeys)
-    Process.exit <span class="dv">1</span>
-  <span class="dt">Right</span> { port, databaseConfig } <span class="ot">-&gt;</span> runServer port databaseConfig</code></pre></div>
+<p>There is a watermark here. One can calculate the watermark in a number of ways. The first and most obvious is: How many people at nilenso have ever been paid $120,000/year or higher in any country? <strong>Two.</strong> So that probably puts the watermark too high. How many people at nilenso could be paid $120,000/year (roughly 77 lakh rupees) today — specifically in Bangalore? <strong>Three.</strong></p>
 
-
-<p>If <code>readServerConfig</code> fails, we print the missing keys to the console and exit the process. Else we run the server with the read config.</p>
-
 
-<p>To test this, we stop the server we ran in the beginning, source the config, and run it again:</p>
+<p>These numbers are clearly too low. The entire value of our company does not hinge on two or three people. But these are the only objective numbers we have on this axis. If we wanted to reach for a subjective number, we could say the watermark exists beneath anyone to whom our rates can be actively attributed. I would say these people number <strong>seven</strong>.</p>
 
 
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">pulp</span> --watch run
-<span class="ex">*</span> Building project in /Users/abhinav/ps-simple-rest-service
-<span class="ex">*</span> Build successful.
-<span class="ex">Server</span> listening on :4000
-^<span class="ex">C</span>
-$ <span class="bu">source</span> setenv.sh
-$ <span class="ex">pulp</span> --watch run
-<span class="ex">*</span> Building project in /Users/abhinav/ps-simple-rest-service
-<span class="ex">*</span> Build successful.
-<span class="ex">Server</span> listening on :4000</code></pre></div>
+<p>Seven of twenty active knowledge workers does not mean we “leverage” (ugh, that word) the other thirteen. Other folks are very close or arguably cross this watermark. But every team has a natural pecking order (a hierarchy drawn in a straight line, whether you draw it with a pen or with your mind) and wherever we assume this watermark to be, our value to our customers is more than the sum of the parts.</p>
 
 
-<p>It works! We test the failure case by opening another terminal which does not have the environment variables set:</p>
+<p>The flaw in the “wow, we make so much money!” argument is that no matter where you place this watermark, you must actively acknowledge from where this value is generated: above the watermark. If there is an argument to be made for altering the salary curve to reflect this, that alteration always implies an inflection point <em>at the watermark</em>. People above the watermark should be paid more. People below the watermark should be paid less. Your financial goals as an employee of such a company are dictated by your ability to cross the watermark and stay above it.</p>
 
 
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">pulp</span> run
-<span class="ex">*</span> Building project in /Users/abhinav/ps-simple-rest-service
-<span class="ex">*</span> Build successful.
-<span class="ex">Unable</span> to start. Missing Env keys: SS_DB_DATABASE, SS_DB_HOST, SS_DB_IDLE_CONN_TIMEOUT_MILLIS, SS_DB_PASSWORD, SS_DB_POOL_SIZE, SS_DB_PORT, SS_DB_USER, SS_PORT
-<span class="ex">*</span> ERROR: Subcommand terminated with exit code 1</code></pre></div>
+<p>That doesn’t sound like a place I’d like to work.</p>
 
 
-<p>Up next, we add logging to our application.</p>
+<p>I’m guessing the author of the original email feels the same way. Being our most junior staff member means starting at the very bottom of this curve and a search for the source of a consultancy’s value is always upward-facing. That’s a big hill to climb and it’s a lot more likely that crossing the watermark will involve nilenso growing from 20 to 40 rather than the most junior employee leapfrogging over 10 other people. We grow slowly on purpose — and it’s not to keep junior people at the bottom of the pay scale.</p>
 
 
-<h2 id="logging">Logging<a href="#logging" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h2>
+<p>We would rather grow <em>inside</em>. We want our most junior staff to become more senior not by stacking themselves on top of new junior people but by perfecting their execution.</p>
 
 
-<p>For logging, we use the <a href="https://pursuit.purescript.org/packages/purescript-logging" target="_blank" rel="noopener"><code>purescript-logging</code></a> package. We write a logger which logs to <code>stdout</code>; in the <code>src/SimpleService/Logger.purs</code> file:</p>
+<blockquote>[F]or people with more experience and established reputation, there is an incentive to break away and start their own business so that they can pocket the difference.</blockquote>
 
 
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">SimpleService.Logger</span>
-  ( debug
-  , info
-  , warn
-  , error
-  ) <span class="kw">where</span>
+<p>No one at nilenso has ever done this. Why not?</p>
 
-<span class="kw">import </span><span class="dt">Prelude</span>
 
-<span class="kw">import </span><span class="dt">Control.Logger</span> <span class="kw">as</span> <span class="dt">L</span>
-<span class="kw">import </span><span class="dt">Control.Monad.Eff.Class</span> (class <span class="dt">MonadEff</span>, liftEff)
-<span class="kw">import </span><span class="dt">Control.Monad.Eff.Console</span> <span class="kw">as</span> <span class="dt">C</span>
-<span class="kw">import </span><span class="dt">Control.Monad.Eff.Now</span> (<span class="dt">NOW</span>, now)
-<span class="kw">import </span><span class="dt">Data.DateTime.Instant</span> (toDateTime)
-<span class="kw">import </span><span class="dt">Data.Either</span> (fromRight)
-<span class="kw">import </span><span class="dt">Data.Formatter.DateTime</span> (<span class="dt">Formatter</span>, format, parseFormatString)
-<span class="kw">import </span><span class="dt">Data.Generic.Rep</span> (class <span class="dt">Generic</span>)
-<span class="kw">import </span><span class="dt">Data.Generic.Rep.Show</span> (genericShow)
-<span class="kw">import </span><span class="dt">Data.String</span> (toUpper)
-<span class="kw">import </span><span class="dt">Partial.Unsafe</span> (unsafePartial)
+<h3>Part 1: Where does all this money go?</h3>
 
-<span class="kw">data</span> <span class="dt">Level</span> <span class="fu">=</span> <span class="dt">Debug</span> <span class="fu">|</span> <span class="dt">Info</span> <span class="fu">|</span> <span class="dt">Warn</span> <span class="fu">|</span> <span class="dt">Error</span>
 
-derive <span class="kw">instance</span><span class="ot"> eqLevel ::</span> <span class="dt">Eq</span> <span class="dt">Level</span>
-derive <span class="kw">instance</span><span class="ot"> ordLevel ::</span> <span class="dt">Ord</span> <span class="dt">Level</span>
-derive <span class="kw">instance</span><span class="ot"> genericLevel ::</span> <span class="dt">Generic</span> <span class="dt">Level</span> _
+<p>Now we get to the juicy bits. The interesting question is not “how much can we pay?” <em>at all</em>. If someone wants to double her salary she can very easily do so today and nilenso is entirely unequipped to deal with that except to wish her the best with her new job.</p>
 
-<span class="kw">instance</span><span class="ot"> showLevel ::</span> <span class="dt">Show</span> <span class="dt">Level</span> <span class="kw">where</span>
-  show <span class="fu">=</span> toUpper <span class="fu">&lt;&lt;&lt;</span> genericShow
 
-<span class="kw">type</span> <span class="dt">Entry</span> <span class="fu">=</span>
-  {<span class="ot"> level   ::</span> <span class="dt">Level</span>
-  ,<span class="ot"> message ::</span> <span class="dt">String</span>
-  }
+<p><strong>People do not work at nilenso to get rich.</strong></p>
 
-<span class="ot">dtFormatter ::</span> <span class="dt">Formatter</span>
-dtFormatter <span class="fu">=</span> unsafePartial <span class="fu">$</span> fromRight <span class="fu">$</span> parseFormatString <span class="st">&quot;YYYY-MM-DD HH:mm:ss.SSS&quot;</span>
 
-<span class="ot">logger ::</span> forall m e<span class="fu">.</span> (
-          <span class="dt">MonadEff</span> (<span class="ot">console ::</span> <span class="dt">C.CONSOLE</span>,<span class="ot"> now ::</span> <span class="dt">NOW</span> <span class="fu">|</span> e) m) <span class="ot">=&gt;</span> <span class="dt">L.Logger</span> m <span class="dt">Entry</span>
-logger <span class="fu">=</span> <span class="dt">L.Logger</span> <span class="fu">$</span> \{ level, message } <span class="ot">-&gt;</span> liftEff <span class="kw">do</span>
-  time <span class="ot">&lt;-</span> toDateTime <span class="fu">&lt;$&gt;</span> now
-  C.log <span class="fu">$</span> <span class="st">&quot;[&quot;</span> <span class="fu">&lt;&gt;</span> format dtFormatter time <span class="fu">&lt;&gt;</span> <span class="st">&quot;] &quot;</span> <span class="fu">&lt;&gt;</span> show level <span class="fu">&lt;&gt;</span> <span class="st">&quot; &quot;</span> <span class="fu">&lt;&gt;</span> message
+<p>People work at nilenso to find… something. Something. What is that Something? To answer this, we must ask: What is nilenso? This is the interesting question.</p>
 
-log<span class="ot"> ::</span> forall m e<span class="fu">.</span>
-        <span class="dt">MonadEff</span> (<span class="ot">console ::</span> <span class="dt">C.CONSOLE</span> ,<span class="ot"> now ::</span> <span class="dt">NOW</span> <span class="fu">|</span> e) m
-     <span class="ot">=&gt;</span> <span class="dt">Entry</span> <span class="ot">-&gt;</span> m <span class="dt">Unit</span>
-log entry<span class="fu">@</span>{level} <span class="fu">=</span> L.log (L.cfilter (\e <span class="ot">-&gt;</span> e<span class="fu">.</span>level <span class="fu">==</span> level) logger) entry
 
-<span class="ot">debug ::</span> forall m e<span class="fu">.</span>
-         <span class="dt">MonadEff</span> (<span class="ot">console ::</span> <span class="dt">C.CONSOLE</span> ,<span class="ot"> now ::</span> <span class="dt">NOW</span> <span class="fu">|</span> e) m <span class="ot">=&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> m <span class="dt">Unit</span>
-debug message <span class="fu">=</span> log { level<span class="fu">:</span> <span class="dt">Debug</span>, message }
+<p>Nilenso Software LLP is, today, a co-op; nilenso is self-hosted. It is written in a homoiconic language. It is self-referential. It is self-describing. The specification is the paper the specification is written on. And while none of these qualities are the Something we were all after, they are the qualities which equip us to do <em>anything we want</em> with the company. We are uninhibited in finding our Somethings if we never need to beg for VC money, never need to give up control, and never need to grow before we’re ready.</p>
 
-<span class="ot">info ::</span> forall m e<span class="fu">.</span>
-        <span class="dt">MonadEff</span> (<span class="ot">console ::</span> <span class="dt">C.CONSOLE</span> ,<span class="ot"> now ::</span> <span class="dt">NOW</span> <span class="fu">|</span> e) m <span class="ot">=&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> m <span class="dt">Unit</span>
-info message <span class="fu">=</span> log { level<span class="fu">:</span> <span class="dt">Info</span>, message }
 
-<span class="ot">warn ::</span> forall m e<span class="fu">.</span>
-        <span class="dt">MonadEff</span> (<span class="ot">console ::</span> <span class="dt">C.CONSOLE</span> ,<span class="ot"> now ::</span> <span class="dt">NOW</span> <span class="fu">|</span> e) m <span class="ot">=&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> m <span class="dt">Unit</span>
-warn message <span class="fu">=</span> log { level<span class="fu">:</span> <span class="dt">Warn</span>, message }
+<p>“Anything we want” can include bumping our salaries by 10% or 50%. It can include handing out bonuses. It can include democratically deciding we want to execute across-the-board pay cuts. But these are all pretty boring axes to manipulate the business. You don’t have to work at a co-op (and therefore run it) for very long to realize the the classic definitions of success are mind-numbingly boring… albeit always tempting.</p>
 
-error<span class="ot"> ::</span> forall m e<span class="fu">.</span>
-         <span class="dt">MonadEff</span> (<span class="ot">console ::</span> <span class="dt">C.CONSOLE</span> ,<span class="ot"> now ::</span> <span class="dt">NOW</span> <span class="fu">|</span> e) m <span class="ot">=&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> m <span class="dt">Unit</span>
-error message <span class="fu">=</span> log { level<span class="fu">:</span> <span class="dt">Error</span>, message }</code></pre></div>
 
+<p>Anything we want? Here is a far more interesting list:</p>
 
-<p><code>purescript-logging</code> lets us define our own logging levels and loggers. We define four log levels, and a log entry type with the log level and the message. Then we write the logger which will print the log entry to <code>stdout</code> along with the current time as a well formatted string. We define convenience functions for each log level.</p>
 
+<ul><li>helping parents raise children in the modern world</li><li>protect privacy as a fundamental right</li><li>fuel our office with solar panels</li><li>make the activity of building free software a work of pride, again</li><li>liberate the data sciences with truly open data</li><li>globally redefine what constitutes a “normal workplace”</li><li>what do you want to do? does it take money to do it? (hint: yes)</li></ul>
 
-<p>Before we proceed, let’s install the required dependencies.</p>
 
+<p>Every rupee we keep inside nilenso, invest as nilenso, or spend as nilenso pushes us further toward a collective activity, a collective vision. Every rupee we divide and distribute, 5 paise per co-op member, is a step away from a collective vision. The farthest we can go in this direction is to distribute everything: nilenso saves nothing, invests nothing, and builds nothing. Well before that stage, nilenso becomes an Umbrella Consultancy and we are nilenso in name only… another army of contractors with a brand attached and a few rupees saved every month to pay the water bill.</p>
 
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">bower</span> install --save purescript-logging purescript-now purescript-formatters</code></pre></div>
 
+<p>It is entirely valid for the collective vision of nilenso to be “we don’t want to have a collective vision” but once that is decided, there is no going back. If you want to become a software product company (as we attempted with <a href="https://relay-chat.com">Relay</a> and previously attempted with <a href="https://github.com/nilenso/kulu">Kulu</a>), an electric rickshaw taxi service (a business model we have seriously considered), or a cafe (a business model we have jokingly considered)… you can’t. You get to go back to Square One, where we were when we incorporated nilenso in 2013. But you get to go back with no money and no way to compete on salaries but to rebuild a vision from scratch.</p>
 
-<p>Now we add a request logger middleware to our server in the <code>src/SimpleService/Server.purs</code> file:</p>
 
+<p>Good luck. It wasn’t easy the first time.</p>
 
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- previous code</span>
-<span class="kw">import </span><span class="dt">Control.Monad.Eff.Console</span> (<span class="dt">CONSOLE</span>)
-<span class="kw">import </span><span class="dt">Control.Monad.Eff.Now</span> (<span class="dt">NOW</span>)
-<span class="kw">import </span><span class="dt">Data.Maybe</span> (maybe)
-<span class="kw">import </span><span class="dt">Data.String</span> (toUpper)
-<span class="kw">import </span><span class="dt">Node.Express.App</span> (<span class="dt">App</span>, all, delete, get, http, listenHttp, post, use, useExternal, useOnError)
-<span class="kw">import </span><span class="dt">Node.Express.Handler</span> (<span class="dt">Handler</span>, next)
-<span class="kw">import </span><span class="dt">Node.Express.Request</span> (getMethod, getPath)
-<span class="kw">import </span><span class="dt">SimpleService.Logger</span> <span class="kw">as</span> <span class="dt">Log</span>
-<span class="co">-- previous code</span>
 
-<span class="ot">requestLogger ::</span> forall eff<span class="fu">.</span> <span class="dt">Handler</span> (<span class="ot">console ::</span> <span class="dt">CONSOLE</span>,<span class="ot"> now ::</span> <span class="dt">NOW</span> <span class="fu">|</span> eff)
-requestLogger <span class="fu">=</span> <span class="kw">do</span>
-  method <span class="ot">&lt;-</span> getMethod
-  path   <span class="ot">&lt;-</span> getPath
-  Log.debug <span class="fu">$</span> <span class="st">&quot;HTTP: &quot;</span> <span class="fu">&lt;&gt;</span> maybe <span class="st">&quot;&quot;</span> id ((toUpper <span class="fu">&lt;&lt;&lt;</span> show) <span class="fu">&lt;$&gt;</span> method) <span class="fu">&lt;&gt;</span> <span class="st">&quot; &quot;</span> <span class="fu">&lt;&gt;</span> path
-  next
+<h3>Epilogue</h3>
 
-<span class="ot">app ::</span> forall eff<span class="fu">.</span>
-       <span class="dt">PG.Pool</span>
-    <span class="ot">-&gt;</span> <span class="dt">App</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span>,<span class="ot"> console ::</span> <span class="dt">CONSOLE</span>,<span class="ot"> now ::</span> <span class="dt">NOW</span> <span class="fu">|</span> eff)
-app pool <span class="fu">=</span> <span class="kw">do</span>
-  useExternal jsonBodyParser
-  use requestLogger
-  <span class="co">-- previous code</span></code></pre></div>
 
+<p>There is no easy way to think about the future regarding corporate or personal finances and arrive at novel conclusions. Follow Steve Jobs’ advice, drop enough acid, and you may. But you are still unlikely to execute based on these conclusions when you are sober on Monday. Such contemplations demand an entire suite of thought exercises. This is my favourite:</p>
 
-<p>We also convert all our previous logging statements which used <code>Console.log</code> to use <code>SimpleService.Logger</code> and add logs in our handlers. We can see logging in effect by restarting the server and hitting it:</p>
 
+<p>Flip the <em>Five Whys</em> exercise around and you have the <em>And Then What?</em> exercise.</p>
 
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">pulp</span> --watch run
-<span class="ex">*</span> Building project in /Users/abhinav/ps-simple-rest-service
-<span class="ex">*</span> Build successful.
-[<span class="ex">2017-09-30</span> 16:02:41.634] INFO Server listening on :4000
-[<span class="ex">2017-09-30</span> 16:02:43.494] DEBUG HTTP: PATCH /v1/user/3
-[<span class="ex">2017-09-30</span> 16:02:43.517] DEBUG Updated user: 3
-[<span class="ex">2017-09-30</span> 16:03:46.615] DEBUG HTTP: DELETE /v1/user/3
-[<span class="ex">2017-09-30</span> 16:03:46.635] DEBUG Deleted user 3
-[<span class="ex">2017-09-30</span> 16:05:03.805] DEBUG HTTP: GET /v1/users</code></pre></div>
 
+<p>Once you are rich, then what? Once you have solved the original problem, then what? Once you have solved an entire category of problems, then what? Once you have taught others to do it, then what?</p>
 
-<h2 id="conclusion">Conclusion<a href="#conclusion" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h2>
 
+<p>And then what?</p>
 
-<p>In this tutorial we learned how to create a simple JSON REST web service written in Purescript with persistence, validation, configuration and logging. The complete code for this tutorial can be found in <a href="https://github.com/abhin4v/ps-simple-rest-service" target="_blank" rel="noopener">github</a>. This post can be discussed on <a href="https://www.reddit.com/r/purescript/comments/73gc9g/writing_a_simple_rest_service_in_purescript_part/" target="_blank" rel="noopener">r/purescript</a>.</p>
 
+<p>And then what?</p>
 
-<p>If you liked this post, please <a href="https://abhinavsarkar.net/posts/ps-simple-rest-service-2/#comment-container">leave a comment</a>.</p>
 
-
-<div class="author">
-  <img src="https://nilenso.com/images/people/abhinav-200.png" style="width: 96px; height: 96;">
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=a18a2976f0d7" width="1" height="1"><div class="author">
+  <img src="http://nilenso.com/images/people/steven-200.png" style="width: 96px; height: 96;">
   <span style="position: absolute; padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/abhin4v">Abhinav Sarkar</a> - check out <a href="https://abhinavsarkar.net">All posts on abhinavsarkar.net</a></i>
+    <i>Original post by <a href="http://twitter.com/deobald">Steven Deobald</a> - check out <a href="https://medium.com/@deobald?source=rss-f6b24d2dc678------2">Stories by Steven Deobald on Medium</a></i>
   </span>
-</div>
-
+</div></p>
 </div>
   
   
@@ -904,7 +335,7 @@ app pool <span class="fu">=</span> <span class="kw">do</span>
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2017/09/29/writing-a-simple-rest-web-service-in-purescript-p/">Writing a Simple REST Web Service in Purescript - Part 1</a></h1>
+      <h1 class="entry-title"><a href="/blog/2018/04/09/designing-for-open-source-software/">Designing for Open Source Software</a></h1>
       
       
     
@@ -919,938 +350,34 @@ app pool <span class="fu">=</span> <span class="kw">do</span>
 
 
 
-<time datetime="2017-09-29T00:00:00+05:30" pubdate data-updated="true"></time>
+<time datetime="2018-04-09T00:00:00+05:30" pubdate data-updated="true"></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><div class="ert">
-23 minute read
-</div>
+  <div class="entry-content"><h4>Mattermost → Relay</h4>
 
 
-<p>At <a href="https://nilenso.com" target="_blank" rel="noopener">Nilenso</a>, we’ve been working with a client who has chosen <a href="http://purescript.org" target="_blank" rel="noopener">Purescript</a> as their primary programming language. Since I couldn’t find any canonical documentation on writing a web service in PureScript, I thought I’d jot down the approach that we took.</p>
+<p>When you hear the words “open source” attached to a product, what image comes to mind? Do you imagine an office full of designers obsessing over every little pixel? Or do you imagine an army of alpha-nerds piecing together a slap-dash knockoff of some proprietary software?</p>
 
 
-<p>The aim of this two-part tutorial is to create a simple JSON <a href="https://en.wikipedia.org/wiki/REST" target="_blank" rel="noopener">REST</a> web service written in Purescript, to run on a node.js server. This assumes that you have basic proficiency with Purescript. We have the following requirements:</p>
+<p>We all believe open source software is badly designed because, historically, it was. (#NotAllOpenSourceSoftware)</p>
 
 
-<ol type="1">
-<li>persisting users into a Postgres database.</li>
-<li>API endpoints for creating, updating, getting, listing and deleting users.</li>
-<li>validation of API requests.</li>
-<li>reading the server and database configs from environment variables.</li>
-<li>logging HTTP requests and debugging info.</li>
-</ol>
+<p>Thirty years ago, in 1988, the very concept of a license or design language for software was far beyond the average person. A decade later, everything was still awful. Software barely worked. Your PC definitely had a virus on it. HTML had a &lt;blink&gt; tag. Installing Linux required weeks of patience and belief in oneself — the kind of conviction I would need to train for a marathon. If there is one canonical failure we can promote as the poster child of this dark era, it is OpenOffice. Or StarOffice or LibreOffice or Apache OpenOffice or OOo or AOO or whatever name you might know it by. When the very <em>name</em> of the product is this broken it’s unlikely to succeed as a brand.</p>
 
 
-<p>In this part we’ll work on setting up the project and on the first two requirements. In the <a href="https://abhinavsarkar.net/posts/ps-simple-rest-service-2/">next</a> part we’ll work on the rest of the requirements.</p>
+<p>Fast forward ten more years. As of 2008, Firefox was eating Microsoft’s lunch. Firefox was open source, fast, and standards-compliant. It was easy to like Firefox. But we didn’t like Firefox. We <strong>loved</strong> Firefox. Firefox had a brand before it was Firefox. A brand isn’t a snappy name and a cute logo. Your product is your brand and your product is dictated by its design.</p>
 
 
-<!--more-->
-
-
-<p><nav id="toc" class="right-toc"><h3>Contents</h3><ol><li><a href="#setting-up">Setting Up</a></li><li><a href="#types-first">Types First</a></li><li><a href="#persisting-it">Persisting It</a></li><li><a href="#serving-it">Serving It</a><ol><li><a href="#getting-a-user">Getting a User</a></li><li><a href="#deleting-a-user">Deleting a User</a></li><li><a href="#creating-a-user">Creating a User</a></li><li><a href="#updating-a-user">Updating a User</a></li><li><a href="#listing-all-users">Listing all Users</a></li></ol></li><li><a href="#conclusion">Conclusion</a></li></ol></nav></p>
-
-<h2 id="setting-up">Setting Up<a href="#setting-up" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h2>
-
-
-<p>We start with installing Purescript and the required tools. This assumes that we have <a href="https://nodejs.org" target="_blank" rel="noopener">node</a> and <a href="https://www.npmjs.com" target="_blank" rel="noopener">npm</a> installed on our machine.</p>
-
-
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">mkdir</span> -p ~/.local/
-$ <span class="ex">npm</span> install -g purescript pulp bower --prefix ~/.local/</code></pre></div>
-
-
-<p><a href="https://github.com/purescript-contrib/pulp" target="_blank" rel="noopener">Pulp</a> is a build tool for Purescript projects and <a href="http://bower.io" target="_blank" rel="noopener">bower</a> is a package manager used to get Purescript libraries. We’ll have to add <code>~/.local/bin</code> in our <code>$PATH</code> (if it is not already added) to access the binaries installed.</p>
-
-
-<p>Let’s create a directory for our project and make Pulp initialize it:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">mkdir</span> ps-simple-rest-service
-$ <span class="bu">cd</span> ps-simple-rest-service
-$ <span class="ex">pulp</span> init
-$ <span class="fu">ls</span>
-<span class="ex">bower.json</span>  bower_components  src  test
-$ <span class="fu">cat</span> bower.json
-<span class="kw">{</span>
-  <span class="st">&quot;name&quot;</span>: <span class="st">&quot;ps-simple-rest-service&quot;</span>,
-  <span class="st">&quot;ignore&quot;</span>:<span class="bu"> [</span>
-    <span class="st">&quot;**/.*&quot;</span>,
-    <span class="st">&quot;node_modules&quot;</span>,
-    <span class="st">&quot;bower_components&quot;</span>,
-    <span class="st">&quot;output&quot;</span>
-  ],
-  <span class="st">&quot;dependencies&quot;</span>: {
-    <span class="st">&quot;purescript-prelude&quot;</span>: <span class="st">&quot;^3.1.0&quot;</span>,
-    <span class="st">&quot;purescript-console&quot;</span>: <span class="st">&quot;^3.0.0&quot;</span>
-  },
-  <span class="st">&quot;devDependencies&quot;</span>: {
-    <span class="st">&quot;purescript-psci-support&quot;</span>: <span class="st">&quot;^3.0.0&quot;</span>
-  }
-}
-$ ls bower_components
-purescript-console  purescript-eff  purescript-prelude purescript-psci-support</code></pre></div>
-
-
-<p>Pulp creates the basic project structure for us. <code>src</code> directory will contain the source while the <code>test</code> directory will contain the tests. <code>bower.json</code> contains the Purescript libraries as dependencies which are downloaded and installed in the <code>bower_components</code> directory.</p>
-
-
-<h2 id="types-first">Types First<a href="#types-first" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h2>
-
-
-<p>First, we create the types needed in <code>src/SimpleService/Types.purs</code>:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">SimpleService.Types</span> <span class="kw">where</span>
-
-<span class="kw">import </span><span class="dt">Prelude</span>
-
-<span class="kw">import </span><span class="dt">Data.Foreign.Class</span> (class <span class="dt">Decode</span>, class <span class="dt">Encode</span>)
-<span class="kw">import </span><span class="dt">Data.Foreign.Generic</span> (defaultOptions, genericDecode, genericEncode)
-<span class="kw">import </span><span class="dt">Data.Generic.Rep</span> (class <span class="dt">Generic</span>)
-<span class="kw">import </span><span class="dt">Data.Generic.Rep.Show</span> (genericShow)
-
-<span class="kw">type</span> <span class="dt">UserID</span> <span class="fu">=</span> <span class="dt">Int</span>
-
-<span class="kw">newtype</span> <span class="dt">User</span> <span class="fu">=</span> <span class="dt">User</span>
-  {<span class="ot"> id   ::</span> <span class="dt">UserID</span>
-  ,<span class="ot"> name ::</span> <span class="dt">String</span>
-  }
-
-derive <span class="kw">instance</span><span class="ot"> genericUser ::</span> <span class="dt">Generic</span> <span class="dt">User</span> _
-
-<span class="kw">instance</span><span class="ot"> showUser ::</span> <span class="dt">Show</span> <span class="dt">User</span> <span class="kw">where</span>
-  show <span class="fu">=</span> genericShow
-
-<span class="kw">instance</span><span class="ot"> decodeUser ::</span> <span class="dt">Decode</span> <span class="dt">User</span> <span class="kw">where</span>
-  decode <span class="fu">=</span> genericDecode <span class="fu">$</span> defaultOptions { unwrapSingleConstructors <span class="fu">=</span> true }
-
-<span class="kw">instance</span><span class="ot"> encodeUser ::</span> <span class="dt">Encode</span> <span class="dt">User</span> <span class="kw">where</span>
-  encode <span class="fu">=</span> genericEncode <span class="fu">$</span> defaultOptions { unwrapSingleConstructors <span class="fu">=</span> true }</code></pre></div>
-
-
-<p>We are using the generic support for Purescript types from the <a href="https://pursuit.purescript.org/packages/purescript-generics-rep" target="_blank" rel="noopener"><code>purescript-generics-rep</code></a> and <a href="https://pursuit.purescript.org/packages/purescript-foreign-generic" target="_blank" rel="noopener"><code>purescript-foreign-generic</code></a> libraries to encode and decode the <code>User</code> type to JSON. We install the library by running the following command:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">bower</span> install purescript-foreign-generic --save</code></pre></div>
-
-
-<p>Now we can load up the module in the Purescript REPL and try out the JSON conversion features:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">$</span> pulp repl
-<span class="fu">&gt;</span> <span class="kw">import </span><span class="dt">SimpleService.Types</span>
-<span class="fu">&gt;</span> user <span class="fu">=</span> <span class="dt">User</span> { id<span class="fu">:</span> <span class="dv">1</span>, name<span class="fu">:</span> <span class="st">&quot;Abhinav&quot;</span>}
-<span class="fu">&gt;</span> user
-(<span class="dt">User</span> { id<span class="fu">:</span> <span class="dv">1</span>, name<span class="fu">:</span> <span class="st">&quot;Abhinav&quot;</span> })
-
-<span class="fu">&gt;</span> <span class="kw">import </span><span class="dt">Data.Foreign.Generic</span>
-<span class="fu">&gt;</span> userJSON <span class="fu">=</span> encodeJSON user
-<span class="fu">&gt;</span> userJSON
-<span class="st">&quot;{\&quot;name\&quot;:\&quot;Abhinav\&quot;,\&quot;id\&quot;:1}&quot;</span>
-
-<span class="fu">&gt;</span> <span class="kw">import </span><span class="dt">Data.Foreign</span>
-<span class="fu">&gt;</span> <span class="kw">import </span><span class="dt">Control.Monad.Except.Trans</span>
-<span class="fu">&gt;</span> <span class="kw">import </span><span class="dt">Data.Identity</span>
-<span class="fu">&gt;</span> dUser <span class="fu">=</span> decodeJSON<span class="ot"> userJSON ::</span> <span class="dt">F</span> <span class="dt">User</span>
-<span class="fu">&gt;</span> eUser <span class="fu">=</span> <span class="kw">let</span> (<span class="dt">Identity</span> eUser) <span class="fu">=</span> runExceptT <span class="fu">$</span> dUser <span class="kw">in</span> eUser
-<span class="fu">&gt;</span> eUser
-(<span class="dt">Right</span> (<span class="dt">User</span> { id<span class="fu">:</span> <span class="dv">1</span>, name<span class="fu">:</span> <span class="st">&quot;Abhinav&quot;</span> }))</code></pre></div>
-
-
-<p>We use <code>encodeJSON</code> and <code>decodeJSON</code> functions from the <a href="https://pursuit.purescript.org/packages/purescript-foreign-generic/4.3.0/docs/Data.Foreign.Generic" target="_blank" rel="noopener"><code>Data.Foreign.Generic</code></a> module to encode and decode the <code>User</code> instance to JSON. The return type of <code>decodeJSON</code> is a bit complicated as it needs to return the parsing errors too. In this case, the decoding returns no errors and we get back a <code>Right</code> with the correctly parsed <code>User</code> instance.</p>
-
-
-<h2 id="persisting-it">Persisting It<a href="#persisting-it" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h2>
-
-
-<p>Next, we add the support for saving a <code>User</code> instance to a Postgres DB. First, we install the required libraries using bower and npm: <a href="https://github.com/brianc/node-postgres" target="_blank" rel="noopener"><code>pg</code></a> for Javascript bindings to call Postgres, <a href="https://pursuit.purescript.org/packages/purescript-aff" target="_blank" rel="noopener"><code>purescript-aff</code></a> for asynchronous processing and <a href="https://pursuit.purescript.org/packages/purescript-postgresql-client" target="_blank" rel="noopener"><code>purescript-postgresql-client</code></a> for Purescript wrapper over <code>pg</code>:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">npm</span> init -y
-$ <span class="ex">npm</span> install pg@6.4.0 --save
-$ <span class="ex">bower</span> install purescript-aff --save
-$ <span class="ex">bower</span> install purescript-postgresql-client --save</code></pre></div>
-
-
-<p>Before writing the code, we create the database and the <code>users</code> table using the command-line Postgres client:</p>
-
-
-<pre><code>$ psql postgres
-psql (9.5.4)
-Type &quot;help&quot; for help.
-
-postgres=# create database simple_service;
-CREATE DATABASE
-postgres=# \c simple_service
-You are now connected to database &quot;simple_service&quot; as user &quot;abhinav&quot;.
-simple_service=# create table users (id int primary key, name varchar(100) not null);
-CREATE TABLE
-simple_service=# \d users
-            Table &quot;public.users&quot;
- Column |          Type          | Modifiers
---------+------------------------+-----------
- id     | integer                | not null
- name   | character varying(100) | not null
-Indexes:
-    &quot;users_pkey&quot; PRIMARY KEY, btree (id)</code></pre>
-
-
-<p>Now we add support for converting a <code>User</code> instance to-and-from an SQL row by adding the following code in the <code>src/SimpleService/Types.purs</code> file:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Array</span> <span class="kw">as</span> <span class="dt">Array</span>
-<span class="kw">import </span><span class="dt">Data.Either</span> (<span class="dt">Either</span>(..))
-<span class="kw">import </span><span class="dt">Database.PostgreSQL</span> (class <span class="dt">FromSQLRow</span>, class <span class="dt">ToSQLRow</span>, fromSQLValue, toSQLValue)
-
-<span class="co">-- code written earlier</span>
-
-<span class="kw">instance</span><span class="ot"> userFromSQLRow ::</span> <span class="dt">FromSQLRow</span> <span class="dt">User</span> <span class="kw">where</span>
-  fromSQLRow [id, name] <span class="fu">=</span>
-    <span class="dt">User</span> <span class="fu">&lt;$&gt;</span> ({ id<span class="fu">:</span> _, name<span class="fu">:</span> _} <span class="fu">&lt;$&gt;</span> fromSQLValue id <span class="fu">&lt;*&gt;</span> fromSQLValue name)
-
-  fromSQLRow xs <span class="fu">=</span> <span class="dt">Left</span> <span class="fu">$</span> <span class="st">&quot;Row has &quot;</span> <span class="fu">&lt;&gt;</span> show n <span class="fu">&lt;&gt;</span> <span class="st">&quot; fields, expecting 2.&quot;</span>
-    <span class="kw">where</span> n <span class="fu">=</span> Array.length xs
-
-<span class="kw">instance</span><span class="ot"> userToSQLRow ::</span> <span class="dt">ToSQLRow</span> <span class="dt">User</span> <span class="kw">where</span>
-  toSQLRow (<span class="dt">User</span> {id, name}) <span class="fu">=</span> [toSQLValue id, toSQLValue name]</code></pre></div>
-
-
-<p>We can try out the persistence support in the REPL:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">$</span> pulp repl
-<span class="dt">PSCi</span>, version <span class="fl">0.11</span><span class="fu">.</span><span class="dv">6</span>
-<span class="dt">Type</span> <span class="fu">:?</span> for help
-
-<span class="kw">import </span><span class="dt">Prelude</span>
-<span class="fu">&gt;</span>
-<span class="fu">&gt;</span> <span class="kw">import </span><span class="dt">SimpleService.Types</span>
-<span class="fu">&gt;</span> <span class="kw">import </span><span class="dt">Control.Monad.Aff</span> (launchAff, liftEff')
-<span class="fu">&gt;</span> <span class="kw">import </span><span class="dt">Database.PostgreSQL</span> <span class="kw">as</span> <span class="dt">PG</span>
-<span class="fu">&gt;</span> user <span class="fu">=</span> <span class="dt">User</span> { id<span class="fu">:</span> <span class="dv">1</span>, name<span class="fu">:</span> <span class="st">&quot;Abhinav&quot;</span> }
-<span class="fu">&gt;</span> databaseConfig <span class="fu">=</span> {user<span class="fu">:</span> <span class="st">&quot;abhinav&quot;</span>, password<span class="fu">:</span> <span class="st">&quot;&quot;</span>, host<span class="fu">:</span> <span class="st">&quot;localhost&quot;</span>, port<span class="fu">:</span> <span class="dv">5432</span>, database<span class="fu">:</span> <span class="st">&quot;simple_service&quot;</span>, max<span class="fu">:</span> <span class="dv">10</span>, idleTimeoutMillis<span class="fu">:</span> <span class="dv">1000</span>}
-
-<span class="fu">&gt;</span> <span class="fu">:</span>paste
-… void <span class="fu">$</span> launchAff <span class="kw">do</span>
-…   pool <span class="ot">&lt;-</span> PG.newPool databaseConfig
-…   PG.withConnection pool <span class="fu">$</span> \conn <span class="ot">-&gt;</span> <span class="kw">do</span>
-…     PG.execute conn (<span class="dt">PG.Query</span> <span class="st">&quot;insert into users (id, name) values ($1, $2)&quot;</span>) user
-…
-unit
-
-<span class="fu">&gt;</span> <span class="kw">import </span><span class="dt">Data.Foldable</span> (for_)
-<span class="fu">&gt;</span> <span class="kw">import </span><span class="dt">Control.Monad.Eff.Console</span> (logShow)
-<span class="fu">&gt;</span> <span class="fu">:</span>paste
-… void <span class="fu">$</span> launchAff <span class="kw">do</span>
-…   pool <span class="ot">&lt;-</span> PG.newPool databaseConfig
-…   PG.withConnection pool <span class="fu">$</span> \conn <span class="ot">-&gt;</span> <span class="kw">do</span>
-…<span class="ot">     users ::</span> <span class="dt">Array</span> <span class="dt">User</span> <span class="ot">&lt;-</span> PG.query conn (<span class="dt">PG.Query</span> <span class="st">&quot;select id, name from users where id = $1&quot;</span>) (<span class="dt">PG.Row1</span> <span class="dv">1</span>)
-…     liftEff' <span class="fu">$</span> void <span class="fu">$</span> for_ users logShow
-…
-unit
-(<span class="dt">User</span> { id<span class="fu">:</span> <span class="dv">1</span>, name<span class="fu">:</span> <span class="st">&quot;Abhinav&quot;</span> })</code></pre></div>
-
-
-<p>We create the <code>databaseConfig</code> record with the configs needed to connect to the database. Using the recond, we create a new Postgres connection pool (<code>PG.newPool</code>) and get a connection from it (<code>PG.withConnection</code>). We call <code>PG.execute</code> with the connection, the SQL insert query for the users table and the <code>User</code> instance, to insert the user into the table. All of this is done inside <a href="https://pursuit.purescript.org/packages/purescript-aff/3.1.0/docs/Control.Monad.Aff#v:launchAff" target="_blank" rel="noopener"><code>launchAff</code></a> which takes care of sequencing the callbacks correctly to make the asynchronous code look synchronous.</p>
-
-
-<p>Similarly, in the second part, we query the table using <code>PG.query</code> function by calling it with a connection, the SQL select query and the <code>User</code> ID as the query parameter. It returns an <code>Array</code> of users which we log to the console using the <code>logShow</code> function.</p>
-
-
-<p>We use this experiment to write the persistence related code in the <code>src/SimpleService/Persistence.purs</code> file:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">SimpleService.Persistence</span>
-  ( insertUser
-  , findUser
-  , updateUser
-  , deleteUser
-  , listUsers
-  ) <span class="kw">where</span>
-
-<span class="kw">import </span><span class="dt">Prelude</span>
-
-<span class="kw">import </span><span class="dt">Control.Monad.Aff</span> (<span class="dt">Aff</span>)
-<span class="kw">import </span><span class="dt">Data.Array</span> <span class="kw">as</span> <span class="dt">Array</span>
-<span class="kw">import </span><span class="dt">Data.Maybe</span> (<span class="dt">Maybe</span>)
-<span class="kw">import </span><span class="dt">Database.PostgreSQL</span> <span class="kw">as</span> <span class="dt">PG</span>
-<span class="kw">import </span><span class="dt">SimpleService.Types</span> (<span class="dt">User</span>(..), <span class="dt">UserID</span>)
-
-<span class="ot">insertUserQuery ::</span> <span class="dt">String</span>
-insertUserQuery <span class="fu">=</span> <span class="st">&quot;insert into users (id, name) values ($1, $2)&quot;</span>
-
-<span class="ot">findUserQuery ::</span> <span class="dt">String</span>
-findUserQuery <span class="fu">=</span> <span class="st">&quot;select id, name from users where id = $1&quot;</span>
-
-<span class="ot">updateUserQuery ::</span> <span class="dt">String</span>
-updateUserQuery <span class="fu">=</span> <span class="st">&quot;update users set name = $1 where id = $2&quot;</span>
-
-<span class="ot">deleteUserQuery ::</span> <span class="dt">String</span>
-deleteUserQuery <span class="fu">=</span> <span class="st">&quot;delete from users where id = $1&quot;</span>
-
-<span class="ot">listUsersQuery ::</span> <span class="dt">String</span>
-listUsersQuery <span class="fu">=</span> <span class="st">&quot;select id, name from users&quot;</span>
-
-<span class="ot">insertUser ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Connection</span> <span class="ot">-&gt;</span> <span class="dt">User</span>
-           <span class="ot">-&gt;</span> <span class="dt">Aff</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff) <span class="dt">Unit</span>
-insertUser conn user <span class="fu">=</span>
-  PG.execute conn (<span class="dt">PG.Query</span> insertUserQuery) user
-
-<span class="ot">findUser ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Connection</span> <span class="ot">-&gt;</span> <span class="dt">UserID</span>
-         <span class="ot">-&gt;</span> <span class="dt">Aff</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff) (<span class="dt">Maybe</span> <span class="dt">User</span>)
-findUser conn userID <span class="fu">=</span>
-  map Array.head <span class="fu">$</span> PG.query conn (<span class="dt">PG.Query</span> findUserQuery) (<span class="dt">PG.Row1</span> userID)
-
-<span class="ot">updateUser ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Connection</span> <span class="ot">-&gt;</span> <span class="dt">User</span>
-           <span class="ot">-&gt;</span> <span class="dt">Aff</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff) <span class="dt">Unit</span>
-updateUser conn (<span class="dt">User</span> {id, name}) <span class="fu">=</span>
-  PG.execute conn (<span class="dt">PG.Query</span> updateUserQuery) (<span class="dt">PG.Row2</span> name id)
-
-<span class="ot">deleteUser ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Connection</span> <span class="ot">-&gt;</span> <span class="dt">UserID</span>
-           <span class="ot">-&gt;</span> <span class="dt">Aff</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff) <span class="dt">Unit</span>
-deleteUser conn userID <span class="fu">=</span>
-  PG.execute conn (<span class="dt">PG.Query</span> deleteUserQuery) (<span class="dt">PG.Row1</span> userID)
-
-<span class="ot">listUsers ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Connection</span>
-          <span class="ot">-&gt;</span> <span class="dt">Aff</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff) (<span class="dt">Array</span> <span class="dt">User</span>)
-listUsers conn <span class="fu">=</span>
-  PG.query conn (<span class="dt">PG.Query</span> listUsersQuery) <span class="dt">PG.Row0</span></code></pre></div>
-
-
-<h2 id="serving-it">Serving It<a href="#serving-it" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h2>
-
-
-<p>We can now write a simple HTTP API over the persistence layer using <a href="https://expressjs.com" target="_blank" rel="noopener">Express</a> to provide CRUD functionality for users. Let’s install Express and <a href="https://pursuit.purescript.org/packages/purescript-express" target="_blank" rel="noopener">purescript-express</a>, the Purescript wrapper over it:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">npm</span> install express --save
-$ <span class="ex">bower</span> install purescript-express --save</code></pre></div>
-
-
-<h3 id="getting-a-user">Getting a User<a href="#getting-a-user" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h3>
-
-
-<p>We do this top-down. First, we change <code>src/Main.purs</code> to run the HTTP server by providing the server port and database configuration:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">Main</span> <span class="kw">where</span>
-
-<span class="kw">import </span><span class="dt">Prelude</span>
-
-<span class="kw">import </span><span class="dt">Control.Monad.Eff</span> (<span class="dt">Eff</span>)
-<span class="kw">import </span><span class="dt">Control.Monad.Eff.Console</span> (<span class="dt">CONSOLE</span>)
-<span class="kw">import </span><span class="dt">Database.PostgreSQL</span> <span class="kw">as</span> <span class="dt">PG</span>
-<span class="kw">import </span><span class="dt">Node.Express.Types</span> (<span class="dt">EXPRESS</span>)
-<span class="kw">import </span><span class="dt">SimpleService.Server</span> (runServer)
-
-<span class="ot">main ::</span> forall eff<span class="fu">.</span> <span class="dt">Eff</span> (<span class="ot"> console ::</span> <span class="dt">CONSOLE</span>
-                        ,<span class="ot"> express ::</span> <span class="dt">EXPRESS</span>
-                        ,<span class="ot"> postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span>
-                        <span class="fu">|</span> eff) <span class="dt">Unit</span>
-main <span class="fu">=</span> runServer port databaseConfig
-  <span class="kw">where</span>
-    port <span class="fu">=</span> <span class="dv">4000</span>
-    databaseConfig <span class="fu">=</span> { user<span class="fu">:</span> <span class="st">&quot;abhinav&quot;</span>
-                     , password<span class="fu">:</span> <span class="st">&quot;&quot;</span>
-                     , host<span class="fu">:</span> <span class="st">&quot;localhost&quot;</span>
-                     , port<span class="fu">:</span> <span class="dv">5432</span>
-                     , database<span class="fu">:</span> <span class="st">&quot;simple_service&quot;</span>
-                     , max<span class="fu">:</span> <span class="dv">10</span>
-                     , idleTimeoutMillis<span class="fu">:</span> <span class="dv">1000</span>
-                     }</code></pre></div>
-
-
-<p>Next, we wire up the server routes to the handlers in <code>src/SimpleService/Server.purs</code>:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">SimpleService.Server</span> (runServer) <span class="kw">where</span>
-
-<span class="kw">import </span><span class="dt">Prelude</span>
-
-<span class="kw">import </span><span class="dt">Control.Monad.Aff</span> (runAff)
-<span class="kw">import </span><span class="dt">Control.Monad.Eff</span> (<span class="dt">Eff</span>)
-<span class="kw">import </span><span class="dt">Control.Monad.Eff.Class</span> (liftEff)
-<span class="kw">import </span><span class="dt">Control.Monad.Eff.Console</span> (<span class="dt">CONSOLE</span>, log, logShow)
-<span class="kw">import </span><span class="dt">Database.PostgreSQL</span> <span class="kw">as</span> <span class="dt">PG</span>
-<span class="kw">import </span><span class="dt">Node.Express.App</span> (<span class="dt">App</span>, get, listenHttp)
-<span class="kw">import </span><span class="dt">Node.Express.Types</span> (<span class="dt">EXPRESS</span>)
-<span class="kw">import </span><span class="dt">SimpleService.Handler</span> (getUser)
-
-<span class="ot">app ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">App</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
-app pool <span class="fu">=</span> <span class="kw">do</span>
-  get <span class="st">&quot;/v1/user/:id&quot;</span> <span class="fu">$</span> getUser pool
-
-<span class="ot">runServer ::</span> forall eff<span class="fu">.</span>
-             <span class="dt">Int</span>
-          <span class="ot">-&gt;</span> <span class="dt">PG.PoolConfiguration</span>
-          <span class="ot">-&gt;</span> <span class="dt">Eff</span> (<span class="ot"> express ::</span> <span class="dt">EXPRESS</span>
-                 ,<span class="ot"> postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span>
-                 ,<span class="ot"> console ::</span> <span class="dt">CONSOLE</span>
-                 <span class="fu">|</span> eff ) <span class="dt">Unit</span>
-runServer port databaseConfig <span class="fu">=</span>  void <span class="fu">$</span> runAff logShow pure <span class="kw">do</span>
-  pool <span class="ot">&lt;-</span> PG.newPool databaseConfig
-  <span class="kw">let</span> app' <span class="fu">=</span> app pool
-  void <span class="fu">$</span> liftEff <span class="fu">$</span> listenHttp app' port \_ <span class="ot">-&gt;</span> log <span class="fu">$</span> <span class="st">&quot;Server listening on :&quot;</span> <span class="fu">&lt;&gt;</span> show port</code></pre></div>
-
-
-<p><code>runServer</code> creates a PostgreSQL connection pool and passes it to the <code>app</code> function which creates the Express application, which in turn, binds it to the handler <code>getUser</code>. Then it launches the HTTP server by calling <code>listenHttp</code>.</p>
-
-
-<p>Finally, we write the actual <code>getUser</code> handler in <code>src/SimpleService/Handler.purs</code>:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">SimpleService.Handler</span> <span class="kw">where</span>
-
-<span class="kw">import </span><span class="dt">Prelude</span>
-
-<span class="kw">import </span><span class="dt">Control.Monad.Aff.Class</span> (liftAff)
-<span class="kw">import </span><span class="dt">Data.Foreign.Class</span> (encode)
-<span class="kw">import </span><span class="dt">Data.Int</span> (fromString)
-<span class="kw">import </span><span class="dt">Data.Maybe</span> (<span class="dt">Maybe</span>(..))
-<span class="kw">import </span><span class="dt">Database.PostgreSQL</span> <span class="kw">as</span> <span class="dt">PG</span>
-<span class="kw">import </span><span class="dt">Node.Express.Handler</span> (<span class="dt">Handler</span>)
-<span class="kw">import </span><span class="dt">Node.Express.Request</span> (getRouteParam)
-<span class="kw">import </span><span class="dt">Node.Express.Response</span> (end, sendJson, setStatus)
-<span class="kw">import </span><span class="dt">SimpleService.Persistence</span> <span class="kw">as</span> <span class="dt">P</span>
-
-<span class="ot">getUser ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">Handler</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
-getUser pool <span class="fu">=</span> getRouteParam <span class="st">&quot;id&quot;</span> <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
-  <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respond <span class="dv">422</span> { error<span class="fu">:</span> <span class="st">&quot;User ID is required&quot;</span> }
-  <span class="dt">Just</span> sUserId <span class="ot">-&gt;</span> <span class="kw">case</span> fromString sUserId <span class="kw">of</span>
-    <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respond <span class="dv">422</span> { error<span class="fu">:</span> <span class="st">&quot;User ID must be an integer: &quot;</span> <span class="fu">&lt;&gt;</span> sUserId }
-    <span class="dt">Just</span> userId <span class="ot">-&gt;</span> liftAff (PG.withConnection pool <span class="fu">$</span> flip P.findUser userId) <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
-      <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respond <span class="dv">404</span> { error<span class="fu">:</span> <span class="st">&quot;User not found with id: &quot;</span> <span class="fu">&lt;&gt;</span> sUserId }
-      <span class="dt">Just</span> user <span class="ot">-&gt;</span> respond <span class="dv">200</span> (encode user)
-
-<span class="ot">respond ::</span> forall eff a<span class="fu">.</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">Handler</span> eff
-respond status body <span class="fu">=</span> <span class="kw">do</span>
-  setStatus status
-  sendJson body
-
-<span class="ot">respondNoContent ::</span> forall eff<span class="fu">.</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Handler</span> eff
-respondNoContent status <span class="fu">=</span> <span class="kw">do</span>
-  setStatus status
-  end</code></pre></div>
-
-
-<p><code>getUser</code> validates the route parameter for valid user ID, sending error HTTP responses in case of failures. It then calls <code>findUser</code> to find the user and returns appropriate response.</p>
-
-
-<p>We can test this on the command-line using <a href="https://httpie.org" target="_blank" rel="noopener">HTTPie</a>. We run <code>pulp --watch run</code> in one terminal to start the server with file watching, and test it from another terminal:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">pulp</span> --watch run
-<span class="ex">*</span> Building project in ps-simple-rest-service
-<span class="ex">*</span> Build successful.
-<span class="ex">Server</span> listening on :4000</code></pre></div>
-
-
-<pre class="http"><code>$ http GET http://localhost:4000/v1/user/1 # should return the user we created earlier
-HTTP/1.1 200 OK
-Connection: keep-alive
-Content-Length: 25
-Content-Type: application/json; charset=utf-8
-Date: Sun, 10 Sep 2017 14:32:52 GMT
-ETag: W/&quot;19-qmtK9XY+WDrqHTgqtFlV+h+NGOY&quot;
-X-Powered-By: Express
-
-{
-    &quot;id&quot;: 1,
-    &quot;name&quot;: &quot;Abhinav&quot;
-}</code></pre>
-
-
-<pre class="http"><code>$ http GET http://localhost:4000/v1/user/s
-HTTP/1.1 422 Unprocessable Entity
-Connection: keep-alive
-Content-Length: 38
-Content-Type: application/json; charset=utf-8
-Date: Sun, 10 Sep 2017 14:36:04 GMT
-ETag: W/&quot;26-//tvORl1gGDUMwgSaqbEpJhuadI&quot;
-X-Powered-By: Express
-
-{
-    &quot;error&quot;: &quot;User ID must be an integer: s&quot;
-}</code></pre>
-
-
-<pre class="http"><code>$ http GET http://localhost:4000/v1/user/2
-HTTP/1.1 404 Not Found
-Connection: keep-alive
-Content-Length: 36
-Content-Type: application/json; charset=utf-8
-Date: Sun, 10 Sep 2017 14:36:11 GMT
-ETag: W/&quot;24-IyD5VT4E8/m3kvpwycRBQunI7Uc&quot;
-X-Powered-By: Express
-
-{
-    &quot;error&quot;: &quot;User not found with id: 2&quot;
-}</code></pre>
-
-
-<h3 id="deleting-a-user">Deleting a User<a href="#deleting-a-user" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h3>
-
-
-<p><code>deleteUser</code> handler is similar. We add the route in the <code>app</code> function in the <code>src/SimpleService/Server.purs</code> file:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- previous code</span>
-<span class="kw">import </span><span class="dt">Node.Express.App</span> (<span class="dt">App</span>, delete, get, listenHttp)
-<span class="kw">import </span><span class="dt">SimpleService.Handler</span> (deleteUser, getUser)
-<span class="co">-- previous code</span>
-
-<span class="ot">app ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">App</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
-app pool <span class="fu">=</span> <span class="kw">do</span>
-  get <span class="st">&quot;/v1/user/:id&quot;</span> <span class="fu">$</span> getUser pool
-  delete <span class="st">&quot;/v1/user/:id&quot;</span> <span class="fu">$</span> deleteUser pool
-
-<span class="co">-- previous code</span></code></pre></div>
-
-
-<p>And we add the handler in the <code>src/SimpleService/Handler.purs</code> file:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">deleteUser ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">Handler</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
-deleteUser pool <span class="fu">=</span> getRouteParam <span class="st">&quot;id&quot;</span> <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
-  <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respond <span class="dv">422</span> { error<span class="fu">:</span> <span class="st">&quot;User ID is required&quot;</span> }
-  <span class="dt">Just</span> sUserId <span class="ot">-&gt;</span> <span class="kw">case</span> fromString sUserId <span class="kw">of</span>
-    <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respond <span class="dv">422</span> { error<span class="fu">:</span> <span class="st">&quot;User ID must be an integer: &quot;</span> <span class="fu">&lt;&gt;</span> sUserId }
-    <span class="dt">Just</span> userId <span class="ot">-&gt;</span> <span class="kw">do</span>
-      found <span class="ot">&lt;-</span> liftAff <span class="fu">$</span> PG.withConnection pool \conn <span class="ot">-&gt;</span> PG.withTransaction conn <span class="kw">do</span>
-        P.findUser conn userId <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
-          <span class="dt">Nothing</span> <span class="ot">-&gt;</span> pure false
-          <span class="dt">Just</span> _  <span class="ot">-&gt;</span> <span class="kw">do</span>
-            P.deleteUser conn userId
-            pure true
-      <span class="kw">if</span> found
-        <span class="kw">then</span> respondNoContent <span class="dv">204</span>
-        <span class="kw">else</span> respond <span class="dv">404</span> { error<span class="fu">:</span> <span class="st">&quot;User not found with id: &quot;</span> <span class="fu">&lt;&gt;</span> sUserId }</code></pre></div>
-
-
-<p>After the usual validations on the route param, <code>deleteUser</code> tries to find the user by the given user ID and if found, it deletes the user. Both the persistence related functions are run inside a single SQL transaction using <code>PG.withTransaction</code> function. <code>deleteUser</code> return 404 status if the user is not found, else it returns 204 status.</p>
-
-
-<p>Let’s try it out:</p>
-
-
-<pre class="http"><code>$ http GET http://localhost:4000/v1/user/1
-HTTP/1.1 200 OK
-Connection: keep-alive
-Content-Length: 25
-Content-Type: application/json; charset=utf-8
-Date: Mon, 11 Sep 2017 05:10:50 GMT
-ETag: W/&quot;19-GC9FAtbd81t7CtrQgsNuc8HITXU&quot;
-X-Powered-By: Express
-
-{
-    &quot;id&quot;: 1,
-    &quot;name&quot;: &quot;Abhinav&quot;
-}</code></pre>
-
-
-<pre class="http"><code>$ http DELETE http://localhost:4000/v1/user/1
-HTTP/1.1 204 No Content
-Connection: keep-alive
-Date: Mon, 11 Sep 2017 05:10:56 GMT
-X-Powered-By: Express</code></pre>
-
-
-<pre class="http"><code>$ http GET http://localhost:4000/v1/user/1
-HTTP/1.1 404 Not Found
-Connection: keep-alive
-Content-Length: 37
-Content-Type: application/json; charset=utf-8
-Date: Mon, 11 Sep 2017 05:11:03 GMT
-ETag: W/&quot;25-Eoc4ZbEF73CyW8EGh6t2jqI8mLU&quot;
-X-Powered-By: Express
-
-{
-    &quot;error&quot;: &quot;User not found with id: 1&quot;
-}</code></pre>
-
-
-<pre class="http"><code>$ http DELETE http://localhost:4000/v1/user/1
-HTTP/1.1 404 Not Found
-Connection: keep-alive
-Content-Length: 37
-Content-Type: application/json; charset=utf-8
-Date: Mon, 11 Sep 2017 05:11:05 GMT
-ETag: W/&quot;25-Eoc4ZbEF73CyW8EGh6t2jqI8mLU&quot;
-X-Powered-By: Express
-
-{
-    &quot;error&quot;: &quot;User not found with id: 1&quot;
-}</code></pre>
-
-
-<h3 id="creating-a-user">Creating a User<a href="#creating-a-user" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h3>
-
-
-<p><code>createUser</code> handler is a bit more involved. First, we add an Express middleware to parse the body of the request as JSON. We use <a href="https://github.com/expressjs/body-parser" target="_blank" rel="noopener"><code>body-parser</code></a> for this and access it through Purescript <a href="https://github.com/purescript/documentation/blob/master/guides/FFI.md" target="_blank" rel="noopener">FFI</a>. We create a new file <code>src/SimpleService/Middleware/BodyParser.js</code> with the content:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="st">&quot;use strict&quot;</span><span class="op">;</span>
-
-<span class="kw">var</span> bodyParser <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;body-parser&quot;</span>)<span class="op">;</span>
-
-<span class="va">exports</span>.<span class="at">jsonBodyParser</span> <span class="op">=</span> <span class="va">bodyParser</span>.<span class="at">json</span>(<span class="op">{</span>
-  <span class="dt">limit</span><span class="op">:</span> <span class="st">&quot;5mb&quot;</span>
-<span class="op">}</span>)<span class="op">;</span></code></pre></div>
-
-
-<p>And write a wrapper for it in the file <code>src/SimpleService/Middleware/BodyParser.purs</code> with the content:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">SimpleService.Middleware.BodyParser</span> <span class="kw">where</span>
-
-<span class="kw">import </span><span class="dt">Prelude</span>
-<span class="kw">import </span><span class="dt">Data.Function.Uncurried</span> (<span class="dt">Fn3</span>)
-<span class="kw">import </span><span class="dt">Node.Express.Types</span> (<span class="dt">ExpressM</span>, <span class="dt">Response</span>, <span class="dt">Request</span>)
-
-foreign <span class="kw">import </span>jsonBodyParser ::
-  forall e<span class="fu">.</span> <span class="dt">Fn3</span> <span class="dt">Request</span> <span class="dt">Response</span> (<span class="dt">ExpressM</span> e <span class="dt">Unit</span>) (<span class="dt">ExpressM</span> e <span class="dt">Unit</span>)</code></pre></div>
-
-
-<p>We also install the <code>body-parser</code> npm dependency:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">npm</span> install --save body-parser</code></pre></div>
-
-
-<p>Next, we change the <code>app</code> function in the <code>src/SimpleService/Server.purs</code> file to add the middleware and the route:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- previous code</span>
-<span class="kw">import </span><span class="dt">Node.Express.App</span> (<span class="dt">App</span>, delete, get, listenHttp, post, useExternal)
-<span class="kw">import </span><span class="dt">SimpleService.Handler</span> (createUser, deleteUser, getUser)
-<span class="kw">import </span><span class="dt">SimpleService.Middleware.BodyParser</span> (jsonBodyParser)
-<span class="co">-- previous code</span>
-
-<span class="ot">app ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">App</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
-app pool <span class="fu">=</span> <span class="kw">do</span>
-  useExternal jsonBodyParser
-
-  get <span class="st">&quot;/v1/user/:id&quot;</span> <span class="fu">$</span> getUser pool
-  delete <span class="st">&quot;/v1/user/:id&quot;</span> <span class="fu">$</span> deleteUser pool
-  post <span class="st">&quot;/v1/users&quot;</span> <span class="fu">$</span> createUser pool</code></pre></div>
-
-
-<p>And finally, we write the handler in the <code>src/SimpleService/Handler.purs</code> file:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- previous code</span>
-<span class="kw">import </span><span class="dt">Data.Either</span> (<span class="dt">Either</span>(..))
-<span class="kw">import </span><span class="dt">Data.Foldable</span> (intercalate)
-<span class="kw">import </span><span class="dt">Data.Foreign</span> (renderForeignError)
-<span class="kw">import </span><span class="dt">Node.Express.Request</span> (getBody, getRouteParam)
-<span class="kw">import </span><span class="dt">SimpleService.Types</span>
-<span class="co">-- previous code</span>
-
-<span class="ot">createUser ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">Handler</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
-createUser pool <span class="fu">=</span> getBody <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
-  <span class="dt">Left</span> errs <span class="ot">-&gt;</span> respond <span class="dv">422</span> { error<span class="fu">:</span> intercalate <span class="st">&quot;, &quot;</span> <span class="fu">$</span> map renderForeignError errs}
-  <span class="dt">Right</span> u<span class="fu">@</span>(<span class="dt">User</span> user) <span class="ot">-&gt;</span>
-    <span class="kw">if</span> user<span class="fu">.</span>id <span class="fu">&lt;=</span> <span class="dv">0</span>
-      <span class="kw">then</span> respond <span class="dv">422</span> { error<span class="fu">:</span> <span class="st">&quot;User ID must be positive: &quot;</span> <span class="fu">&lt;&gt;</span> show user<span class="fu">.</span>id}
-      <span class="kw">else</span> <span class="kw">if</span> user<span class="fu">.</span>name <span class="fu">==</span> <span class="st">&quot;&quot;</span>
-        <span class="kw">then</span> respond <span class="dv">422</span> { error<span class="fu">:</span> <span class="st">&quot;User name must not be empty&quot;</span> }
-        <span class="kw">else</span> <span class="kw">do</span>
-          liftAff (PG.withConnection pool <span class="fu">$</span> flip P.insertUser u)
-          respondNoContent <span class="dv">201</span></code></pre></div>
-
-
-<p><code>createUser</code> calls <a href="https://pursuit.purescript.org/packages/purescript-express/0.5.2/docs/Node.Express.Request#v:getBody" target="_blank" rel="noopener"><code>getBody</code></a> which has type signature <code>forall e a. (Decode a) =&gt; HandlerM (express :: EXPRESS | e) (Either MultipleErrors a)</code>. It returns either a list of parsing errors or a parsed instance, which in our case, is a <code>User</code>. In case of errors, we just return the errors rendered as string with a 422 status. If we get a parsed <code>User</code> instance, we do some validations on it, returning appropriate error messages. If all validations pass, we create the user in the DB by calling <code>insertUser</code> from the persistence layer and respond with a status 201.</p>
-
-
-<p>We can try it out:</p>
-
-
-<pre class="http"><code>$ http POST http://localhost:4000/v1/users name=&quot;abhinav&quot;
-HTTP/1.1 422 Unprocessable Entity
-Connection: keep-alive
-Content-Length: 97
-Content-Type: application/json; charset=utf-8
-Date: Mon, 11 Sep 2017 05:51:28 GMT
-ETag: W/&quot;61-BgsrMukZpImcdwAJEKCZ+70WBb8&quot;
-X-Powered-By: Express
-
-{
-    &quot;error&quot;: &quot;Error at array index 0: (ErrorAtProperty \&quot;id\&quot; (TypeMismatch \&quot;Int\&quot; \&quot;Undefined\&quot;))&quot;
-}</code></pre>
-
-
-<pre class="http"><code>$ http POST http://localhost:4000/v1/users id:=1 name=&quot;&quot;
-HTTP/1.1 422 Unprocessable Entity
-Connection: keep-alive
-Content-Length: 39
-Content-Type: application/json; charset=utf-8
-Date: Mon, 11 Sep 2017 05:51:42 GMT
-ETag: W/&quot;27-JQsh12xu/rEFdWy8REF4NMtBUB4&quot;
-X-Powered-By: Express
-
-{
-    &quot;error&quot;: &quot;User name must not be empty&quot;
-}</code></pre>
-
-
-<pre class="http"><code>$ http POST http://localhost:4000/v1/users id:=1 name=&quot;abhinav&quot;
-HTTP/1.1 201 Created
-Connection: keep-alive
-Content-Length: 0
-Date: Mon, 11 Sep 2017 05:52:23 GMT
-X-Powered-By: Express</code></pre>
-
-
-<pre class="http"><code>$ http GET http://localhost:4000/v1/user/1
-HTTP/1.1 200 OK
-Connection: keep-alive
-Content-Length: 25
-Content-Type: application/json; charset=utf-8
-Date: Mon, 11 Sep 2017 05:52:30 GMT
-ETag: W/&quot;19-GC9FAtbd81t7CtrQgsNuc8HITXU&quot;
-X-Powered-By: Express
-
-{
-    &quot;id&quot;: 1,
-    &quot;name&quot;: &quot;abhinav&quot;
-}</code></pre>
-
-
-<p>First try returns a parsing failure because we didn’t provide the <code>id</code> field. Second try is a validation failure because the name was empty. Third try is a success which we check by doing a <code>GET</code> request next.</p>
-
-
-<h3 id="updating-a-user">Updating a User<a href="#updating-a-user" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h3>
-
-
-<p>We want to allow a user’s name to be updated through the API, but not the user’s id. So we add a new type to <code>src/SimpleService/Types.purs</code> to represent a possible change in user’s name:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- previous code</span>
-<span class="kw">import </span><span class="dt">Data.Foreign.NullOrUndefined</span> (<span class="dt">NullOrUndefined</span>)
-<span class="co">-- previous code</span>
-
-<span class="kw">newtype</span> <span class="dt">UserPatch</span> <span class="fu">=</span> <span class="dt">UserPatch</span> {<span class="ot"> name ::</span> <span class="dt">NullOrUndefined</span> <span class="dt">String</span> }
-
-derive <span class="kw">instance</span><span class="ot"> genericUserPatch ::</span> <span class="dt">Generic</span> <span class="dt">UserPatch</span> _
-
-<span class="kw">instance</span><span class="ot"> decodeUserPatch ::</span> <span class="dt">Decode</span> <span class="dt">UserPatch</span> <span class="kw">where</span>
-  decode <span class="fu">=</span> genericDecode <span class="fu">$</span> defaultOptions { unwrapSingleConstructors <span class="fu">=</span> true }</code></pre></div>
-
-
-<p><a href="https://pursuit.purescript.org/packages/purescript-foreign-generic/4.3.0/docs/Data.Foreign.NullOrUndefined#t:NullOrUndefined" target="_blank" rel="noopener"><code>NullOrUndefined</code></a> is a wrapper over <code>Maybe</code> with added support for Javascript <code>null</code> and <code>undefined</code> values. We define <code>UserPatch</code> as having a possibly null (or undefined) <code>name</code> field.</p>
-
-
-<p>Now we can add the corresponding handler in <code>src/SimpleService/Handlers.purs</code>:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- previous code</span>
-<span class="kw">import </span><span class="dt">Data.Foreign.NullOrUndefined</span> (unNullOrUndefined)
-<span class="co">-- previous code</span>
-
-<span class="ot">updateUser ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">Handler</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
-updateUser pool <span class="fu">=</span> getRouteParam <span class="st">&quot;id&quot;</span> <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
-  <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respond <span class="dv">422</span> { error<span class="fu">:</span> <span class="st">&quot;User ID is required&quot;</span> }
-  <span class="dt">Just</span> sUserId <span class="ot">-&gt;</span> <span class="kw">case</span> fromString sUserId <span class="kw">of</span>
-    <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respond <span class="dv">422</span> { error<span class="fu">:</span> <span class="st">&quot;User ID must be positive: &quot;</span> <span class="fu">&lt;&gt;</span> sUserId }
-    <span class="dt">Just</span> userId <span class="ot">-&gt;</span> getBody <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
-      <span class="dt">Left</span> errs <span class="ot">-&gt;</span> respond <span class="dv">422</span> { error<span class="fu">:</span> intercalate <span class="st">&quot;, &quot;</span> <span class="fu">$</span> map renderForeignError errs}
-      <span class="dt">Right</span> (<span class="dt">UserPatch</span> userPatch) <span class="ot">-&gt;</span> <span class="kw">case</span> unNullOrUndefined userPatch<span class="fu">.</span>name <span class="kw">of</span>
-        <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respondNoContent <span class="dv">204</span>
-        <span class="dt">Just</span> userName <span class="ot">-&gt;</span> <span class="kw">if</span> userName <span class="fu">==</span> <span class="st">&quot;&quot;</span>
-          <span class="kw">then</span> respond <span class="dv">422</span> { error<span class="fu">:</span> <span class="st">&quot;User name must not be empty&quot;</span> }
-          <span class="kw">else</span> <span class="kw">do</span>
-            savedUser <span class="ot">&lt;-</span> liftAff <span class="fu">$</span> PG.withConnection pool \conn <span class="ot">-&gt;</span> PG.withTransaction conn <span class="kw">do</span>
-              P.findUser conn userId <span class="fu">&gt;&gt;=</span> <span class="kw">case</span> _ <span class="kw">of</span>
-                <span class="dt">Nothing</span> <span class="ot">-&gt;</span> pure <span class="dt">Nothing</span>
-                <span class="dt">Just</span> (<span class="dt">User</span> user) <span class="ot">-&gt;</span> <span class="kw">do</span>
-                  <span class="kw">let</span> user' <span class="fu">=</span> <span class="dt">User</span> (user { name <span class="fu">=</span> userName })
-                  P.updateUser conn user'
-                  pure <span class="fu">$</span> <span class="dt">Just</span> user'
-            <span class="kw">case</span> savedUser <span class="kw">of</span>
-              <span class="dt">Nothing</span> <span class="ot">-&gt;</span> respond <span class="dv">404</span> { error<span class="fu">:</span> <span class="st">&quot;User not found with id: &quot;</span> <span class="fu">&lt;&gt;</span> sUserId }
-              <span class="dt">Just</span> user <span class="ot">-&gt;</span> respond <span class="dv">200</span> (encode user)</code></pre></div>
-
-
-<p>After checking for a valid user ID as before, we get the decoded request body as a <code>UserPatch</code> instance. If the path does not have the name field or has it as <code>null</code>, there is nothing to do and we respond with a 204 status. If the user name is present in the patch, we validate it for non-emptiness. Then, within a DB transaction, we try to find the user with the given ID, responding with a 404 status if the user is not found. If the user is found, we update the user’s name in the database, and respond with a 200 status and the saved user encoded as the JSON response body.</p>
-
-
-<p>Finally, we can add the route to our server’s router in <code>src/SimpleService/Server.purs</code> to make the functionality available:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- previous code</span>
-<span class="kw">import </span><span class="dt">Node.Express.App</span> (<span class="dt">App</span>, delete, get, http, listenHttp, post, useExternal)
-<span class="kw">import </span><span class="dt">Node.Express.Types</span> (<span class="dt">EXPRESS</span>, <span class="dt">Method</span>(..))
-<span class="kw">import </span><span class="dt">SimpleService.Handler</span> (createUser, deleteUser, getUser, updateUser)
-<span class="co">-- previous code</span>
-
-<span class="ot">app ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">App</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
-app pool <span class="fu">=</span> <span class="kw">do</span>
-  useExternal jsonBodyParser
-
-  get <span class="st">&quot;/v1/user/:id&quot;</span>    <span class="fu">$</span> getUser pool
-  delete <span class="st">&quot;/v1/user/:id&quot;</span> <span class="fu">$</span> deleteUser pool
-  post <span class="st">&quot;/v1/users&quot;</span>      <span class="fu">$</span> createUser pool
-  patch <span class="st">&quot;/v1/user/:id&quot;</span>  <span class="fu">$</span> updateUser pool
-  <span class="kw">where</span>
-    patch <span class="fu">=</span> http (<span class="dt">CustomMethod</span> <span class="st">&quot;patch&quot;</span>)</code></pre></div>
-
-
-<p>We can try it out now:</p>
-
-
-<pre class="http"><code>$ http GET http://localhost:4000/v1/user/1
-HTTP/1.1 200 OK
-Connection: keep-alive
-Content-Length: 26
-Content-Type: application/json; charset=utf-8
-Date: Fri, 11 Sep 2017 06:41:10 GMT
-ETag: W/&quot;1a-hoLBx55zeY8nZFWJh/kM05pXwSA&quot;
-X-Powered-By: Express
-
-{
-    &quot;id&quot;: 1,
-    &quot;name&quot;: &quot;abhinav&quot;
-}</code></pre>
-
-
-<pre class="http"><code>$ http PATCH http://localhost:4000/v1/user/1 name=abhinavsarkar
-HTTP/1.1 200 OK
-Connection: keep-alive
-Content-Length: 31
-Content-Type: application/json; charset=utf-8
-Date: Fri, 11 Sep 2017 06:41:36 GMT
-ETag: W/&quot;1f-EG5i0hq/hYhF0BsuheD9hNXeBpI&quot;
-X-Powered-By: Express
-
-{
-    &quot;id&quot;: 1,
-    &quot;name&quot;: &quot;abhinavsarkar&quot;
-}</code></pre>
-
-
-<pre class="http"><code>$ http GET http://localhost:4000/v1/user/1
-HTTP/1.1 200 OK
-Connection: keep-alive
-Content-Length: 31
-Content-Type: application/json; charset=utf-8
-Date: Fri, 11 Sep 2017 06:41:40 GMT
-ETag: W/&quot;1f-EG5i0hq/hYhF0BsuheD9hNXeBpI&quot;
-X-Powered-By: Express
-
-{
-    &quot;id&quot;: 1,
-    &quot;name&quot;: &quot;abhinavsarkar&quot;
-}</code></pre>
-
-
-<pre class="http"><code>$ http PATCH http://localhost:4000/v1/user/1
-HTTP/1.1 204 No Content
-Connection: keep-alive
-Date: Fri, 11 Sep 2017 06:42:31 GMT
-X-Powered-By: Express</code></pre>
-
-
-<pre class="http"><code>$ http PATCH http://localhost:4000/v1/user/1 name=&quot;&quot;
-HTTP/1.1 422 Unprocessable Entity
-Connection: keep-alive
-Content-Length: 39
-Content-Type: application/json; charset=utf-8
-Date: Fri, 11 Sep 2017 06:43:17 GMT
-ETag: W/&quot;27-JQsh12xu/rEFdWy8REF4NMtBUB4&quot;
-X-Powered-By: Express
-
-{
-    &quot;error&quot;: &quot;User name must not be empty&quot;
-}</code></pre>
-
-
-<h3 id="listing-all-users">Listing all Users<a href="#listing-all-users" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h3>
-
-
-<p>Listing all users is quite simple since it doesn’t require us to take any request parameter.</p>
-
-
-<p>We add the handler to the <code>src/SimpleService/Handler.purs</code> file:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- previous code</span>
-<span class="ot">listUsers ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">Handler</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
-listUsers pool <span class="fu">=</span> liftAff (PG.withConnection pool P.listUsers) <span class="fu">&gt;&gt;=</span> encode <span class="fu">&gt;&gt;&gt;</span> respond <span class="dv">200</span></code></pre></div>
-
-
-<p>And the route to the <code>src/SimpleService/Server.purs</code> file:</p>
-
-
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- previous code</span>
-<span class="kw">import </span><span class="dt">SimpleService.Handler</span> (createUser, deleteUser, getUser, listUsers, updateUser)
-<span class="co">-- previous code</span>
-
-<span class="ot">app ::</span> forall eff<span class="fu">.</span> <span class="dt">PG.Pool</span> <span class="ot">-&gt;</span> <span class="dt">App</span> (<span class="ot">postgreSQL ::</span> <span class="dt">PG.POSTGRESQL</span> <span class="fu">|</span> eff)
-app pool <span class="fu">=</span> <span class="kw">do</span>
-  useExternal jsonBodyParser
-
-  get <span class="st">&quot;/v1/user/:id&quot;</span>    <span class="fu">$</span> getUser pool
-  delete <span class="st">&quot;/v1/user/:id&quot;</span> <span class="fu">$</span> deleteUser pool
-  post <span class="st">&quot;/v1/users&quot;</span>      <span class="fu">$</span> createUser pool
-  patch <span class="st">&quot;/v1/user/:id&quot;</span>  <span class="fu">$</span> updateUser pool
-  get <span class="st">&quot;/v1/users&quot;</span>       <span class="fu">$</span> listUsers pool
-  <span class="kw">where</span>
-    patch <span class="fu">=</span> http (<span class="dt">CustomMethod</span> <span class="st">&quot;patch&quot;</span>)</code></pre></div>
-
-
-<p>And that’s it. We can test this endpoint:</p>
-
-
-<pre class="http"><code>$ http POST http://localhost:4000/v1/users id:=2 name=sarkarabhinav
-HTTP/1.1 201 Created
-Connection: keep-alive
-Content-Length: 0
-Date: Fri, 11 Sep 2017 07:06:24 GMT
-X-Powered-By: Express</code></pre>
-
-
-<pre class="http"><code>$ http GET http://localhost:4000/v1/users
-HTTP/1.1 200 OK
-Connection: keep-alive
-Content-Length: 65
-Content-Type: application/json; charset=utf-8
-Date: Fri, 11 Sep 2017 07:06:27 GMT
-ETag: W/&quot;41-btt9uNdG+9A1RO7SCLOsyMmIyFo&quot;
-X-Powered-By: Express
-
-[
-    {
-        &quot;id&quot;: 1,
-        &quot;name&quot;: &quot;abhinavsarkar&quot;
-    },
-    {
-        &quot;id&quot;: 2,
-        &quot;name&quot;: &quot;sarkarabhinav&quot;
-    }
-]</code></pre>
-
-
-<h2 id="conclusion">Conclusion<a href="#conclusion" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h2>
-
-
-<p>That concludes the first part of the two-part tutorial. We learned how to set up a Purescript project, how to access a Postgres database and how to create a JSON REST API over the database. The code till the end of this part can be found in <a href="https://github.com/abhin4v/ps-simple-rest-service/tree/9fdfe3a15508a3c29bd4bc96310fcf52b1022678" target="_blank" rel="noopener">github</a>. In the <a href="https://abhinavsarkar.net/posts/ps-simple-rest-service-2/">next</a> part, we’ll learn how to do API validation, application configuration and logging. This post can be discussed on <a href="https://www.reddit.com/r/purescript/comments/737bg1/writing_a_simple_rest_service_in_purescript/" target="_blank" rel="noopener">r/purescript</a>.</p>
-
-
-<p>If you liked this post, please <a href="https://abhinavsarkar.net/posts/ps-simple-rest-service/#comment-container">leave a comment</a>.</p>
-
-
-<div class="author">
-  <img src="https://nilenso.com/images/people/abhinav-200.png" style="width: 96px; height: 96;">
+<p><figure><img alt="" src="https://cdn-images-1.medium.com/max/400/1*Mbzpzkw4uraKcHuYgVnp_g.png" /><figcaption>Image from <a href="http://www.lowter.com/blogs/2008/6/21/firefox-3">Lowter</a></figcaption></figure><p>In 2018, user expectations demand that design asymptotically approach perfection: your product better be open, compatible, clean, fast, and powerful. When nilenso first made the move <a href="https://medium.com/@deobald/we-created-relay-by-escaping-slack-aedf0579a65f">from Slack to Mattermost</a>, we kept all of this in mind. From our very first deployment of Mattermost it felt <em>whole</em>. We chose Mattermost because it was so very close to the design we wanted, we knew we could help bring it the rest of the way.</p><h3>The beginning</h3><p>The design problems that currently exist with Mattermost aren’t just visual but interaction and experience related. One of the first issues we took up was adding infinite scroll to the channel history. We couldn’t fathom why users should manually click to load every page of history. <a href="https://github.com/mattermost/mattermost-webapp/pull/941">So we fixed it</a>!</p><p>In the not-too-distant future we will add all the little nuanced details which transform Relay into software you absolutely <strong>love</strong>. At the moment, however, our aim is to solve the obvious problems our users have with the Mattermost/Relay experience. Like infinite scroll, these are the problems that left our early users shouting at us “ugh… how have you not fixed this yet?!”</p><p>Such problems stem from the pains caused by inconsistencies and visual discrepancies which hamper usability. It is surprising to many how quickly these seemingly small issues amount to death by a thousand papercuts. It is equally surprising how quickly software becomes a joy to use once you get the basics right.</p><p>We’ll start with the basics — icons and fonts — and then move on to the specifics of how we redesigned Mattermost as Relay, piece by piece.</p><h3>Icons</h3><p><a href="https://medium.com/@deobald/we-created-relay-by-escaping-slack-aedf0579a65f">When we moved from Slack to Mattermost</a> the difference in icons used was stark. All icons used in Mattermost were inconsistent with respect to weights. They were standing out of the interface rather than blending in.</p><p>After further digging, we realised that Mattermost uses the free version of <a href="https://fontawesome.com/icons">Font Awesome</a>. Don’t get me wrong, I love the guys at Font Awesome; I even backed their kickstarter. But not all icons being available in the free weights (regular &amp; solid) is quite a bummer.</p><p>We had three rules for selecting an icon set:</p><ul><li>Icons <strong>must</strong> be open source</li><li>Icons need to be extensive</li><li>Icons need to be available in different styles (line and solid)</li></ul><blockquote>Allow me to interrupt with an aside. Technically, it is <em>possible</em> for us to build commercial artefacts into the Relay client by keeping them out of the source tree, even though Relay is AGPL3-licensed (as a derivative of the <a href="https://github.com/mattermost/mattermost-webapp">mattermost-webapp</a>). Why, then, do we feel it is essential that the icons be open source? Relay lives at the intersection of <a href="https://www.fsf.org/about/what-is-free-software">the principles of Free Software</a> and <a href="https://opensource.org/licenses/AGPL-3.0">the license which governs it</a>. Relay stands on the shoulders of giants — not only the Mattermost source code but Linux, GoLang, React, and hundreds of other projects. Here, between the spirit and the letter of Open Philosophies, exists a great deal of nuance. Cutting through this nuance is a root concept, however: “share alike.” If we take something from the free/open software community, what we return to that community should afford the next recipient the same freedoms we had. If we tweak Relay’s design until it is absolutely perfect but that involves changes which Mattermost cannot absorb upstream, we have failed them and every other project we have built ourselves upon. Thus, our icons must have an open license. — Steven Deobald</blockquote><p>Thanks Steve. Keeping the above mentioned points in mind, there were three icon sets that made the final round of discussion:</p><ul><li><a href="https://vmware.github.io/clarity/icons/icon-sets">Clarity icons</a></li><li><a href="https://feathericons.com/">Feather icons</a></li><li><a href="https://useiconic.com/open">Iconic icons</a></li></ul><p>We chose the Clarity icon set because of styles, consistency, and the icons being part of a design language system. Clarity is an open source design system created and maintained by the good folks at VMware. Since VMware has a dedicated team pushing continuous updates there is little fear the icon set will be abandoned or go stale.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*8YedTvLmvirplj0sFZ8_EA.png" /></figure><h3>Font</h3><p>Our font selection followed the same rules:</p><ul><li>Fonts <strong>must</strong> be open source</li><li>Fonts should be available in multiple weights</li></ul><p>…along with these additions:</p><ul><li>Fonts with large x-height for easy readability</li><li>Fonts with thick Regular weight so fonts will be crisp</li></ul><p>We stress so much on font weights because Relay is, first and foremost, a messaging tool. In Relay, you spend most of your time reading and we want this experience to be as enjoyable as possible. Relay also has complete Markdown support and weights help establish hierarchy both within the app and within the messages themselves.</p><p>We had a few contenders which satisfied these requirements. PT Sans, Lato, and Noto Sans all have an enjoyable reading experience but after a lot of trial and error we chose Fira Sans.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*zKRXBmPhm29XOuEAIu-V1Q.png" /></figure><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*cFZx7FuOzEfaRXvzkL9-3w.png" /></figure><p>Fira Sans is an incredible font. It has a healthy variety of weights and the compressed nature of the font holds the messaging interface together while keeping it crisp.</p><blockquote>Did you know that Fira Sans was built on top of Erik Spiekermann’s commercial font FF Meta? And that Spiekermann was commissioned by the Mozilla Foundation! <a href="http://typographica.org/typeface-reviews/fira-sans/">Read the whole story here</a></blockquote><h3>How Mattermost became Relay</h3><p>Implementing the design basics improved the existing experience. But to make those changes truly delightful we need to fine-tune every aspect of the app. We have started with three major sections:</p><ol><li>Left sidebar</li><li>Channel header</li><li>Main messaging interface</li></ol><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*Nxo6ha36AGdYC5yTbPM-4g.png" /><figcaption>Present Mattermost interface</figcaption></figure><h4>1. Left sidebar</h4><p>The sidebar’s Team section allows users to switch between teams within organisations that they’re a part of. The current Mattermost implementation truncates the team name and adds a byline. The problem with this is that it does not add any value since hovering over the team opens a tooltip with the team name anyway. We removed the byline and the truncated text.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*9SkvIpcpCoZcPqK_aQyg3w.png" /></figure><p>The sidebar’s Channel section felt mashed together. There is a clear hierarchy intended, which includes channel headers such as “Favorite Channels” and a distinction between active and inactive channels. We brought this hierarchy to the surface. Active channels have a heavy weight and inactive channels fade away with a lower opacity, despite the <em>increased</em> crispness of Fira Sans.</p><p>Grouped channels now have tighter spacing and groups themselves have larger spacing, allowing group titles to have a smaller font. All together, this makes the hierarchy obvious even at a glance.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*hiZL-Z9BvrCqgQmi1KZL3w.png" /></figure><h4>2. Channel header</h4><p>In the channel header we cleaned up the icons. Here are the issues we encountered with the icons:</p><ul><li>Most icons weren’t of the same weight</li><li>Some icons were of a different size</li><li>Some icons had some positioning overrides to align them</li></ul><p>The old icons for the channel header stood out, drawing attention away from the main chat area. We wanted them instead to blend into the design — unobtrusive but still obvious. To do this we removed the borders and switched the icon set to Clarity.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*JPH74EFnVALhnJT40VyJEQ.png" /></figure><p>In addition to icons, we fixed the CSS for the header and right sidebar, getting rid of all funny margins and relative positioning. We also added consistent heights, paddings, and sizes for each of the icons. These fixes don’t just add polish to the UI; once merged, they will also ensure it is easier for anyone in the community, including us, to customise Mattermost.</p><h4>3. Messaging interface</h4><p>The messaging interface is where users spend the most time. The messaging interface is also where Mattermost has most of its design inconsistencies, which are most glaring in the basics: alignment, spacing between posts, font size, and other elements on the interface such as the reply box.</p><p>After we moved to Fira Sans we bumped up the font size, made sure the headings and names are bolded to establish hierarchy, and fixed alignment and spacing issues to deliver a crisper and more enjoyable reading experience.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*fHEbMdPuBuTKZTOBIFOrLg.png" /></figure><h3>Themes</h3><p>Accessibility matters. We have light-sensitive coworkers and we’re sure you do, too. That’s why Relay comes with light and dark themes out of the box.</p><p>There are many Relay/Mattermost-compatible themes available already but we will pour all our energy into these two. They already make Relay beautiful and with every <a href="https://en.wikipedia.org/wiki/Kaizen">kaizen</a> they will only get better.</p><p>Of course, we don’t restrict you to these two themes. Relay also comes with community themes and Relay’s entire colour scheme is fully customisable… not just the sidebar (<em>cough</em> Slack <em>cough</em>). We are working to make Relay <a href="https://trello.com/c/rAjOFRmw">100% customisable through CSS</a> so users have complete control over every aspect of the UI, if they want.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*Xi8y7fGywOWfNpZPAYbxPA.png" /></figure><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*RSYA2D6Mbd-RgxbbYPcANQ.png" /></figure><h3>Putting it all together</h3><p>By following a consistent design language for icons, font, and themes we ensure all our “pieces” are whole unto themselves. Putting them back together, the application itself becomes whole.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*w6L79VGBNKJy4pKu-qhK1A.png" /></figure><p>Mattermost has published a <a href="https://github.com/mattermost/mattermost-server/issues/8350">design challenge</a> that encourages designers from all over the world to improve Mattermost (and, hence, Relay) readability and usability. <a href="https://github.com/mattermost/mattermost-webapp/pull/971">Our redesign addresses this challenge</a>.</p><p><a href="https://relay-chat.com/signup">Sign up</a>, try the redesign, and tell us what you think!</p><p>Along with visual design changes, Relay also aims to significantly improve its user experience. Our <a href="https://trello.com/b/OaHPWOAi">public Trello board</a> contains our plan for Relay’s future.</p><h3>Future</h3><p>“Design” is the <a href="https://medium.com/@baditaflorin/inside-the-top-1000-tags-on-medium-com-part-1-a1ff96356639">8th most popular tag on Medium</a>. “Open Source” is ranked 290. Source code licenses will never be sexy for the same reason your city’s water utility company will never be. The water supply is inherently a part of your city’s design. Similarly, your freedom as a user is designed into software you buy. Your ownership of a product is but one more limb in the tree of design.</p><blockquote>Open source software needs good design because good design respects you, the user.</blockquote><blockquote>❤</blockquote><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*g6rztkAO4PgkBPPYG0A91w.png" /><figcaption>Illustration by <a href="https://www.instagram.com/basementtaco/">Shrishti Ambani</a></figcaption></figure><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=65ea40616c5a" width="1" height="1"><hr><p><a href="https://medium.com/the-relay/designing-for-open-source-software-65ea40616c5a">Designing for Open Source Software</a> was originally published in <a href="https://medium.com/the-relay">The Relay</a> on Medium, where people are continuing the conversation by highlighting and responding to this story.</p><div class="author">
+  <img src="https://nilenso.com/images/people/varun-200.png" style="width: 96px; height: 96;">
   <span style="position: absolute; padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/abhin4v">Abhinav Sarkar</a> - check out <a href="https://abhinavsarkar.net">All posts on abhinavsarkar.net</a></i>
+    <i>Original post by <a href="http://twitter.com/">Varun Pai</a> - check out <a href="https://medium.com/@irrational_pai?source=rss-3a83e65683fa------2">Stories by Varun Pai on Medium</a></i>
   </span>
-</div>
-
+</div></p>
 </div>
   
   
@@ -1864,7 +391,7 @@ X-Powered-By: Express
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2017/09/12/gunak-designing-with-the-indian-government/">Gunak — Designing with the Indian Government</a></h1>
+      <h1 class="entry-title"><a href="/blog/2018/03/21/designing-for-open-source-software/">Designing for open source software</a></h1>
       
       
     
@@ -1879,29 +406,32 @@ X-Powered-By: Express
 
 
 
-<time datetime="2017-09-12T00:00:00+05:30" pubdate data-updated="true"></time>
+<time datetime="2018-03-21T00:00:00+05:30" pubdate data-updated="true"></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><h4>Working with a government body to digitise their offline hospital quality assurance system</h4>
+  <div class="entry-content"><h4>We all believe open source software is badly designed because, historically, it was.</h4>
 
 
-<h3>What’s the problem?</h3>
+<h4>Mattermost → Relay</h4>
 
 
-<p>The NRHM (National Rural Health Mission) is an initiative undertaken by the Government of India to address the health needs of under-served rural areas. The NRHM was initially tasked with addressing the health needs of 18 states that had been identified as having weak public health indicators.</p>
+<p>When you hear the words “open source” attached to a product, what image comes to mind? Do you imagine an office full of designers obsessing over every little pixel? Or do you imagine an army of alpha-nerds piecing together a slap-dash knockoff of some proprietary software?</p>
 
 
-<p>In an effort to better this setup, the Government of India setup the NHSRC (National Health Systems Resource Centre), under the NRHM, to serve as an apex body for technical assistance. The goal of this institution is to improve health outcomes by facilitating governance reform, health systems innovations, and improved information sharing among all stakeholders — at the national, state, district and sub-district levels — through capacity development and convergence models.</p>
+<p>We all believe open source software is badly designed because, historically, it was. (#NotAllOpenSourceSoftware)</p>
 
 
-<p>One of the areas that the NHSRC works in is the provision of universal healthcare services. Universal access to good quality services — services that are effective, that are safe and satisfying to the patient; services that are patient and community centred, and services that make efficient use of the limited resources available.</p>
+<p>Thirty years ago, in 1988, the very concept of a license or design language for software was far beyond the average person. A decade later, everything was still awful. Software barely worked. Your PC definitely had a virus on it. HTML had a &lt;blink&gt; tag. Installing Linux required weeks of patience and belief in oneself — the kind of conviction I would need to train for a marathon. If there is one canonical failure we can promote as the poster child of this dark era, it is OpenOffice. Or StarOffice or LibreOffice or Apache OpenOffice or OOo or AOO or whatever name you might know it by. When the very <em>name</em> of the product is this broken it’s unlikely to succeed as a brand.</p>
 
 
-<p><figure><img alt="" src="https://cdn-images-1.medium.com/max/450/1*8xDWMKa1RdtFHedqIwICWg.jpeg" /></figure><p>The approach for achieving these objectives involves ensuring that every single health facility is scored against pre-defined standards with periodic supportive supervision for ensuring continual improvement.</p><p>There are three main components to conducting an assessment,</p><p>- Facilities<br>- Assessments themselves, and<br>- Facilitators</p><blockquote>Facilitators <em>conduct</em> Assessments <em>for</em> Facilities.</blockquote><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*_nUdGAoCa5TMnX3xgXSJaQ.png" /></figure><p>Facilities are hospitals or other healthcare systems that exist at different levels,</p><ul><li>National level</li><li>State level</li><li>District level</li><li>District Hospital level</li></ul><p>Based on their level, facilities would be eligible for a particular type of assessment.</p><p>There are two main types of assessments in the system,</p><ul><li><strong>National Quality Assessment System (NQAS):</strong> Is a system which has incorporated best practices from the contemporary systems, and contextualised them for meeting the needs of Public Health System in the country</li><li><strong>Kayakalp assessment:</strong> To complement the government’s ‘Swachh Bharat Abhiyan’ (cleanliness in public spaces campaign), the Ministry of Health &amp; Family welfare, Government of India launched a National Initiative to present awards to public health facilities that demonstrate high levels of cleanliness, hygiene and infection control</li></ul><p><strong>Assessments</strong> are a set of pre-defined standards against which facilities are scored. Assessments happen periodically throughout the year under supervision to ensure continual improvement.</p><p><strong>Facilitators</strong> are people with varied experience, who are picked based on the type of assessment. For instance, National level assessments would require facilitators with a certain set of requirements as compared to a State level assessments. For instance, national level facilitators will consist of representatives from the programme divisions (maternal health, child health, family planning, etc.) of the Ministry of Health and Family Welfare, Government of India and National Health Systems Resource Centre.</p><h3>How does the assessment process work?</h3><p>The assessment process requires Facilitators to give a Score (of 0, 1 or 2) to a Measurable Element (ME).</p><p>Each ME belongs to an Area of Concern (AoC) and an AoC belongs to a Standard.</p><p><strong>Standards:</strong> These are broad thematic areas with respect to cleanliness &amp; hygiene, and can be termed as the “pillars” of the system.</p><p><strong>Area of Concern:</strong> Each theme (Standard), has a fixed number of criteria that cover specific attributes.</p><p><strong>Measurable Element:</strong> Is the lowest and most tangible unit of an assessment. MEs are specific requirements that the facilitators are expected to look for in a facility for ascertaining the extent of compliance and award a score.</p><p><strong>Checkpoints:</strong> In the NQAS type assessment, MEs are broken down further into Checkpoints. Checkpoints are departmental checklists.</p><p>This is how the above-mentioned elements exist in the Assessments,</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*eMGSqgyRMWAe1B5VIfCu5Q.jpeg" /></figure><p>Assessments for Facilities are done via <strong>Checklists</strong>, which encapsulate all of the above (Standards, AoCs, MEs and Checkpoints).</p><h3>How were assessments conducted prior to the app?</h3><p>Facilitators were handed sheets of paper with all the Standards, AoC and ME on them. Facilitators would traverse back and forth through this list, assign a compliance score to a ME until they were done with all AoC and subsequently with all Standards.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/450/1*MYeRa6OIbjnpvCMJNPjV9A.png" /></figure><p><strong>Advantages of the offline system</strong>,</p><ul><li>Easy and fast scanning of Standards, AoCs and MEs</li><li>This medium requires little to no training</li></ul><p><strong>Disadvantages of the the offline system</strong>,</p><ul><li>Hard to keep track of progress. Facilitators have to scan and do this themselves by repeatedly going through the list</li><li>Force facilitators to conduct their assessments by the list, rather than what is convenient</li><li>Unobliging towards writing comments for scores awarded to MEs</li><li>Can’t generate reports immediately</li><li>Submitting Assessments as a physical copy and manually syncing the results across the entire district/state/nation</li></ul><h3>What is Gunak?</h3><p>Based on the disadvantages mentioned above, Nikhil (senior member of the NHSRC) thought it’d be best to use technology to make the process of conducting and syncing assessments easier. <strong>Gunak</strong> is the app that aimed at doing this.</p><p><strong>Minimum feature list</strong> we aimed to launch the app with,</p><ul><li>Conduct NQAS and Kayakalp assessments</li><li>Motivate facilitators to enter comments for the scores they give</li><li>Allow assessments to be conducted offline</li><li>Sync assessments once facilitators were in an area with active internet connection</li><li>View detailed reports across all Standards, AoCs and MEs for finished assessments</li><li>Sync reports of finished assessments for peers/superiors to view/review</li></ul><p><strong>The challenges we faced</strong>,</p><ul><li>Maintain familiarity while transitioning facilitators from an offline to an online system</li><li>Translating a multi-tier architecture to mobile</li></ul><h3>Navigation</h3><p><strong>Usage:</strong> For an assessment to be complete, facilitators have to finish all MEs across all AoCs.</p><p><strong>Usage Pattern:</strong> Facilitators, physically visit facilities to conduct assessments. The offline medium sometimes forced the facilitators to finish Measurable Elements in a sequential order (as displayed on paper) since it would be easier to keep track of the progress of the assessment.</p><p><strong>Notes:</strong></p><ol><li>MEs are specific department-wise questions for a facility. Since most facilities aren’t built the same way, following a sequential pattern wasn’t the way to go ahead.</li><li>The assessments are usually carried out over a period of 3–5 days.</li></ol><p>We wanted to design a system that would be flexible and not dictate facilitator behaviour. A system that would always keep the facilitator aware of where they are and their progress. In addition to this, we had to ensure that readability and usability were the main focus since facilitators moved around a lot while conducting assessments.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*n6_cjD2L90y6iRs04Jllkw.jpeg" /></figure><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*SEo8KLo9l7b4iHNfKXCP0A.jpeg" /></figure><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*d8rDosnp93kSlIF8EI5xog.jpeg" /></figure><p>The bottom navigation for an ME, allows facilitators to know the progress of the AoC these MEs belong to. It works as a navigation system where facilitators can jump forward to answer an ME and come back to answer another ME.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*qPKh7IjED-M9TovayibpYQ.jpeg" /></figure><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*Hq2MZVvQbVIkMqseh-SmIw.jpeg" /></figure><h3>Search</h3><p>We wanted to find an equivalent for the ‘flip &amp; find’ function, that facilitators perform on paper, for the app.</p><p>Search allows facilitators to find MEs, AoCs and Standards.</p><p>Our Search feature isn’t a simple text match. As seen below, it can identify that the word ‘hygiene’, could pertain to a Standard, an AoC or MEs.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*TYIUyJtHTqSPWxwBNVXt1A.jpeg" /></figure><h3>Reports</h3><p>One of the main drawbacks of the offline medium was its inability to generate reports. A facilitator or their superior would spend hours going through an assessment and assign a score for the same.</p><p>We took advantage of technology to provide detailed reports based on Departments, AoC and Score, which can be shared as an excel sheet or as an image.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*1qdESsDlkRVWDjUtwbqD4w.jpeg" /></figure><h3>Who did we work with?</h3><p>This project would not have been possible if it wasn’t for the amazing team at <a href="http://www.samanvayfoundation.org/">Samanvay</a>. This is our second project with them, you can read about the first one here,</p><p><a href="https://uxdesign.cc/designing-for-rural-india-part-1-a0700e705400">Designing for Rural India — Part 1</a></p><h3>App Launch and Reception</h3><p>The Gunak app is being rolled out in phases. Its first launch was in August 2017 by the Ministry of Health and Family Welfare, the app has a 4.8* rating on the play store.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*bAw7hqDgqP8B1iTyDrk9Nw.jpeg" /></figure><p>Thank you so much for reading this. If you found this interesting, don’t forget to 👏 👏</p><p>If you have questions or thoughts about the post and/or would like to reach out to us outside of Medium, send us an email, <strong><a href="&#109;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#109;&#111;&#x73;&#x68;&#x69;&#x6d;&#x6f;&#x73;&#x68;&#x69;&#x40;&#110;&#105;&#108;&#101;&#x6e;&#115;&#x6f;&#46;&#99;&#x6f;&#x6d;">&#x6d;&#x6f;&#115;&#104;&#105;&#109;&#111;&#115;&#x68;&#105;&#x40;&#110;&#x69;&#108;&#x65;&#110;&#115;&#x6f;&#x2e;&#x63;&#x6f;&#x6d;</a></strong></p><p>🙏</p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=9d3d4b0eefe" width="1" height="1"><hr><p><a href="https://uxdesign.cc/gunak-designing-with-the-government-9d3d4b0eefe">Gunak — Designing with the Indian Government</a> was originally published in <a href="https://uxdesign.cc">uxdesign.cc</a> on Medium, where people are continuing the conversation by highlighting and responding to this story.</p><div class="author">
+<p>Fast forward ten more years. As of 2008, Firefox was eating Microsoft’s lunch. Firefox was open source, fast, and standards-compliant. It was easy to like Firefox. But we didn’t like Firefox. We <strong>loved</strong> Firefox. Firefox had a brand before it was Firefox. A brand isn’t a snappy name and a cute logo. Your product is your brand and your product is dictated by its design.</p>
+
+
+<p><figure><img alt="" src="https://cdn-images-1.medium.com/max/400/1*Mbzpzkw4uraKcHuYgVnp_g.png" /><figcaption>Image from <a href="http://www.lowter.com/blogs/2008/6/21/firefox-3">Lowter</a></figcaption></figure><p>In 2018, user expectations demand that design asymptotically approach perfection: your product better be open, compatible, clean, fast, and powerful. When nilenso first made the move <a href="https://medium.com/@deobald/we-created-relay-by-escaping-slack-aedf0579a65f">from Slack to Mattermost</a>, we kept all of this in mind. From our very first deployment of Mattermost it felt <em>whole</em>. We chose Mattermost because it was so very close to the design we wanted, we knew we could help bring it the rest of the way.</p><h3>The beginning</h3><p>The design problems that currently exist with Mattermost aren’t just visual but interaction and experience related. One of the first issues we took up was adding infinite scroll to the channel history. We couldn’t fathom why users should manually click to load every page of history. <a href="https://github.com/mattermost/mattermost-webapp/pull/941">So we fixed it</a>!</p><p>In the not-too-distant future we will add all the little nuanced details which transform Relay into software you absolutely <strong>love</strong>. At the moment, however, our aim is to solve the obvious problems our users have with the Mattermost/Relay experience. Like infinite scroll, these are the problems that left our early users shouting at us “ugh… how have you not fixed this yet?!”</p><p>Such problems stem from the pains caused by inconsistencies and visual discrepancies which hamper usability. It is surprising to many how quickly these seemingly small issues amount to death by a thousand papercuts. It is equally surprising how quickly software becomes a joy to use once you get the basics right.</p><p>We’ll start with the basics — icons and fonts — and then move on to the specifics of how we redesigned Mattermost as Relay, piece by piece.</p><h3>Icons</h3><p><a href="https://medium.com/@deobald/we-created-relay-by-escaping-slack-aedf0579a65f">When we moved from Slack to Mattermost</a> the difference in icons used was stark. All icons used in Mattermost were inconsistent with respect to weights. They were standing out of the interface rather than blending in.</p><p>After further digging, we realised that Mattermost uses the free version of <a href="https://fontawesome.com/icons">Font Awesome</a>. Don’t get me wrong, I love the guys at Font Awesome; I even backed their kickstarter. But not all icons being available in the free weights (regular &amp; solid) is quite a bummer.</p><p>We had three rules for selecting an icon set:</p><ul><li>Icons <strong>must</strong> be open source</li><li>Icons need to be extensive</li><li>Icons need to be available in different styles (line and solid)</li></ul><blockquote>Allow me to interrupt with an aside. Technically, it is <em>possible</em> for us to build commercial artefacts into the Relay client by keeping them out of the source tree, even though Relay is AGPL3-licensed (as a derivative of the <a href="https://github.com/mattermost/mattermost-webapp">mattermost-webapp</a>). Why, then, do we feel it is essential that the icons be open source? Relay lives at the intersection of <a href="https://www.fsf.org/about/what-is-free-software">the principles of Free Software</a> and <a href="https://opensource.org/licenses/AGPL-3.0">the license which governs it</a>. Relay stands on the shoulders of giants — not only the Mattermost source code but Linux, GoLang, React, and hundreds of other projects. Here, between the spirit and the letter of Open Philosophies, exists a great deal of nuance. Cutting through this nuance is a root concept, however: “share alike.” If we take something from the free/open software community, what we return to that community should afford the next recipient the same freedoms we had. If we tweak Relay’s design until it is absolutely perfect but that involves changes which Mattermost cannot absorb upstream, we have failed them and every other project we have built ourselves upon. Thus, our icons must have an open license. — Steven Deobald</blockquote><p>Thanks Steve. Keeping the above mentioned points in mind, there were three icon sets that made the final round of discussion:</p><ul><li><a href="https://vmware.github.io/clarity/icons/icon-sets">Clarity icons</a></li><li><a href="https://feathericons.com/">Feather icons</a></li><li><a href="https://useiconic.com/open">Iconic icons</a></li></ul><p>We chose the Clarity icon set because of styles, consistency, and the icons being part of a design language system. Clarity is an open source design system created and maintained by the good folks at VMware. Since VMware has a dedicated team pushing continuous updates there is little fear the icon set will be abandoned or go stale.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*8YedTvLmvirplj0sFZ8_EA.png" /></figure><h3>Font</h3><p>Our font selection followed the same rules:</p><ul><li>Fonts <strong>must</strong> be open source</li><li>Fonts should be available in multiple weights</li></ul><p>…along with these additions:</p><ul><li>Fonts with large x-height for easy readability</li><li>Fonts with thick Regular weight so fonts will be crisp</li></ul><p>We stress so much on font weights because Relay is, first and foremost, a messaging tool. In Relay, you spend most of your time reading and we want this experience to be as enjoyable as possible. Relay also has complete Markdown support and weights help establish hierarchy both within the app and within the messages themselves.</p><p>We had a few contenders which satisfied these requirements. PT Sans, Lato, and Noto Sans all have an enjoyable reading experience but after a lot of trial and error we chose Fira Sans.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*zKRXBmPhm29XOuEAIu-V1Q.png" /></figure><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*cFZx7FuOzEfaRXvzkL9-3w.png" /></figure><p>Fira Sans is an incredible font. It has a healthy variety of weights and the compressed nature of the font holds the messaging interface together while keeping it crisp.</p><blockquote>Did you know that Fira Sans was built on top of Erik Spiekermann’s commercial font FF Meta? And that Spiekermann was commissioned by the Mozilla Foundation! <a href="http://typographica.org/typeface-reviews/fira-sans/">Read the whole story here</a></blockquote><h3>How Mattermost became Relay</h3><p>Implementing the design basics improved the existing experience. But to make those changes truly delightful we need to fine-tune every aspect of the app. We have started with three major sections:</p><ol><li>Left sidebar</li><li>Channel header</li><li>Main messaging interface</li></ol><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*Nxo6ha36AGdYC5yTbPM-4g.png" /><figcaption>Present Mattermost interface</figcaption></figure><h4><strong>1. Left sidebar</strong></h4><p>The sidebar’s Team section allows users to switch between teams within organisations that they’re a part of. The current Mattermost implementation truncates the team name and adds a byline. The problem with this is that it does not add any value since hovering over the team opens a tooltip with the team name anyway. We removed the byline and the truncated text.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*9SkvIpcpCoZcPqK_aQyg3w.png" /></figure><p>The sidebar’s Channel section felt mashed together. There is a clear hierarchy intended, which includes channel headers such as “Favorite Channels” and a distinction between active and inactive channels. We brought this hierarchy to the surface. Active channels have a heavy weight and inactive channels fade away with a lower opacity, despite the <em>increased</em> crispness of Fira Sans.</p><p>Grouped channels now have tighter spacing and groups themselves have larger spacing, allowing group titles to have a smaller font. All together, this makes the hierarchy obvious even at a glance.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*hiZL-Z9BvrCqgQmi1KZL3w.png" /></figure><h4><strong>2. Channel header</strong></h4><p>In the channel header we cleaned up the icons. Here are the issues we encountered with the icons:</p><ul><li>Most icons weren’t of the same weight</li><li>Some icons were of a different size</li><li>Some icons had some positioning overrides to align them</li></ul><p>The old icons for the channel header stood out, drawing attention away from the main chat area. We wanted them instead to blend into the design—unobtrusive but still obvious. To do this we removed the borders and switched the icon set to Clarity.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*JPH74EFnVALhnJT40VyJEQ.png" /></figure><p>In addition to icons, we fixed the CSS for the header and right sidebar, getting rid of all funny margins and relative positioning. We also added consistent heights, paddings, and sizes for each of the icons. These fixes don’t just add polish to the UI; once merged, they will also ensure it is easier for anyone in the community, including us, to customise Mattermost.</p><h4><strong>3. Messaging interface</strong></h4><p>The messaging interface is where users spend the most time. The messaging interface is also where Mattermost has most of its design inconsistencies, which are most glaring in the basics: alignment, spacing between posts, font size, and other elements on the interface such as the reply box.</p><p>After we moved to Fira Sans we bumped up the font size, made sure the headings and names are bolded to establish hierarchy, and fixed alignment and spacing issues to deliver a crisper and more enjoyable reading experience.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*fHEbMdPuBuTKZTOBIFOrLg.png" /></figure><h3><strong>Themes</strong></h3><p>Accessibility matters. We have light-sensitive coworkers and we’re sure you do, too. That’s why Relay comes with light and dark themes out of the box.</p><p>There are many Relay/Mattermost-compatible themes available already but we will pour all our energy into these two. They already make Relay beautiful and with every <a href="https://en.wikipedia.org/wiki/Kaizen">kaizen</a> they will only get better.</p><p>Of course, we don’t restrict you to these two themes. Relay also comes with community themes and Relay’s entire colour scheme is fully customisable… not just the sidebar (<em>cough</em> Slack <em>cough</em>). We are working to make Relay <a href="https://trello.com/c/rAjOFRmw">100% customisable through CSS</a> so users have complete control over every aspect of the UI, if they want.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*Xi8y7fGywOWfNpZPAYbxPA.png" /></figure><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*RSYA2D6Mbd-RgxbbYPcANQ.png" /></figure><h3>Putting it all together</h3><p>By following a consistent design language for icons, font, and themes we ensure all our “pieces” are whole unto themselves. Putting them back together, the application itself becomes whole.</p><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*w6L79VGBNKJy4pKu-qhK1A.png" /></figure><p>Mattermost has published a <a href="https://github.com/mattermost/mattermost-server/issues/8350">design challenge</a> that encourages designers from all over the world to improve Mattermost (and, hence, Relay) readability and usability. <a href="https://github.com/mattermost/mattermost-webapp/pull/971">Our redesign addresses this challenge</a>.</p><p><a href="https://relay-chat.com/signup">Sign up</a>, try the redesign, and tell us what you think!</p><p>Along with visual design changes, Relay also aims to significantly improve its user experience. Our <a href="https://trello.com/b/OaHPWOAi">public Trello board</a> contains our plan for Relay’s future.</p><h3><strong>Future</strong></h3><p>“Design” is the <a href="https://medium.com/@baditaflorin/inside-the-top-1000-tags-on-medium-com-part-1-a1ff96356639">8th most popular tag on Medium</a>. “Open Source” is ranked 290. Source code licenses will never be sexy for the same reason your city’s water utility company will never be. The water supply is inherently a part of your city’s design. Similarly, your freedom as a user is designed into software you buy. Your ownership of a product is but one more limb in the tree of design.</p><blockquote>Open source software needs good design because good design respects you, the user.</blockquote><blockquote>❤</blockquote><figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*g6rztkAO4PgkBPPYG0A91w.png" /><figcaption>Illustration by <a href="https://www.instagram.com/basementtaco/">Shrishti Ambani</a></figcaption></figure><iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fupscri.be%2F50d69a%3Fas_embed%3Dtrue&amp;dntp=1&amp;url=https%3A%2F%2Fupscri.be%2F50d69a%2F&amp;image=https%3A%2F%2Fucarecdn.com%2F6e8986c7-e64a-4116-9afb-fd71a476f0a9%2F&amp;key=d04bfffea46d4aeda930ec88cc64b87c&amp;type=text%2Fhtml&amp;schema=upscri" width="800" height="400" frameborder="0" scrolling="no"><a href="https://medium.com/media/05d5fd32eda31cbd1b83287606744532/href"><a href="https://medium.com/media/05d5fd32eda31cbd1b83287606744532/href">https://medium.com/media/05d5fd32eda31cbd1b83287606744532/href</a></a></iframe><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=e19dfb68c708" width="1" height="1"><hr><p><a href="https://uxdesign.cc/mattermost-relay-e19dfb68c708">Designing for open source software</a> was originally published in <a href="https://uxdesign.cc">UX Collective</a> on Medium, where people are continuing the conversation by highlighting and responding to this story.</p><div class="author">
   <img src="https://nilenso.com/images/people/varun-200.png" style="width: 96px; height: 96;">
   <span style="position: absolute; padding: 32px 15px;">
     <i>Original post by <a href="http://twitter.com/">Varun Pai</a> - check out <a href="https://medium.com/@irrational_pai?source=rss-3a83e65683fa------2">Stories by Varun Pai on Medium</a></i>
@@ -1939,23 +469,23 @@ Included file 'custom/asides/subscribe.html' not found in _includes directory<se
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2017/10/01/writing-a-simple-rest-web-service-in-purescript-p/">Writing a Simple REST Web Service in Purescript - Part 2</a>
+        <a href="/blog/2018/05/23/finances-in-an-employee-owned-technology-co-opera/">Finances in an Employee-Owned Technology Co-operative</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2017/09/29/writing-a-simple-rest-web-service-in-purescript-p/">Writing a Simple REST Web Service in Purescript - Part 1</a>
+        <a href="/blog/2018/04/09/designing-for-open-source-software/">Designing for Open Source Software</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2017/09/12/gunak-designing-with-the-indian-government/">Gunak — Designing with the Indian Government</a>
+        <a href="/blog/2018/03/21/designing-for-open-source-software/">Designing for open source software</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2017/05/05/designing-for-rural-india-part-1/">Designing for Rural India — Part 1</a>
+        <a href="/blog/2017/10/01/writing-a-simple-rest-web-service-in-purescript-p/">Writing a Simple REST Web Service in PureScript - Part 2</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2017/04/06/black-mirror-or-a-review-of-the-review-process-at/">Black Mirror*, or a review of the review process at a software co-operative</a>
+        <a href="/blog/2017/09/29/writing-a-simple-rest-web-service-in-purescript-p/">Writing a Simple REST Web Service in PureScript - Part 1</a>
       </li>
     
   </ul>

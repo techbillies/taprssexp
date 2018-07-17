@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Writing a Simple REST Web Service in Purescript - Part 1 - Nilenso Blog</title>
+  <title>Writing a Simple REST Web Service in PureScript - Part 1 - Nilenso Blog</title>
   <meta name="author" content="Nilenso">
 
   
@@ -15,7 +15,7 @@
   
   
     
-      Writing a Simple REST Web Service in Purescript - Part 1
+      Writing a Simple REST Web Service in PureScript - Part 1
     
   
     
@@ -48,7 +48,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes"/>
 
   
-  <link rel="canonical" href="http://blog.nilenso.com/blog/2017/09/29/writing-a-simple-rest-web-service-in-purescript-p/">
+  <link rel="canonical" href="https://abhinavsarkar.net/posts/ps-simple-rest-service/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Nilenso Blog" type="application/atom+xml">
@@ -108,7 +108,7 @@
   <header>
   
     
-      <h1 class="entry-title">Writing a Simple REST Web Service in Purescript - Part 1</h1>
+      <h1 class="entry-title">Writing a Simple REST Web Service in PureScript - Part 1</h1>
     
   
     
@@ -135,10 +135,10 @@
 </div>
 
 
-<p>At <a href="https://nilenso.com" target="_blank" rel="noopener">Nilenso</a>, we’ve been working with a client who has chosen <a href="http://purescript.org" target="_blank" rel="noopener">Purescript</a> as their primary programming language. Since I couldn’t find any canonical documentation on writing a web service in PureScript, I thought I’d jot down the approach that we took.</p>
+<p>At <a href="https://nilenso.com" target="_blank" rel="noopener">Nilenso</a>, we’ve been working with a client who has chosen <a href="http://purescript.org" target="_blank" rel="noopener">PureScript</a> as their primary programming language. Since I couldn’t find any canonical documentation on writing a web service in PureScript, I thought I’d jot down the approach that we took.</p>
 
 
-<p>The aim of this two-part tutorial is to create a simple JSON <a href="https://en.wikipedia.org/wiki/REST" target="_blank" rel="noopener">REST</a> web service written in Purescript, to run on a node.js server. This assumes that you have basic proficiency with Purescript. We have the following requirements:</p>
+<p>The aim of this two-part tutorial is to create a simple JSON <a href="https://en.wikipedia.org/wiki/REST" target="_blank" rel="noopener">REST</a> web service written in PureScript, to run on a node.js server. This assumes that you have basic proficiency with PureScript. We have the following requirements:</p>
 
 
 <ol type="1">
@@ -161,14 +161,14 @@
 <h2 id="setting-up">Setting Up<a href="#setting-up" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h2>
 
 
-<p>We start with installing Purescript and the required tools. This assumes that we have <a href="https://nodejs.org" target="_blank" rel="noopener">node</a> and <a href="https://www.npmjs.com" target="_blank" rel="noopener">npm</a> installed on our machine.</p>
+<p>We start with installing PureScript and the required tools. This assumes that we have <a href="https://nodejs.org" target="_blank" rel="noopener">node</a> and <a href="https://www.npmjs.com" target="_blank" rel="noopener">npm</a> installed on our machine.</p>
 
 
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">mkdir</span> -p ~/.local/
 $ <span class="ex">npm</span> install -g purescript pulp bower --prefix ~/.local/</code></pre></div>
 
 
-<p><a href="https://github.com/purescript-contrib/pulp" target="_blank" rel="noopener">Pulp</a> is a build tool for Purescript projects and <a href="http://bower.io" target="_blank" rel="noopener">bower</a> is a package manager used to get Purescript libraries. We’ll have to add <code>~/.local/bin</code> in our <code>$PATH</code> (if it is not already added) to access the binaries installed.</p>
+<p><a href="https://github.com/purescript-contrib/pulp" target="_blank" rel="noopener">Pulp</a> is a build tool for PureScript projects and <a href="http://bower.io" target="_blank" rel="noopener">bower</a> is a package manager used to get PureScript libraries. We’ll have to add <code>~/.local/bin</code> in our <code>$PATH</code> (if it is not already added) to access the binaries installed.</p>
 
 
 <p>Let’s create a directory for our project and make Pulp initialize it:</p>
@@ -200,7 +200,7 @@ $ ls bower_components
 purescript-console  purescript-eff  purescript-prelude purescript-psci-support</code></pre></div>
 
 
-<p>Pulp creates the basic project structure for us. <code>src</code> directory will contain the source while the <code>test</code> directory will contain the tests. <code>bower.json</code> contains the Purescript libraries as dependencies which are downloaded and installed in the <code>bower_components</code> directory.</p>
+<p>Pulp creates the basic project structure for us. <code>src</code> directory will contain the source while the <code>test</code> directory will contain the tests. <code>bower.json</code> contains the PureScript libraries as dependencies which are downloaded and installed in the <code>bower_components</code> directory.</p>
 
 
 <h2 id="types-first">Types First<a href="#types-first" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h2>
@@ -237,13 +237,13 @@ derive <span class="kw">instance</span><span class="ot"> genericUser ::</span> <
   encode <span class="fu">=</span> genericEncode <span class="fu">$</span> defaultOptions { unwrapSingleConstructors <span class="fu">=</span> true }</code></pre></div>
 
 
-<p>We are using the generic support for Purescript types from the <a href="https://pursuit.purescript.org/packages/purescript-generics-rep" target="_blank" rel="noopener"><code>purescript-generics-rep</code></a> and <a href="https://pursuit.purescript.org/packages/purescript-foreign-generic" target="_blank" rel="noopener"><code>purescript-foreign-generic</code></a> libraries to encode and decode the <code>User</code> type to JSON. We install the library by running the following command:</p>
+<p>We are using the generic support for PureScript types from the <a href="https://pursuit.purescript.org/packages/purescript-generics-rep" target="_blank" rel="noopener"><code>purescript-generics-rep</code></a> and <a href="https://pursuit.purescript.org/packages/purescript-foreign-generic" target="_blank" rel="noopener"><code>purescript-foreign-generic</code></a> libraries to encode and decode the <code>User</code> type to JSON. We install the library by running the following command:</p>
 
 
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">bower</span> install purescript-foreign-generic --save</code></pre></div>
 
 
-<p>Now we can load up the module in the Purescript REPL and try out the JSON conversion features:</p>
+<p>Now we can load up the module in the PureScript REPL and try out the JSON conversion features:</p>
 
 
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">$</span> pulp repl
@@ -272,7 +272,7 @@ derive <span class="kw">instance</span><span class="ot"> genericUser ::</span> <
 <h2 id="persisting-it">Persisting It<a href="#persisting-it" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h2>
 
 
-<p>Next, we add the support for saving a <code>User</code> instance to a Postgres DB. First, we install the required libraries using bower and npm: <a href="https://github.com/brianc/node-postgres" target="_blank" rel="noopener"><code>pg</code></a> for Javascript bindings to call Postgres, <a href="https://pursuit.purescript.org/packages/purescript-aff" target="_blank" rel="noopener"><code>purescript-aff</code></a> for asynchronous processing and <a href="https://pursuit.purescript.org/packages/purescript-postgresql-client" target="_blank" rel="noopener"><code>purescript-postgresql-client</code></a> for Purescript wrapper over <code>pg</code>:</p>
+<p>Next, we add the support for saving a <code>User</code> instance to a Postgres DB. First, we install the required libraries using bower and npm: <a href="https://github.com/brianc/node-postgres" target="_blank" rel="noopener"><code>pg</code></a> for Javascript bindings to call Postgres, <a href="https://pursuit.purescript.org/packages/purescript-aff" target="_blank" rel="noopener"><code>purescript-aff</code></a> for asynchronous processing and <a href="https://pursuit.purescript.org/packages/purescript-postgresql-client" target="_blank" rel="noopener"><code>purescript-postgresql-client</code></a> for PureScript wrapper over <code>pg</code>:</p>
 
 
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">npm</span> init -y
@@ -429,7 +429,7 @@ listUsers conn <span class="fu">=</span>
 <h2 id="serving-it">Serving It<a href="#serving-it" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h2>
 
 
-<p>We can now write a simple HTTP API over the persistence layer using <a href="https://expressjs.com" target="_blank" rel="noopener">Express</a> to provide CRUD functionality for users. Let’s install Express and <a href="https://pursuit.purescript.org/packages/purescript-express" target="_blank" rel="noopener">purescript-express</a>, the Purescript wrapper over it:</p>
+<p>We can now write a simple HTTP API over the persistence layer using <a href="https://expressjs.com" target="_blank" rel="noopener">Express</a> to provide CRUD functionality for users. Let’s install Express and <a href="https://pursuit.purescript.org/packages/purescript-express" target="_blank" rel="noopener">purescript-express</a>, the PureScript wrapper over it:</p>
 
 
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">npm</span> install express --save
@@ -695,7 +695,7 @@ X-Powered-By: Express
 <h3 id="creating-a-user">Creating a User<a href="#creating-a-user" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h3>
 
 
-<p><code>createUser</code> handler is a bit more involved. First, we add an Express middleware to parse the body of the request as JSON. We use <a href="https://github.com/expressjs/body-parser" target="_blank" rel="noopener"><code>body-parser</code></a> for this and access it through Purescript <a href="https://github.com/purescript/documentation/blob/master/guides/FFI.md" target="_blank" rel="noopener">FFI</a>. We create a new file <code>src/SimpleService/Middleware/BodyParser.js</code> with the content:</p>
+<p><code>createUser</code> handler is a bit more involved. First, we add an Express middleware to parse the body of the request as JSON. We use <a href="https://github.com/expressjs/body-parser" target="_blank" rel="noopener"><code>body-parser</code></a> for this and access it through PureScript <a href="https://github.com/purescript/documentation/blob/master/guides/FFI.md" target="_blank" rel="noopener">FFI</a>. We create a new file <code>src/SimpleService/Middleware/BodyParser.js</code> with the content:</p>
 
 
 <div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="st">&quot;use strict&quot;</span><span class="op">;</span>
@@ -1042,7 +1042,7 @@ X-Powered-By: Express
 <h2 id="conclusion">Conclusion<a href="#conclusion" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h2>
 
 
-<p>That concludes the first part of the two-part tutorial. We learned how to set up a Purescript project, how to access a Postgres database and how to create a JSON REST API over the database. The code till the end of this part can be found in <a href="https://github.com/abhin4v/ps-simple-rest-service/tree/9fdfe3a15508a3c29bd4bc96310fcf52b1022678" target="_blank" rel="noopener">github</a>. In the <a href="https://abhinavsarkar.net/posts/ps-simple-rest-service-2/">next</a> part, we’ll learn how to do API validation, application configuration and logging. This post can be discussed on <a href="https://www.reddit.com/r/purescript/comments/737bg1/writing_a_simple_rest_service_in_purescript/" target="_blank" rel="noopener">r/purescript</a>.</p>
+<p>That concludes the first part of the two-part tutorial. We learned how to set up a PureScript project, how to access a Postgres database and how to create a JSON REST API over the database. The code till the end of this part can be found in <a href="https://github.com/abhin4v/ps-simple-rest-service/tree/9fdfe3a15508a3c29bd4bc96310fcf52b1022678" target="_blank" rel="noopener">github</a>. In the <a href="https://abhinavsarkar.net/posts/ps-simple-rest-service-2/">next</a> part, we’ll learn how to do API validation, application configuration and logging. This post can be discussed on <a href="https://www.reddit.com/r/purescript/comments/737bg1/writing_a_simple_rest_service_in_purescript/" target="_blank" rel="noopener">r/purescript</a>.</p>
 
 
 <p>If you liked this post, please <a href="https://abhinavsarkar.net/posts/ps-simple-rest-service/#comment-container">leave a comment</a>.</p>
@@ -1093,7 +1093,7 @@ X-Powered-By: Express
         <a class="basic-alignment left" href="/blog/2017/09/12/gunak-designing-with-the-indian-government/" title="Previous Post: Gunak — Designing with the Indian Government">&laquo; Gunak — Designing with the Indian Government</a>
       
       
-        <a class="basic-alignment right" href="/blog/2017/10/01/writing-a-simple-rest-web-service-in-purescript-p/" title="Next Post: Writing a Simple REST Web Service in Purescript - Part 2">Writing a Simple REST Web Service in Purescript - Part 2 &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2017/10/01/writing-a-simple-rest-web-service-in-purescript-p/" title="Next Post: Writing a Simple REST Web Service in PureScript - Part 2">Writing a Simple REST Web Service in PureScript - Part 2 &raquo;</a>
       
     </p>
   </footer>
@@ -1118,23 +1118,23 @@ Included file 'custom/asides/subscribe.html' not found in _includes directory<se
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2017/10/01/writing-a-simple-rest-web-service-in-purescript-p/">Writing a Simple REST Web Service in Purescript - Part 2</a>
+        <a href="/blog/2018/05/23/finances-in-an-employee-owned-technology-co-opera/">Finances in an Employee-Owned Technology Co-operative</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2017/09/29/writing-a-simple-rest-web-service-in-purescript-p/">Writing a Simple REST Web Service in Purescript - Part 1</a>
+        <a href="/blog/2018/04/09/designing-for-open-source-software/">Designing for Open Source Software</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2017/09/12/gunak-designing-with-the-indian-government/">Gunak — Designing with the Indian Government</a>
+        <a href="/blog/2018/03/21/designing-for-open-source-software/">Designing for open source software</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2017/05/05/designing-for-rural-india-part-1/">Designing for Rural India — Part 1</a>
+        <a href="/blog/2017/10/01/writing-a-simple-rest-web-service-in-purescript-p/">Writing a Simple REST Web Service in PureScript - Part 2</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2017/04/06/black-mirror-or-a-review-of-the-review-process-at/">Black Mirror*, or a review of the review process at a software co-operative</a>
+        <a href="/blog/2017/09/29/writing-a-simple-rest-web-service-in-purescript-p/">Writing a Simple REST Web Service in PureScript - Part 1</a>
       </li>
     
   </ul>
