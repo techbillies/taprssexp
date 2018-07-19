@@ -32,6 +32,9 @@ make clean && make
 
 ...that should be it. If you have trouble with `planet.rb` or `Jekyll`, fork those repos, make your change, and get a PR back into the mainline. This repository should only contain tiny wrapper scripts and configuration.
 
+## Deploying
+
+Push to master branch in the repo (built assets not required). The [deploy script in server](bin/generate-planet.sh) should pick up the changes, build assets and deploy them in some time.
 
 ## Troubleshooting
 
