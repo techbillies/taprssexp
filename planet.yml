@@ -56,9 +56,9 @@ blogs:
     image: "https://nilenso.com/images/people/noopur-200.png"
     twitter: "9porcupine"
 
-  - author: "Varun Pai"
-    feed: "https://medium.com/feed/@irrational_pai"
-    image: "https://nilenso.com/images/people/varun-200.png"
+ # - author: "Varun Pai"
+ #   feed: "https://medium.com/feed/@irrational_pai"
+ #   image: "https://nilenso.com/images/people/varun-200.png"
 
     # - author: Nivedita Priyadarshini
     #   feed: "http:///"
