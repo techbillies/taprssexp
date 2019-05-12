@@ -55,18 +55,11 @@ blogs:
     feed: "https://medium.com/feed/@noopurvarma"
     image: "https://nilenso.com/images/people/noopur-200.png"
     twitter: "9porcupine"
-
- # - author: "Varun Pai"
- #   feed: "https://medium.com/feed/@irrational_pai"
- #   image: "https://nilenso.com/images/people/varun-200.png"
-
-    # - author: Nivedita Priyadarshini
-    #   feed: "http:///"
-    #   image:  "http://nilenso.com/images/people/nid-200.png"
-    #   twitter: "nid90"
-
-    # TODO: add @govindkrjoshi, @neenaoffline, @nid90, @noopurvarma, @yudistrange
-
+    
+  - author: "Samrat Man Singh"
+    feed: "https://samrat.me/feed.xml"
+    image: "https://nilenso.com/images/people/samrat-200.png"
+    twitter: "samratmansingh"
 
     ########################
     # Alumni: new posts won't be tagged with `nilenso` and if we regenerate
@@ -82,13 +75,3 @@ blogs:
     feed: "http://blog.timothyandrew.net/atom.xml"
     image:  "http://nilenso.com/images/people/tim-200.png"
     twitter: "timothyandrew"
-
-  # - author: "Neha Kumari"
-  #   feed: "http://isateapot.com/rss"
-  #   image:  "http://nilenso.com/images/people/neha-200.png"
-  #   twitter: "__neha"
-
-  # - author: "Prashant Karpe"
-  #   feed: "http://like-that-only.tumblr.com/rss"
-  #   image:  "http://nilenso.com/images/people/prashant-200.png"
-  #   twitter: "prashantwit"
