@@ -45,3 +45,23 @@ Push to master branch in the repo (built assets not required). The [deploy scrip
 ## Troubleshooting
 
 Only a few plugins have been carried over from [planet-nilenso](http://github.com/nilenso/planet-nilenso). If an aspect of the blog/planet appears to be broken, look in the `/plugins` directory of `planet-nilenso` for anything suspicious we may have forgotten. The less we need from there the better, though.
+
+## Adding / Removing feeds & tags
+
+### Adding a new feed
+New feeds can be added to the planet.yml under the `blogs` section. The configuration would look something as follows:
+```
+  - author: "Akshay Gupta"
+    feed: "http://blog.kitallis.in/feeds/posts/default"
+    image: "http://nilenso.com/images/people/kitallis-200.png"
+    twitter: "kitallis"
+```
+
+### Removing older feeds
+Feeds can be removed by removing the author configuration from the planet.yml file. This *WILL NOT* remove the older blog posts from these authors as they are added to the `source/_posts` directory
+
+### Adding new tags
+New tags can be added under the `whitelisted_tags` section in planet.yml.
+
+### Caveats
+Adding a new tag *WILL ADD* posts with this tag from all the active feeds. Thus historical posts will also be added from the active feeds.
