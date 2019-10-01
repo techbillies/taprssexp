@@ -16,46 +16,21 @@ planet:
       - "design"
 
 blogs:
-  - author: "Abhinav Sarkar"
-    feed: "https://abhinavsarkar.net/feed.xml"
-    image: "https://nilenso.com/images/people/abhinav-200.png"
-    twitter: "abhin4v"
-
   - author: "Akshay Gupta"
     feed: "http://blog.kitallis.in/feeds/posts/default"
     image:  "http://nilenso.com/images/people/kitallis-200.png"
     twitter: "kitallis"
-
-  - author: "Steven Deobald"
-    feed: "http://blog.deobald.ca/feeds/posts/default"
-    image:  "http://nilenso.com/images/people/steven-200.png"
-    twitter: "deobald"
-
-  - author: "Steven Deobald"
-    feed: "https://medium.com/feed/@deobald"
-    image:  "http://nilenso.com/images/people/steven2-200.png"
-    twitter: "deobald"
 
   - author: "Srihari Sriraman"
     feed: "http://sriharisriraman.in/atom.xml"
     image:  "http://nilenso.com/images/people/srihari-200.png"
     twitter: "sriharisriraman"
 
-  - author: "Unnikrishnan Geethagovindan"
-    feed: "http://blog.unnikrishnan.in/feed/"
-    image:  "http://blog.unnikrishnan.in/wp-content/uploads/2016/05/13124641_10207964967054916_8185125548463219102_n-e1464062267378.jpg"
-    twitter: "krish8664"
-
   - author: "Deepa Venkatraman"
     feed: "https://medium.com/feed/@deepa_93680"
     image: "https://nilenso.com/images/people/deepa-200.png"
     twitter: "deepa_v"
 
-  - author: "Noopur Varma"
-    feed: "https://medium.com/feed/@noopurvarma"
-    image: "https://nilenso.com/images/people/noopur-200.png"
-    twitter: "9porcupine"
-    
   - author: "Samrat Man Singh"
     feed: "https://samrat.me/feed.xml"
     image: "https://nilenso.com/images/people/samrat-200.png"
@@ -65,13 +40,31 @@ blogs:
     # Alumni: new posts won't be tagged with `nilenso` and if we regenerate
     #         the planet, old posts won't be lost
     #########################
-
-  - author: "Tejas Dinkar"
-    feed: "http://blog.gja.in/feeds/posts/default"
-    image:  "http://nilenso.com/images/people/gja-200.png"
-    twitter: "tdinkar"
-
-  - author: "Timothy Andrew"
-    feed: "http://blog.timothyandrew.net/atom.xml"
-    image:  "http://nilenso.com/images/people/tim-200.png"
-    twitter: "timothyandrew"
+  # - author: "Tejas Dinkar"
+  #   feed: "http://blog.gja.in/feeds/posts/default"
+  #   image: "http://nilenso.com/images/people/gja-200.png"
+  #   twitter: "tdinkar"
+  # - author: "Timothy Andrew"
+  #   feed: "http://blog.timothyandrew.net/atom.xml"
+  #   image: "http://nilenso.com/images/people/tim-200.png"
+  #   twitter: "timothyandrew"
+  # - author: "Abhinav Sarkar"
+  #   feed: "https://abhinavsarkar.net/feed.xml"
+  #   image: "https://nilenso.com/images/people/abhinav-200.png"
+  #   twitter: "abhin4v"
+  # - author: "Steven Deobald"
+  #   feed: "http://blog.deobald.ca/feeds/posts/default"
+  #   image: "http://nilenso.com/images/people/steven-200.png"
+  #   twitter: "deobald"
+  # - author: "Steven Deobald"
+  #   feed: "https://medium.com/feed/@deobald"
+  #   image: "http://nilenso.com/images/people/steven2-200.png"
+  #   twitter: "deobald"
+  # - author: "Unnikrishnan Geethagovindan"
+  #   feed: "http://blog.unnikrishnan.in/feed/"
+  #   image: "http://blog.unnikrishnan.in/wp-content/uploads/2016/05/13124641_10207964967054916_8185125548463219102_n-e1464062267378.jpg"
+  #   twitter: "krish8664"
+  # - author: "Noopur Varma"
+  #   feed: "https://medium.com/feed/@noopurvarma"
+  #   image: "https://nilenso.com/images/people/noopur-200.png"
+  #   twitter: "9porcupine"
