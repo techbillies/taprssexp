@@ -18,7 +18,7 @@
   
   
     
-      Turning Your Local Git Repo Into a Remote
+      Pow Over HTTPS
       
       
     
@@ -37,7 +37,10 @@
         
       
     
-...">
+  
+
+
+  I use Pow to manage ...">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -110,7 +113,7 @@
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2013/05/09/turning-your-local-git-repo-into-a-remote/">Turning Your Local Git Repo Into a Remote</a></h1>
+      <h1 class="entry-title"><a href="/blog/2013/07/11/pow-over-https/">Pow Over HTTPS</a></h1>
       
       
     
@@ -125,219 +128,56 @@
 
 
 
-<time datetime="2013-05-09T00:00:00+05:30" pubdate data-updated="true"></time>
+<time datetime="2013-07-11T00:00:00+05:30" pubdate data-updated="true"></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>Need to pull some changes from a friend&#8217;s local Git repo without having to push to <code>origin</code>? This post will show you how to do that.</p>
+  <div class="entry-content"><p>I use <a href="http://pow.cx">Pow</a> to manage web servers on my development machine. It works pretty well.
+To start my server, I just hit a URL like <code>http://surveyweb.dev</code>, which starts the server (if it isn&#8217;t running) and spins it down automatically in 5 minutes.</p>
 
 
 
 
-<p>You can access a local Git repo using SSH, but setting up keys and such will probably take some time. For a quick-and-dirty solution, HTTP is <em>much</em> easier.</p>
-
-
-
-
-<p>On the machine you want to use as the server, navigate to your project and then into the <code>.git</code> directory.</p>
+<p>It doesn&#8217;t work over HTTPS by default; here&#8217;s how you get that done.</p>
 
 
 <p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span> /path/to/project
-</span><span class='line'><span class="nv">$ </span><span class="nb">cd</span> .git
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gem install tunnels
 </span></code></pre></td></tr></table></div></figure></p>
 
-<p>Stand up a HTTP server using Python&#8217;s <code>SimpleHTTPServer</code> module. You can use any port number you like.</p>
+<p>This gem lets you route traffic from one port to another port.</p>
+
+
+
+
+<p>We need to route traffic from port 443, to port 80 (where the Pow server runs).</p>
 
 
 <p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>python -m SimpleHTTPServer 5000
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo tunnels 443 80
 </span></code></pre></td></tr></table></div></figure></p>
 
-<p>You&#8217;ll need the IP address of this machine as well. (Use <code>ifconfig</code>)</p>
+<p>While the tunnel is open, I can access <code>https://surveyweb.dev</code> just fine.</p>
 
 
 
 
-<p>Make sure you can access the python server from a browser on the client machine. You should be able to see something like this at <code>http://ip.address:5000/</code></p>
+<p>Pow also has a feature where I can access my server from another machine on the LAN using a URL like <code>http://surveyweb.192.168.1.10.xip.io/</code> where <code>192.168.1.10</code> is the IP address of my machine. Even with the tunnel open, HTTPS doesn&#8217;t work for this URL.</p>
 
 
 
 
-<p><img src="images/2013-05-09-python-server.png" alt="Python Server Browser Screenshot" /></p>
-
-
-
-
-<p>On the client, you should be now able to access the git repo over HTTP as though it were a normal git remote.</p>
+<p>We need to start another tunnel:</p>
 
 
 <p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git ls-remote <a href="http://ip.address:5000">http://ip.address:5000</a>
-</span><span class='line'><span class="nv">$ </span>git pull <a href="http://ip.address:5000">http://ip.address:5000</a> master
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo tunnels 192.168.1.10:443 127.0.0.1:80 <span class="c"># Replace 192.168.1.10 with your IP address</span>
 </span></code></pre></td></tr></table></div></figure></p>
 
-<p>Add it as a remote to avoid typing out the entire IP each time.</p>
-
-
-<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git remote add <a href="http://ip.address:5000">http://ip.address:5000</a> <span class="nb">local</span>-foo
-</span><span class='line'><span class="nv">$ </span>git pull <span class="nb">local</span>-foo master
-</span></code></pre></td></tr></table></div></figure><div class="author">
-  <img src="http://nilenso.com/images/people/tim-200.png" style="width: 96px; height: 96;">
-  <span style="position: absolute; padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
-  </span>
-</div></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/05/01/writing-custom-rspec-matchers/">Writing Custom RSpec Matchers</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-<time datetime="2013-05-01T00:00:00+05:30" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>RSpec matchers let you abstract away common assertions in your test code.</p>
-
-
-
-
-<p>For example, we recently had a spec file with a bunch of lines that looked like this:</p>
-
-
-<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">worksheet</span><span class="o">.</span><span class="n">rows</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="n">cells</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:value</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="kp">include</span> <span class="s2">&quot;Foo&quot;</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>Which tests if the excel file we&#8217;re generating (using <a href="https://github.com/randym/axlsx">axlsx</a>) includes <code>Foo</code> in the header row.</p>
-
-
-
-
-<p>That isn&#8217;t very neat. What if we replace it with this?</p>
-
-
-<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">worksheet</span><span class="o">.</span><span class="n">should</span> <span class="n">have_header_cell</span> <span class="s2">&quot;Foo&quot;</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>That looks a lot better. We can implement this kind of abstraction using custom RSpec matchers.</p>
-
-
-
-
-<p>The matcher for this is as simple as:</p>
-
-
-<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">RSpec</span><span class="p">:</span><span class="ss">:Matchers</span><span class="o">.</span><span class="n">define</span> <span class="ss">:have_header_cell</span> <span class="k">do</span> <span class="o">|</span><span class="n">cell_value</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">match</span> <span class="k">do</span> <span class="o">|</span><span class="n">worksheet</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">worksheet</span><span class="o">.</span><span class="n">rows</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="n">cells</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:value</span><span class="p">)</span><span class="o">.</span><span class="n">include?</span> <span class="n">cell_value</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>RSpec passes in the expected and actual values to these blocks, and our code has to return a boolean representing the result of the assertion.</p>
-
-
-
-
-<p>Now what about assertions that look like this?</p>
-
-
-<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">worksheet</span><span class="o">.</span><span class="n">rows</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="n">cells</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:value</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="kp">include</span> <span class="s2">&quot;Foo&quot;</span>
-</span><span class='line'><span class="n">worksheet</span><span class="o">.</span><span class="n">rows</span><span class="o">[</span><span class="mi">2</span><span class="o">].</span><span class="n">cells</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:value</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="kp">include</span> <span class="s2">&quot;Bar&quot;</span>
-</span><span class='line'><span class="n">worksheet</span><span class="o">.</span><span class="n">rows</span><span class="o">[</span><span class="mi">3</span><span class="o">].</span><span class="n">cells</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:value</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="kp">include</span> <span class="s2">&quot;Baz&quot;</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>The row that we&#8217;re checking changes for each assertion. Of course, we <em>could</em> create a different matcher for each of these cases, but there&#8217;s a better way.</p>
-
-
-<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">worksheet</span><span class="o">.</span><span class="n">should</span> <span class="n">have_cell</span><span class="p">(</span><span class="s2">&quot;Foo&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">in_row</span> <span class="mi">1</span>
-</span><span class='line'><span class="n">worksheet</span><span class="o">.</span><span class="n">should</span> <span class="n">have_cell</span><span class="p">(</span><span class="s2">&quot;Bar&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">in_row</span> <span class="mi">2</span>
-</span><span class='line'><span class="n">worksheet</span><span class="o">.</span><span class="n">should</span> <span class="n">have_cell</span><span class="p">(</span><span class="s2">&quot;Baz&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">in_row</span> <span class="mi">3</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>RSpec lets you <em>chain</em> custom matchers.</p>
-
-
-<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">RSpec</span><span class="p">:</span><span class="ss">:Matchers</span><span class="o">.</span><span class="n">define</span> <span class="ss">:have_cell</span> <span class="k">do</span> <span class="o">|</span><span class="n">expected</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">match</span> <span class="k">do</span> <span class="o">|</span><span class="n">worksheet</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">worksheet</span><span class="o">.</span><span class="n">rows</span><span class="o">[</span><span class="vi">@index</span><span class="o">].</span><span class="n">cells</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:value</span><span class="p">)</span><span class="o">.</span><span class="n">include?</span> <span class="n">expected</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">chain</span> <span class="ss">:in_row</span> <span class="k">do</span> <span class="o">|</span><span class="n">index</span><span class="o">|</span>
-</span><span class='line'>    <span class="vi">@index</span> <span class="o">=</span> <span class="n">index</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">failure_message_for_should</span> <span class="k">do</span> <span class="o">|</span><span class="n">actual</span><span class="o">|</span>
-</span><span class='line'>    <span class="s2">&quot;Expected </span><span class="si">#{</span><span class="n">actual</span><span class="si">}</span><span class="s2"> to include </span><span class="si">#{</span><span class="n">expected</span><span class="si">}</span><span class="s2"> at row </span><span class="si">#{</span><span class="vi">@index</span><span class="si">}</span><span class="s2">.&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>We first store the argument passed in to <code>in_row</code> as an instance variable, and then access it in the main <code>have_cell</code> matcher.</p>
-
-
-
-
-<p>The example also includes a custom error message handler, which properly formats an error message if the assertion fails.</p>
+<p>And now, both URLs work over HTTPS.</p>
 
 
 <div class="author">
@@ -360,7 +200,7 @@
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2013/04/28/yaml-serialization-for-delayed-job/">YAML Serialization for Delayed Job</a></h1>
+      <h1 class="entry-title"><a href="/blog/2013/07/10/using-roboguice-to-inject-views-into-a-pojo/">Using RoboGuice to Inject Views Into a POJO</a></h1>
       
       
     
@@ -375,64 +215,676 @@
 
 
 
-<time datetime="2013-04-28T00:00:00+05:30" pubdate data-updated="true"></time>
+<time datetime="2013-07-10T00:00:00+05:30" pubdate data-updated="true"></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>When we first moved excel generation off to a delayed job on <a href="http://github.com/c42/survey-web">survey-web</a>, we had code that looked like this:</p>
+  <div class="entry-content"><p><a href="https://github.com/roboguice/roboguice">RoboGuice</a> is great. It lets you get rid of code like:</p>
 
 
 <p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">responses</span> <span class="o">=</span> <span class="no">Response</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">:foo</span> <span class="o">=&gt;</span> <span class="n">bar</span><span class="p">)</span>
-</span><span class='line'><span class="ss">Delayed</span><span class="p">:</span><span class="ss">:Job</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="no">MyCustomJob</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">responses</span><span class="p">))</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LoginActivity</span> <span class="kd">extends</span> <span class="n">Activity</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">Button</span> <span class="n">mSignInButtonView</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">mSignInButtonView</span> <span class="o">=</span> <span class="o">(</span><span class="n">Button</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">sign_in_button</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure></p>
 
-<p>And this would bomb with an error like <code>Can't dump anonymous Module</code>.
-After some time getting nowhere, we solved it like this:</p>
+<p>Instead, with a single line, RoboGuice will take care of injecting that view into your activity:</p>
 
 
 <p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">response_ids</span> <span class="o">=</span> <span class="no">Response</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">:foo</span> <span class="o">=&gt;</span> <span class="n">bar</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:id</span><span class="p">)</span>
-</span><span class='line'><span class="ss">Delayed</span><span class="p">:</span><span class="ss">:Job</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="no">MyCustomJob</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">response_ids</span><span class="p">))</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LoginActivity</span> <span class="kd">extends</span> <span class="n">RoboActivity</span> <span class="o">{</span>
+</span><span class='line'>    <span class="nd">@InjectView</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">sign_in_button</span><span class="o">)</span> <span class="n">Button</span> <span class="n">mSignInButtonView</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// I have a reference to mSignInButtonView here.</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure></p>
 
-<p>And in the job:</p>
-
-
-<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">responses</span> <span class="o">=</span> <span class="no">Response</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;id in (?)&#39;</span><span class="p">,</span> <span class="n">response_ids</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>While refactoring a lot of that code over the last few days, we ran into the same issue. But with one difference. A controller spec was failing, but a test for the job which also passed a bunch of responses into it passed.</p>
+<p>Now we&#8217;re rewriting <a href="http://github.com/nilenso/ashoka-survey-mobile">ashoka-survey-mobile</a> as a layered <a href="(http://github.com/nilenso/ashoka-survey-mobile-native">native app</a>).
+We have a LoginView (POJO) which needs references to views present on-screen. Normally, we would instantiate the POJO in the activity, and pass it all the views it needs.</p>
 
 
 
 
-<p>We wondered if maybe it was because we were passing a relation into the job instead of an array.</p>
+<p>But can we do this with RoboGuice? We can&#8217;t really use <code>@InjectView</code> in a POJO. It needs an Activity context.
+The next best thing is to inject the activity into the POJO (RoboGuice is smart enough to inject the correct activity), and pick the views manually using <code>findViewById</code>.</p>
 
 
 
 
-<p>So we tried:</p>
+<p>So in the activity:</p>
 
 
 <p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">responses</span> <span class="o">=</span> <span class="no">Response</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">:foo</span> <span class="o">=&gt;</span> <span class="n">bar</span><span class="p">)</span><span class="o">.</span><span class="n">all</span>
-</span><span class='line'><span class="ss">Delayed</span><span class="p">:</span><span class="ss">:Job</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="no">MyCustomJob</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">responses</span><span class="p">))</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LoginActivity</span> <span class="kd">extends</span> <span class="n">RoboActivity</span> <span class="o">{</span>
+</span><span class='line'>    <span class="nd">@Inject</span> <span class="n">LoginView</span> <span class="n">loginView</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">loginView</span><span class="o">.</span><span class="na">onCreate</span><span class="o">();</span> <span class="c1">// Need to manually build up the view references inside LoginView</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure></p>
 
-<p>And that worked great.</p>
+<p>and in <code>LoginView</code>:</p>
+
+
+<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LoginView</span> <span class="o">{</span>
+</span><span class='line'>    <span class="nd">@Inject</span> <span class="n">Activity</span> <span class="n">activity</span><span class="o">;</span> <span class="c1">// This gets injected with the correct instance of LoginActivity</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">Button</span> <span class="n">buttonView</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">EditText</span> <span class="n">editText</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">buttonView</span> <span class="o">=</span> <span class="n">activity</span><span class="o">.</span><span class="na">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">my_button</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">editText</span> <span class="o">=</span> <span class="n">activity</span><span class="o">.</span><span class="na">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">my_edit_text</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>And then your POJO can manipulate the views that are on-screen as required.</p>
+
+
+<div class="author">
+  <img src="http://nilenso.com/images/people/tim-200.png" style="width: 96px; height: 96;">
+  <span style="position: absolute; padding: 32px 15px;">
+    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
+  </span>
+</div>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/06/24/recursive-postgres-queries/">Recursive Postgres Queries</a></h1>
+      
+      
+    
+      <p class="meta">
+        
 
 
 
 
-<p>(The files in question are <a href="https://github.com/c42/survey-web/blob/master/app/controllers/responses_controller.rb#L16">here</a> and <a href="https://github.com/c42/survey-web/blob/master/app/models/reports/excel/job.rb%22">here</a>).</p>
+
+
+
+
+
+<time datetime="2013-06-24T00:00:00+05:30" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Introduction</h3>
+
+
+
+
+<p>At <a href="http://nilenso.com/">Nilenso</a>, I&#8217;m working on an (<a href="http://github.com/nilenso/ashoka-survey-web">open-source!</a>) app to design and conduct surveys.</p>
+
+
+
+
+<p>Here&#8217;s a simple survey being designed:</p>
+
+
+
+
+<p><a href="http://blog.timothyandrew.net/images/recursive-pg/survey-overview.png"><img src="http://blog.timothyandrew.net/images/recursive-pg/survey-overview.png" alt="Survey Builder Overview" /></a></p>
+
+
+
+
+<p>Internally, this is represented as:</p>
+
+
+
+
+<p><a href="http://blog.timothyandrew.net/images/recursive-pg/internal-survey-overview.png"><img src="http://blog.timothyandrew.net/images/recursive-pg/internal-survey-overview.png" alt="Survey Model Overview" /></a></p>
+
+
+
+
+<p>A survey is made up of many <em>questions</em>. A number of questions can (optionally) be grouped together in a <em>category</em>. Our actual data model is a bit more complicated than this (sub-questions, especially), but let&#8217;s assume that we&#8217;re just working with questions and categories.</p>
+
+
+
+
+<p>Here&#8217;s how we preserve the ordering of questions and categories in this survey.</p>
+
+
+
+
+<p>Each question and category has an <code>order_number</code> field. It&#8217;s an integer that specifies the relative ordering of itself and its siblings.</p>
+
+
+
+
+<p>For example, in this case,</p>
+
+
+
+
+<p><a href="http://blog.timothyandrew.net/images/recursive-pg/order-number-overview.png"><img src="http://blog.timothyandrew.net/images/recursive-pg/order-number-overview.png" alt="Order Number Overview" /></a></p>
+
+
+
+
+<p>the question <code>Bar</code> will have an <code>order_number</code> that is <em>less than</em> the order number of <code>Baz</code>.</p>
+
+
+
+
+<p>This guarantees that the a category can fetch its sub-questions in the right order:</p>
+
+
+<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># In category.rb</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">sub_questions_in_order</span>
+</span><span class='line'>  <span class="n">questions</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="s1">&#39;order_number&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>In fact, this is how we fetch the entire survey at this point. Each category calls <code>sub_questions_in_order</code> on each of its children, and so on down the entire tree.</p>
+
+
+
+
+<p>This gives us a depth-first ordering of this tree:</p>
+
+
+
+
+<p><a href="http://blog.timothyandrew.net/images/recursive-pg/naive-order.png"><img src="http://blog.timothyandrew.net/images/recursive-pg/naive-order.png" alt="Naive Ordering" /></a></p>
+
+
+
+
+<p>For large surveys with 5+ levels of nesting, and more than a hundred questions, this is pretty slow.</p>
+
+
+
+
+<!-- more -->
+
+
+
+
+<h3>Recursive Queries</h3>
+
+
+
+
+<p>I&#8217;ve used gems like <a href="https://github.com/collectiveidea/awesome_nested_set"><code>awesome_nested_set</code></a> before, but as far as I could find, none of them supported fetching results across multiple models.</p>
+
+
+
+
+<p>Then I stumbled on <a href="http://www.postgresql.org/docs/9.1/static/queries-with.html">a page</a> describing PostgreSQL&#8217;s support for recursive queries! That seemed perfect.</p>
+
+
+
+
+<p>Let&#8217;s solve this particular problem using recursive queries. (My understanding of this is still very basic, so please don&#8217;t take my word for any of this)</p>
+
+
+
+
+<p>To define a recursive Postgres query, we need to define an initial query, which is called the non-recursive term.</p>
+
+
+
+
+<p>In our case, that would be the top level questions and categories.
+Top level elements don&#8217;t have a parent category, so their <code>category_id</code> is <code>NULL</code>.</p>
+
+
+<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="p">(</span>
+</span><span class='line'>  <span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">order_number</span><span class="p">,</span> <span class="k">type</span><span class="p">,</span> <span class="n">category_id</span> <span class="k">FROM</span> <span class="n">questions</span>
+</span><span class='line'>  <span class="k">WHERE</span> <span class="n">questions</span><span class="p">.</span><span class="n">survey_id</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">AND</span> <span class="n">questions</span><span class="p">.</span><span class="n">category_id</span> <span class="k">IS</span> <span class="k">NULL</span>
+</span><span class='line'><span class="p">)</span>
+</span><span class='line'><span class="k">UNION</span>
+</span><span class='line'><span class="p">(</span>
+</span><span class='line'>  <span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">order_number</span><span class="p">,</span> <span class="k">type</span><span class="p">,</span> <span class="n">category_id</span> <span class="k">FROM</span> <span class="n">categories</span>
+</span><span class='line'>  <span class="k">WHERE</span> <span class="n">categories</span><span class="p">.</span><span class="n">survey_id</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">AND</span> <span class="n">categories</span><span class="p">.</span><span class="n">category_id</span> <span class="k">IS</span> <span class="k">NULL</span>
+</span><span class='line'><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>(That query, and all subsequent ones, assume that the survey we&#8217;re querying has id = 2)</p>
+
+
+
+
+<p>This gives us the top-level elements.</p>
+
+
+
+
+<p><a href="http://blog.timothyandrew.net/images/recursive-pg/top-level-elements-query.png"><img src="http://blog.timothyandrew.net/images/recursive-pg/top-level-elements-query.png" alt="Top-Level Queries" /></a></p>
+
+
+
+
+<p>Now on to the recursive term. According to the Postgres docs:</p>
+
+
+
+
+<p><a href="http://blog.timothyandrew.net/images/recursive-pg/steps.png"><img src="http://blog.timothyandrew.net/images/recursive-pg/steps.png" alt="Postgres Steps" /></a></p>
+
+
+
+
+<p>Our recursive term simply has to find all the direct children of the elements fetched by the non-recursive term.</p>
+
+
+<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">WITH</span> <span class="k">RECURSIVE</span> <span class="n">first_level_elements</span> <span class="k">AS</span> <span class="p">(</span>
+</span><span class='line'>  <span class="c1">&ndash; Non-recursive term</span>
+</span><span class='line'>  <span class="p">(</span>
+</span><span class='line'>    <span class="p">(</span>
+</span><span class='line'>      <span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">order_number</span><span class="p">,</span> <span class="n">category_id</span> <span class="k">FROM</span> <span class="n">questions</span>
+</span><span class='line'>      <span class="k">WHERE</span> <span class="n">questions</span><span class="p">.</span><span class="n">survey_id</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">AND</span> <span class="n">questions</span><span class="p">.</span><span class="n">category_id</span> <span class="k">IS</span> <span class="k">NULL</span>
+</span><span class='line'>    <span class="k">UNION</span>
+</span><span class='line'>      <span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">order_number</span><span class="p">,</span> <span class="n">category_id</span> <span class="k">FROM</span> <span class="n">categories</span>
+</span><span class='line'>      <span class="k">WHERE</span> <span class="n">categories</span><span class="p">.</span><span class="n">survey_id</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">AND</span> <span class="n">categories</span><span class="p">.</span><span class="n">category_id</span> <span class="k">IS</span> <span class="k">NULL</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>  <span class="p">)</span>
+</span><span class='line'>  <span class="k">UNION</span>
+</span><span class='line'>  <span class="c1">&ndash; Recursive Term</span>
+</span><span class='line'>  <span class="k">SELECT</span> <span class="n">q</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">q</span><span class="p">.</span><span class="n">content</span><span class="p">,</span> <span class="n">q</span><span class="p">.</span><span class="n">order_number</span><span class="p">,</span> <span class="n">q</span><span class="p">.</span><span class="n">category_id</span>
+</span><span class='line'>  <span class="k">FROM</span> <span class="n">first_level_elements</span> <span class="n">fle</span><span class="p">,</span> <span class="n">questions</span> <span class="n">q</span>
+</span><span class='line'>  <span class="k">WHERE</span> <span class="n">q</span><span class="p">.</span><span class="n">survey_id</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">AND</span> <span class="n">q</span><span class="p">.</span><span class="n">category_id</span> <span class="o">=</span> <span class="n">fle</span><span class="p">.</span><span class="n">id</span>
+</span><span class='line'><span class="p">)</span>
+</span><span class='line'><span class="k">SELECT</span> <span class="o">*</span> <span class="k">from</span> <span class="n">first_level_elements</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>But wait. The recursive term is only fetching questions. What if the child of a first-level category is a category?
+Postgres doesn&#8217;t let us reference the non-recursive term more than once. So doing a <code>UNION</code> of categories and questions is out.
+We have to be a little creative here:</p>
+
+
+<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">WITH</span> <span class="k">RECURSIVE</span> <span class="n">first_level_elements</span> <span class="k">AS</span> <span class="p">(</span>
+</span><span class='line'>  <span class="p">(</span>
+</span><span class='line'>    <span class="p">(</span>
+</span><span class='line'>      <span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">order_number</span><span class="p">,</span> <span class="n">category_id</span> <span class="k">FROM</span> <span class="n">questions</span>
+</span><span class='line'>      <span class="k">WHERE</span> <span class="n">questions</span><span class="p">.</span><span class="n">survey_id</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">AND</span> <span class="n">questions</span><span class="p">.</span><span class="n">category_id</span> <span class="k">IS</span> <span class="k">NULL</span>
+</span><span class='line'>    <span class="k">UNION</span>
+</span><span class='line'>      <span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">order_number</span><span class="p">,</span> <span class="n">category_id</span> <span class="k">FROM</span> <span class="n">categories</span>
+</span><span class='line'>      <span class="k">WHERE</span> <span class="n">categories</span><span class="p">.</span><span class="n">survey_id</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">AND</span> <span class="n">categories</span><span class="p">.</span><span class="n">category_id</span> <span class="k">IS</span> <span class="k">NULL</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>  <span class="p">)</span>
+</span><span class='line'>  <span class="k">UNION</span>
+</span><span class='line'>  <span class="p">(</span>
+</span><span class='line'>      <span class="k">SELECT</span> <span class="n">e</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">content</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">order_number</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">category_id</span>
+</span><span class='line'>      <span class="k">FROM</span>
+</span><span class='line'>      <span class="p">(</span>
+</span><span class='line'>        <span class="c1">&ndash; Fetch questions AND categories</span>
+</span><span class='line'>        <span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">order_number</span><span class="p">,</span> <span class="n">category_id</span> <span class="k">FROM</span> <span class="n">questions</span> <span class="k">WHERE</span> <span class="n">survey_id</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span class='line'>        <span class="k">UNION</span>
+</span><span class='line'>        <span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">order_number</span><span class="p">,</span> <span class="n">category_id</span> <span class="k">FROM</span> <span class="n">categories</span> <span class="k">WHERE</span> <span class="n">survey_id</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span class='line'>      <span class="p">)</span> <span class="n">e</span><span class="p">,</span> <span class="n">first_level_elements</span> <span class="n">fle</span>
+</span><span class='line'>      <span class="k">WHERE</span> <span class="n">e</span><span class="p">.</span><span class="n">category_id</span> <span class="o">=</span> <span class="n">fle</span><span class="p">.</span><span class="n">id</span>
+</span><span class='line'>  <span class="p">)</span>
+</span><span class='line'><span class="p">)</span>
+</span><span class='line'><span class="k">SELECT</span> <span class="o">*</span> <span class="k">from</span> <span class="n">first_level_elements</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>We perform a <code>UNION</code> of categories and questions <em>before</em> joining it with the non-recursive term.</p>
+
+
+
+
+<p>This yields all the survey elements:</p>
+
+
+
+
+<p><a href="http://blog.timothyandrew.net/images/recursive-pg/all-elements-without-order-query.png"><img src="http://blog.timothyandrew.net/images/recursive-pg/all-elements-without-order-query.png" alt="Query without ordering" /></a></p>
+
+
+
+
+<p>Unfortunately, it looks like the ordering is way off.</p>
+
+
+
+
+<h3>Ordering a Recursive Query</h3>
+
+
+
+
+<p>The problem is that since we&#8217;re effectively <em>appending</em> second-level elements to first-level elements, we&#8217;re effectively performing a <a href="https://en.wikipedia.org/wiki/Breadth-first_search"><em>breadth-first search</em></a> instead of a <a href="http://en.wikipedia.org/wiki/Depth-first_search"><em>depth-first search</em></a>.</p>
+
+
+
+
+<p>How can we correct that?</p>
+
+
+
+
+<p>Postgres has <a href="http://www.postgresql.org/docs/9.1/static/arrays.html">arrays</a> that can be built during a query.</p>
+
+
+
+
+<p>Let&#8217;s build an array of order numbers for each element that we fetch. Let&#8217;s call this the <code>path</code>. The <code>path</code> for an element is:</p>
+
+
+
+
+<blockquote><p>the path of it&#8217;s parent category (if one exists) + its own order_number</p></blockquote>
+
+
+
+
+<p>If we sort the final result by <code>path</code>, we&#8217;ve converted it into a depth-first search!</p>
+
+
+<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">WITH</span> <span class="k">RECURSIVE</span> <span class="n">first_level_elements</span> <span class="k">AS</span> <span class="p">(</span>
+</span><span class='line'>  <span class="p">(</span>
+</span><span class='line'>    <span class="p">(</span>
+</span><span class='line'>      <span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="nb">array</span><span class="p">[</span><span class="n">id</span><span class="p">]</span> <span class="k">AS</span> <span class="n">path</span> <span class="k">FROM</span> <span class="n">questions</span>
+</span><span class='line'>      <span class="k">WHERE</span> <span class="n">questions</span><span class="p">.</span><span class="n">survey_id</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">AND</span> <span class="n">questions</span><span class="p">.</span><span class="n">category_id</span> <span class="k">IS</span> <span class="k">NULL</span>
+</span><span class='line'>    <span class="k">UNION</span>
+</span><span class='line'>      <span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="nb">array</span><span class="p">[</span><span class="n">id</span><span class="p">]</span> <span class="k">AS</span> <span class="n">path</span> <span class="k">FROM</span> <span class="n">categories</span>
+</span><span class='line'>      <span class="k">WHERE</span> <span class="n">categories</span><span class="p">.</span><span class="n">survey_id</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">AND</span> <span class="n">categories</span><span class="p">.</span><span class="n">category_id</span> <span class="k">IS</span> <span class="k">NULL</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>  <span class="p">)</span>
+</span><span class='line'>  <span class="k">UNION</span>
+</span><span class='line'>  <span class="p">(</span>
+</span><span class='line'>      <span class="k">SELECT</span> <span class="n">e</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">content</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">category_id</span><span class="p">,</span> <span class="p">(</span><span class="n">fle</span><span class="p">.</span><span class="n">path</span> <span class="o">||</span> <span class="n">e</span><span class="p">.</span><span class="n">id</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">FROM</span>
+</span><span class='line'>      <span class="p">(</span>
+</span><span class='line'>        <span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">order_number</span> <span class="k">FROM</span> <span class="n">questions</span> <span class="k">WHERE</span> <span class="n">survey_id</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span class='line'>        <span class="k">UNION</span>
+</span><span class='line'>        <span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">order_number</span> <span class="k">FROM</span> <span class="n">categories</span> <span class="k">WHERE</span> <span class="n">survey_id</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span class='line'>      <span class="p">)</span> <span class="n">e</span><span class="p">,</span> <span class="n">first_level_elements</span> <span class="n">fle</span>
+</span><span class='line'>      <span class="k">WHERE</span> <span class="n">e</span><span class="p">.</span><span class="n">category_id</span> <span class="o">=</span> <span class="n">fle</span><span class="p">.</span><span class="n">id</span>
+</span><span class='line'>  <span class="p">)</span>
+</span><span class='line'><span class="p">)</span>
+</span><span class='line'><span class="k">SELECT</span> <span class="o">*</span> <span class="k">from</span> <span class="n">first_level_elements</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">path</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><a href="http://blog.timothyandrew.net/images/recursive-pg/almost.png"><img src="http://blog.timothyandrew.net/images/recursive-pg/almost.png" alt="Query with duplicate" /></a></p>
+
+
+
+
+<p>That&#8217;s <em>almost</em> right. There are two entries for <em>What&#8217;s your favourite song?</em></p>
+
+
+
+
+<p>This is happening because when we do an ID comparison to look for children:</p>
+
+
+<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">WHERE</span> <span class="n">e</span><span class="p">.</span><span class="n">category_id</span> <span class="o">=</span> <span class="n">fle</span><span class="p">.</span><span class="n">id</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><code>fle</code> contains both questions and categories. But we want this to match only categories (because questions can&#8217;t have children).</p>
+
+
+
+
+<p>Let&#8217;s hard-code a type into each of these queries, so that we don&#8217;t try and check for children of a question:</p>
+
+
+<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">WITH</span> <span class="k">RECURSIVE</span> <span class="n">first_level_elements</span> <span class="k">AS</span> <span class="p">(</span>
+</span><span class='line'>  <span class="p">(</span>
+</span><span class='line'>    <span class="p">(</span>
+</span><span class='line'>      <span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="s1">&#39;questions&#39;</span> <span class="k">as</span> <span class="k">type</span><span class="p">,</span> <span class="nb">array</span><span class="p">[</span><span class="n">id</span><span class="p">]</span> <span class="k">AS</span> <span class="n">path</span> <span class="k">FROM</span> <span class="n">questions</span>
+</span><span class='line'>      <span class="k">WHERE</span> <span class="n">questions</span><span class="p">.</span><span class="n">survey_id</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">AND</span> <span class="n">questions</span><span class="p">.</span><span class="n">category_id</span> <span class="k">IS</span> <span class="k">NULL</span>
+</span><span class='line'>    <span class="k">UNION</span>
+</span><span class='line'>      <span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="s1">&#39;categories&#39;</span> <span class="k">as</span> <span class="k">type</span><span class="p">,</span> <span class="nb">array</span><span class="p">[</span><span class="n">id</span><span class="p">]</span> <span class="k">AS</span> <span class="n">path</span> <span class="k">FROM</span> <span class="n">categories</span>
+</span><span class='line'>      <span class="k">WHERE</span> <span class="n">categories</span><span class="p">.</span><span class="n">survey_id</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">AND</span> <span class="n">categories</span><span class="p">.</span><span class="n">category_id</span> <span class="k">IS</span> <span class="k">NULL</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>  <span class="p">)</span>
+</span><span class='line'>  <span class="k">UNION</span>
+</span><span class='line'>  <span class="p">(</span>
+</span><span class='line'>      <span class="k">SELECT</span> <span class="n">e</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">content</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">category_id</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="k">type</span><span class="p">,</span> <span class="p">(</span><span class="n">fle</span><span class="p">.</span><span class="n">path</span> <span class="o">||</span> <span class="n">e</span><span class="p">.</span><span class="n">id</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">FROM</span>
+</span><span class='line'>      <span class="p">(</span>
+</span><span class='line'>        <span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="s1">&#39;questions&#39;</span> <span class="k">as</span> <span class="k">type</span><span class="p">,</span> <span class="n">order_number</span> <span class="k">FROM</span> <span class="n">questions</span> <span class="k">WHERE</span> <span class="n">survey_id</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span class='line'>        <span class="k">UNION</span>
+</span><span class='line'>        <span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="s1">&#39;categories&#39;</span> <span class="k">as</span> <span class="k">type</span><span class="p">,</span> <span class="n">order_number</span> <span class="k">FROM</span> <span class="n">categories</span> <span class="k">WHERE</span> <span class="n">survey_id</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span class='line'>      <span class="p">)</span> <span class="n">e</span><span class="p">,</span> <span class="n">first_level_elements</span> <span class="n">fle</span>
+</span><span class='line'>      <span class="c1">&ndash; Look for children only if the type is &#39;categories&#39;</span>
+</span><span class='line'>      <span class="k">WHERE</span> <span class="n">e</span><span class="p">.</span><span class="n">category_id</span> <span class="o">=</span> <span class="n">fle</span><span class="p">.</span><span class="n">id</span> <span class="k">AND</span> <span class="n">fle</span><span class="p">.</span><span class="k">type</span> <span class="o">=</span> <span class="s1">&#39;categories&#39;</span>
+</span><span class='line'>  <span class="p">)</span>
+</span><span class='line'><span class="p">)</span>
+</span><span class='line'><span class="k">SELECT</span> <span class="o">*</span> <span class="k">from</span> <span class="n">first_level_elements</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">path</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><a href="http://blog.timothyandrew.net/images/recursive-pg/final.png"><img src="http://blog.timothyandrew.net/images/recursive-pg/final.png" alt="Final Query" /></a></p>
+
+
+
+
+<p>That seems about right. We&#8217;re done here.</p>
+
+
+
+
+<p>Let&#8217;s see how much of a performance boost this gives us.</p>
+
+
+
+
+<h3>Performance</h3>
+
+
+
+
+<p>Using this script (after creating a survey from the UI), I generated 10 sub-question chains; each 6 levels deep.</p>
+
+
+<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">survey</span> <span class="o">=</span> <span class="no">Survey</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+</span><span class='line'><span class="mi">10</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">category</span> <span class="o">=</span> <span class="no">FactoryGirl</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:category</span><span class="p">,</span> <span class="ss">:survey</span> <span class="o">=&gt;</span> <span class="n">survey</span><span class="p">)</span>
+</span><span class='line'>  <span class="mi">6</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">category</span> <span class="o">=</span> <span class="no">FactoryGirl</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:category</span><span class="p">,</span> <span class="ss">:category</span> <span class="o">=&gt;</span> <span class="n">category</span><span class="p">,</span> <span class="ss">:survey</span> <span class="o">=&gt;</span> <span class="n">survey</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="no">FactoryGirl</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:single_line_question</span><span class="p">,</span> <span class="ss">:category_id</span> <span class="o">=&gt;</span> <span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="ss">:survey_id</span> <span class="o">=&gt;</span> <span class="n">survey</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Each chain looks like this:</p>
+
+
+
+
+<p><a href="http://blog.timothyandrew.net/images/recursive-pg/chain.png"><img src="http://blog.timothyandrew.net/images/recursive-pg/chain.png" alt="Sub-question Chain" /></a></p>
+
+
+
+
+<p>Let&#8217;s see if recursive queries are faster.</p>
+
+
+<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="no">Benchmark</span><span class="o">.</span><span class="n">ms</span> <span class="p">{</span> <span class="mi">5</span><span class="o">.</span><span class="n">times</span> <span class="p">{</span> <span class="no">Survey</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">sub_questions_using_recursive_queries</span> <span class="p">}}</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">36</span><span class="o">.</span><span class="mi">839999999999996</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">pry</span><span class="p">(</span><span class="n">main</span><span class="p">)</span><span class="o">&gt;</span> <span class="no">Benchmark</span><span class="o">.</span><span class="n">ms</span> <span class="p">{</span> <span class="mi">5</span><span class="o">.</span><span class="n">times</span> <span class="p">{</span> <span class="no">Survey</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">sub_questions_in_order</span> <span class="p">}</span> <span class="p">}</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">1145</span><span class="o">.</span><span class="mi">1309999999999</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>31x faster? Not bad.</p>
+
+
+
+
+<p><a href="http://blog.timothyandrew.net/images/recursive-pg/not-bad.jpg"><img src="http://blog.timothyandrew.net/images/recursive-pg/not-bad.jpg" alt="Not bad" /></a></p>
 
 
 <div class="author">
@@ -476,23 +928,23 @@ Included file 'custom/asides/subscribe.html' not found in _includes directory<se
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2019/02/01/india-has-a-three-body-problem/">India has a Three-Body Problem</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2018/08/13/fast-sudoku-solver-in-haskell-3-picking-the-right/">Fast Sudoku Solver in Haskell #3: Picking the Right Data Structures</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2018/07/11/fast-sudoku-solver-in-haskell-2-a-200x-faster-sol/">Fast Sudoku Solver in Haskell #2: A 200x Faster Solution</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2018/06/28/fast-sudoku-solver-in-haskell-1-a-simple-solution/">Fast Sudoku Solver in Haskell #1: A Simple Solution</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2018/05/23/finances-in-an-employee-owned-technology-co-opera/">Finances in an Employee-Owned Technology Co-operative</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2018/04/09/designing-for-open-source-software/">Designing for Open Source Software</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2018/03/21/designing-for-open-source-software/">Designing for open source software</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2017/10/01/writing-a-simple-rest-web-service-in-purescript-p/">Writing a Simple REST Web Service in PureScript - Part 2</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2017/09/29/writing-a-simple-rest-web-service-in-purescript-p/">Writing a Simple REST Web Service in PureScript - Part 1</a>
       </li>
     
   </ul>

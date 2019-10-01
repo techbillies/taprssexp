@@ -18,7 +18,7 @@
   
   
     
-      Building an offline survey tool for Rural India
+      Welcome, gratitude.
       
       
     
@@ -35,7 +35,12 @@
 
 
         
-      ...">
+      
+    
+  
+
+
+  I recently suff...">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -108,7 +113,7 @@
   <header>
   
     
-      <h1 class="entry-title"><a href="/blog/2013/09/19/ashoka-survey-offline-tool/">Building an offline survey tool for Rural India</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/11/06/welcome-gratitude/">Welcome, gratitude.</a></h1>
       
       
     
@@ -123,333 +128,135 @@
 
 
 
-<time datetime="2013-09-19T18:21:00+05:30" pubdate data-updated="true"></time>
+<time datetime="2014-11-06T00:00:00+05:30" pubdate data-updated="true"></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>At Nilenso, we&rsquo;ve helped <a href="http://india.ashoka.org/">Ashoka</a> accomplish their initiative in building infrastructure for the <a href="https://www.ashoka.org/citizensector">citizen sector</a>.</p>
-
-<p>Infiniti is a suite of products envisioned for social entrepreneurs, the fellows at Ashoka and other citizen sector organizations to get a variety of quality data through crowd sourcing, surveys and market research.</p>
-
-<p>Field agents responsible for carrying out these organized surveys face problems where there is often severe lack of proper mobile connectivity and even basic amenities. The data capturing tools therefore need to be really effective offline and should have the capability to synced to the central server once the agents return back to camp.</p>
-
-<p><img src="/images/rural-survey-use.png" alt="" /></p>
-
-<p>It is currently very much in use at Ashoka around these verticals:</p>
-
-<ul>
-<li>Nutrition and Wellness – for addressing malnutrition problem among children in India</li>
-<li>Affordable Housing – for enabling access to housing in the informal sector</li>
-<li>Rural Innovation and Farming – to understand the role of women in Agriculture</li>
-</ul>
-
-
-<p>And is largely composed of these ideas:</p>
-
-<p><img src="/images/infiniti.png" alt="Infiniti Suite" /></p>
-
-<p>As a part of this, we built Ashoka Survey Web – one of the arms that takes care of data collection, validation, integrity and reporting.</p>
-
-<h2>How does Survey Web work?</h2>
-
-<p>It is a collection of these 4 applications:</p>
-
-<ul>
-<li>the auth provider, <a href="https://github.com/nilenso/ashoka-user-owner">user-owner</a>.</li>
-<li>the survey builder, <a href="https://github.com/nilenso/ashoka-survey-web">survey-web</a></li>
-<li>response collection from the web, <a href="https://github.com/nilenso/ashoka-survey-web">survey-web</a>.</li>
-<li>the mobile applications:
-<a href="https://github.com/nilenso/ashoka-survey-mobile">survey-mobile</a>,
-<a href="https://github.com/nilenso/ashoka-survey-mobile-native">survey-mobile-native</a>.</li>
-</ul>
-
-
-<h4>Process</h4>
-
-<p>The fellows at Ashoka first identify the problem sets based on the verticals mentioned above and create a questionnaire that will effectively capture the data necessary. Once that is done, they use the survey builder to quickly digitise them. These surveys can be shared with different registered organisations or shared publicly.</p>
-
-<p>The responses are then collected by the field agents of the respective organizations using the <code>survey-mobile</code> application that can take validated answers client-side and store them offline. These can be synced to <code>survey-web</code>, once the field agents get internet connectivity.</p>
-
-<p>Here&rsquo;s a figure explaining the roles and interfaces of each of these applications:</p>
-
-<p><img src="/images/architecture.png" alt="Architecture Diagram" /></p>
-
-<p>We created a quick one-minute screencast that describes a simple workflow on how a survey is created, how a response is taken on that survey on the web and some basic reports you can see around it.</p>
-
-<p><video width="640" height="360" controls>
-  <source src="/videos/ashoka-survey-screencast.mp4" type="video/mp4">
-  <source src="/videos/ashoka-survey-screencast.webm" type="video/webm">
-  Your browser does not support the video tag.
-</video></p>
-
-<h4>Need for a separate auth app</h4>
-
-<p>The <code>user-owner</code> app was built to serve as a centralized auth provider for all of Ashoka&rsquo;s web services. It is implemented using the <a href="https://github.com/applicake/doorkeeper">doorkeeper</a> gem.</p>
-
-<h4>Survey Builder amongst the alternatives available</h4>
-
-<p><a href="http://wufoo.com">Wufoo</a> and <a href="http://forms.google.com">Google Forms</a> aren&rsquo;t designed for long surveys. They work well for short forms/questionnaires that can be answered on the web, but they do not have support for nesting questions or collecting responses from a mobile app offline.</p>
-
-<p><a href="http://opendatakit.org">OpenDataKit</a> doesn&rsquo;t have a good interface for building long surveys or nested questions. It requires working with XLS files for many complex operations.</p>
-
-<p><a href="http://surveymonkey.com">SurveyMonkey</a> is a good tool, but we couldn&rsquo;t use it since we needed complete ownership of the survey and response data.</p>
-
-<h4>Survey Builder V2</h4>
-
-<p>The current survey builder works well and is pretty functional, but it fails on a few usability aspects.</p>
-
-<ul>
-<li><p>Being able to switch between one question type to another. Simply using a drop-down bar instead of individual buttons to solve this.</p></li>
-<li><p>Editing concerns are shared across both panes, fine-grained question (question options, sub-questions etc.) level editing is on the left pane, more general editing and meta-information (type of question, maximum/minimum values for answers etc.) about the questions is on the right.</p></li>
-</ul>
-
-
-<p>We worked together with Accenture to come up with new designs and started working on rebuilding it last month. It is still in progress, and can be viewed from the <code>create-v2</code> menu. The new visual designs are <a href="https://github.com/nilenso/ashoka-survey-web/commit/a5aeb01fadedf43311a779412ef49c0c28081d92">here</a>.</p>
-
-<h4>The Native Android App</h4>
-
-<p>The <code>survey-mobile</code> app is built with <a href="http://www.appcelerator.com/platform/titanium-platform/">Titanium</a>. We&rsquo;re looking to move away from this to a native android app. You can read a bit about where we&rsquo;re at in this <a href="http://blog.nilenso.com/blog/2013/09/10/android-native-mvp/">post</a> and checkout the mockups <a href="https://github.com/nilenso/ashoka-survey-mobile-native/commit/317c4692227249d9b476286d821493404b0acb0f">here</a>.</p>
-
-<h4>Data Portal</h4>
-
-<p>Each survey conducted by Ashoka typically has about 300 responses. We currently have some basic reports built with google charts. But we don&rsquo;t have the ability to say, interpret data of similar/same respondents across multiple surveys.</p>
-
-<p>This is a separate project where the idea is to build connections between disparate sources of data and make sense out of them.</p>
-
-<h4>Contribution</h4>
-
-<p>Each of these applications are entirely open-source, feel free to check them out on the <a href="https://github.com/nilenso">nilenso GitHub page</a>!</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/09/16/octopress-planet-dot-rb-and-the-nilenso-blog/">Octopress, Planet.rb and the Nilenso Blog</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-<time datetime="2013-09-16T16:26:00+05:30" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>We use <a href="http://octopress.com">Octopress</a> with <a href="https://github.com/pote/planet.rb">planet.rb</a> for this blog. It aggregates our personal blogs and also lets us post on the company&rsquo;s behalf. It works pretty well.</p>
-
-<p>We started off with <a href="http://www.planetplanet.org/">planetplanet</a>, tried <a href="http://www.intertwingly.net/code/venus/docs/index.html">planetvenus</a> and then settled on planet.rb. The plusses are:</p>
-
-<ul>
-<li>We can now use the blog as both: a company blog and an aggregator at the same time.</li>
-<li>Octopress is great for us Ruby devs. We needed partials, sass, themeability, extensibility and a static site.</li>
-<li>planet.rb generates markdown files for all the feeds it parses. This keeps it consistent with the rest of the blog, and we love writing markdown.</li>
-</ul>
-
-
-<h2>The tweaks we needed</h2>
-
-<p>Planet.rb is still in development, and there were a couple of things that needed to change before we could release. We sent pull requests for these which are now merged in to <a href="https://github.com/pote/planet.rb/releases/tag/v0.5.0">planet.rb v0.5.0</a>.</p>
-
-<h3>A whitelist</h3>
-
-<p>   One such feature was the ability to filter posts that are not suitable for the company blog. We implemented this as a whitelist of tags. Only posts that have any tags in the whitelist will be imported.</p>
-
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>planet.yml </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nl">planet:</span>
-</span><span class='line'>    <span class="nl">posts_directory:</span> <span class="n">source</span><span class="o">/</span><span class="n">_posts</span><span class="o">/</span>
-</span><span class='line'>    <span class="nl">templates_directory:</span> <span class="n">source</span><span class="o">/</span><span class="n">_layouts</span><span class="o">/</span>
-</span><span class='line'>    <span class="nl">whitelisted_tags:</span> <span class="o">[</span><span class="s">&quot;nilenso&quot;</span><span class="o">,</span> <span class="s">&quot;open source&quot;</span><span class="o">,</span> <span class="s">&quot;software&quot;</span><span class="o">,</span> <span class="s">&quot;gsoc&quot;</span><span class="o">,</span> <span class="s">&quot;gnome&quot;</span><span class="o">,</span> <span class="s">&quot;lifehacks&quot;</span><span class="o">,</span> <span class="s">&quot;dev&quot;</span><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-
-<h3>Fault tolerance</h3>
-
-<p>Another issue with planet.rb was that it quit abruptly when it failed to parse a blog because the blog was unreacheable. We fixed that and then it was good to go. Here&rsquo;s how it looks now when we run <code>planet generate</code>:</p>
-
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>$planet generate </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>planet-nilenso<span class="p">|</span>master <span class="nv">$ </span>planet <span class="nv">generate</span>
-</span><span class='line'><span class="o">=</span>&gt; Parsing http://blog.kitallis.in/feeds/posts/default
-</span><span class='line'><span class="o">=</span>&gt; Found post titled GSoC - <span class="m">1</span> <span class="p">&amp;</span> <span class="m">2</span> - by Akshay <span class="nv">Gupta</span>
-</span><span class='line'>        <span class="o">=</span>&gt; Ignored post titled: Computers with categories: <span class="o">[</span>personal<span class="o">]</span>
-</span><span class='line'><span class="o">=</span>&gt; Found post titled GSoC <span class="m">2011</span> - <span class="m">0</span> - by Akshay <span class="nv">Gupta</span>
-</span><span class='line'><span class="o">=</span>&gt; Found post titled <span class="s2">&quot;Open Containing Folder&quot;</span> <span class="k">for</span> EoG and gedit - by Akshay <span class="nv">Gupta</span>
-</span><span class='line'>        <span class="o">=</span>&gt; Ignored post titled: Init with categories: <span class="o">[</span>personal<span class="o">]</span>
-</span><span class='line'><span class="o">=</span>&gt; Parsing http://blog.deobald.ca/feeds/posts/default
-</span><span class='line'>        <span class="o">=</span>&gt; Failed to fetch http://blog.deobald.ca/feeds/posts/default with response_code: <span class="nv">0</span>
-</span><span class='line'><span class="o">=</span>&gt; Parsing http://blog.timothyandrew.net/atom.xml
-</span><span class='line'><span class="o">=</span>&gt; Found post titled Encrypt Your Emails on OS X - by Timothy <span class="nv">Andrew</span>
-</span><span class='line'><span class="o">=</span>&gt; Found post titled Pow Over HTTPS - by Timothy Andrew
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-
-<h2>The deploy hook and cronjob</h2>
-
-<p>We use <a href="https://github.com/capistrano/capistrano">Capistrano</a> to deploy our blog. Here&rsquo;s the post deploy hook that we use on it:</p>
-
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>config/deploy.rb </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">task</span> <span class="ss">:octopress_planet_generate</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">run</span> <span class="s2">&quot;cd </span><span class="si">#{</span><span class="n">deploy_to</span><span class="si">}</span><span class="s2">/current &amp;&amp; bundle exec planet generate &amp;&amp; bundle exec rake generate&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">after</span> <span class="s2">&quot;deploy&quot;</span><span class="p">,</span> <span class="ss">:octopress_planet_generate</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-
-<p>Taking the final step in automating this, we set up a simple cronjob to aggregate posts everyday:</p>
-
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>$crontab -l </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>@daily <span class="nb">cd</span> /path/to/blog <span class="o">&amp;&amp;</span> planet generate <span class="o">&amp;&amp;</span> rake generate
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/09/15/gimp-tito/">gimp tito</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-<time datetime="2013-09-15T00:00:00+05:30" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>&lsquo;Tito&rsquo; is like Quicksilver inside GIMP. You bring up tito and enter something, it gives a dropdown of possible actions. You hit enter to execute that action. <a href="https://plus.google.com/116053365635940402074">Michael Natterer</a> (maintainer) told me on IRC about a year ago that it can go upstream with a few changes. Quite sadly, I haven&rsquo;t had the time to make those changes.</p>
-
-
-
-
-<p>It works pretty well though. Here are a few screenshots:</p>
-
-
-
-
-<p><img src="http://sriharisriraman.in/images/tito-images/snap.jpg" alt="snap" />
-<img src="http://sriharisriraman.in/images/tito-images/apcan.jpg" alt="apply canvas" />
-<img src="http://sriharisriraman.in/images/tito-images/blur.jpg" alt="blur" />
-<img src="http://sriharisriraman.in/images/tito-images/desktop.jpg" alt="desktop" />
-More screenshots <a href="https://github.com/ssrihari/gimp-tito/wiki/About-gimp-tito#v-screenshots">here</a>.</p>
-
-
-
-
-<h3>Currently implemented features</h3>
-
-
-
-
-<ul>
-<li> It searches first through labels and then tooltips of actions</li>
-<li> It supports fuzzy search</li>
-<li> It is adaptive: frequently used actions appear higher in the results list</li>
-<li> It shows the tooltip, icon and shortcut in each search result if present</li>
-<li> It is highly configurable via a preferences window</li>
-</ul>
-
-
-
-
-<p>More high level details in the <a href="https://github.com/ssrihari/gimp-tito/wiki/About-gimp-tito">tito-readme</a>.
-There is also an old <a href="http://www.youtube.com/watch?v=G0PuH1LFWhA">screencast</a> I made. It isn&rsquo;t great, but you can see it in action ;)</p>
-
-
-
-
-<h3>The story behind it</h3>
-
-
-
-
-<p>We were four developers who knew little about gtk and git. We started off well and shared our initial prototype. We got a mix of positive and dismissive responses from the gimp dev list. You can see the <a href="http://www.gimpusers.com/forums/gimp-developer/14142-an-update-on-the-menu-search">thread</a> where the devs and I debated the values it provided.</p>
-
-
-
-
-<p>Quite a few devs tried it out and gave me feedback. I incorporated that feedback and fixed bugs and regularly interacted with the team on how it could be better. But tito got a fair amount of push back from the interaction design perspective.</p>
-
-
-
-
-<h3>We can finish this together</h3>
-
-
-
-
-<p>I really need some company in finishing this up. Mitch (Michael Natterer on IRC) took a look at the diff and suggested a few changes that would make it eligible to go upstream. I&rsquo;ve created <a href="https://github.com/ssrihari/gimp-tito/issues">issues</a> for these on github. My gut feeling is that this should take lesser than a week. Please <a href="https://twitter.com/sriharisriraman">get in touch</a> if you are interested. Let&rsquo;s collaborate!</p>
+  <div class="entry-content"><div dir="ltr" style="text-align: left;" trbidi="on"><br />I recently suffered the most severe injuries of my life - I experienced a retinal tear and detachment which led to multiple surgeries. Those surgeries themselves have permanently damaged my vision and physically deformed my right eye. While I was recovering, I was unable to read, use a computer, or watch video. Oh. And I was in California, on business. The surgeries prevented me from flying so I was unable to go home to India or home-home to Canada. When one is confronted with such restrictions, a strategy is required.<br /><br />The strategy recommended by everyone I spoke to was familiar: distraction. "You can't read? You should watch movies!" "You can't even watch TV? You should definitely get some audiobooks." The familiar imagery of a sick child surrounded by books, video games, and constant television stood in stark contrast to the time I spent trapped in a Marriott. I meditated. I bathed. I ate. I thought.<br /><br />Thus far, I have been on 4 silent meditation "retreats". Being entirely alone with one's self is difficult, even when life feels perfectly balanced and content. To attempt such a "retreat" on my own in the midst of my first medical trauma was to oscillate on an emotional sling. This mental and emotional cha-cha danced over both habit and interpretation. In pondering the latter, I arrived at some conclusions which rang truer the more I pondered them.<br /><br />Habit and emotion was the first constant struggle I encountered. It took a surprising amount of patience to acknowledge, even for a moment, that the accident leading to my retinal tear was entirely my fault. If I fixated on any of the factors leading up to the surgery, I'd find myself externalizing blame for hours. My reptile brain was furious and anxious to pin the blame on the optometrists who refused to sell me contact lenses, the distractions I had encountered riding home that night, and even my friends.<br /><br />Acknowledging and accepting that the accident was entirely my fault turned out to be only half the battle. Yes, I had decided to ride a bicycle after drinking with friends, with glasses on, late at night, in the dark. Yes. "I" had made these choices. But who was "I"? Was the me of a month prior so much worse a person than I was in the moment of remembering? Was the me of the past worthy of my anger and disappointment? Day by day, I came to see externalizing blame and time-shifting blame to be quite similar. The past is undeniably immutable and yet we humans seem prone to lament and regret the decisions and experiences which created the immediate world we now live in.<br /><br />Whenever I became obsessed with externalizing the causes of my feelings, I found the only real emotion I would ever hold on to for an extended period of time was anger. Feeling sad? Find a reason to be angry about the thing that "made me sad". Feeling anxious? Don't worry! That emotion is easily stomped on by a good bout of rage. Feeling fear? Humanity has long since proven the best solution to sources of fear are to destroy them. And if we're powerless to destroy mosquitoes buzzing in our ears, the very least we can do it sit around and hate them passionately. As weeks passed, my eye stopped bleeding and eventually lost its sensitivity to the light so I could go outside. But while trapped inside I was vexed by a world of violence, a temporary home in a country with a savage healthcare system, topical police brutality, an ignorant march of Atheists creating A New Religion, global warming, and -my god!- my hotel room didn't have recycling!<br /><br />The other end of the emotional sling was more productive and the sling did reach this productive end on occasion. While trapped alone with my damaged eyeball, anger was most often a thin veil for fear. My Aunt had sent me an email (read to me by a friend, since I couldn't read it) describing neurological research which placed fear and gratefulness on two ends of an emotional spectrum which could not be tied up simultaneously, thanks to limitations of the human brain. It appeared she was right. While it was easier to fantasize about changing the world into a more beautiful, more scientific, more peaceful place it was not all that difficult to be thankful for the world I was presently experiencing. Similarly, while it was easier to fantasize about having my sight back it was not impossible to be thankful for what sight I still had. With every moment of gratefulness came another. Meditating on gratefulness for a few hours a day, constantly returning to feelings of gratefulness when I was distracted by fear, the moments began to snowball. Soon, full days were spent distancing myself from feelings of fear and anger, even while I was in very intense pain. The distance wasn't rejecting emotion or burying it, however. It was a genuine <i>disinterest</i> in indulging those hateful fantasies I had in prior days.<br /><br />What I found interesting about gratitude was that it left me surveying where I was, what I was doing, and how I viewed the exciting opportunities which lay ahead. Where anger became narrowing and obsessive, gratitude appeared to grow boundlessly and open new doors to thought and creativity as it went. I had shifted my focus from emotion to interpretation.<br /><br />I began to ponder my ideals, my philosophy, and my "spirituality" (for lack of a better term). Having recently watched Carl Sagan's original "Cosmos" series, the notion of the Cosmic Calendar, in which the existence of the universe spans one calendar year and the existence of homo sapiens sapiens spans eight full minutes, I began to linger on the idea of human progress viewed under a 200,000 year lens. Previous visualizations of the scientifically observable universe (such as <a href="http://scaleofuniverse.com/">scaleofuniverse.com</a>) always left me feeling utterly insignificant, as though the time scale of the universe were so large as to exist beyond comprehension. The scale of the Cosmic Calendar was comfortingly familiar: I had experienced one year and knew what it felt like. I had experienced milliseconds and knew what they felt like. The scale presented me with a foundation for the consideration of my own actions which did not reduce me (and everyone else) to the infinitesimally small.<br /><br />I've spent much of my life in search of moments where I felt relevant: scoring a goal, making someone laugh, getting a raise, making a new friend, convincing others of my opinions, demonstrating my intelligence or strength or stamina. Structured as events, every success is ephemeral. Structured as events, my relevance is fleeting. Structured as participating in a continuum, my relevance is not only constant but does not require my superiority over another person in any way. While exploring this idea, it became apparent that the difference between perceived relevance as an aggregation of events and perceived relevance as participation in a continuum was the role of the individual, the self. In the former case, individualism mirrors my fears. The goals and accomplishments of the past are increasingly narrowing of what defines success in the future; my next accomplishment must outstrip my last. In the latter case, individualism is a paradox and mirrors the joy and gratefulness attached to the opposing end of the emotional spectrum. On a 100,000-year timescale, our efforts are collective, cooperative and our "selves" are limitations of perception provided for us to overcome. Within this paradox, the limitations of my "self" are yet one more thing to be grateful for: I <i>get</i> to overcome my self-perception. While held in these moments of intense gratitude, self-reflection could be identified in no other way. On a superficial level, where in the past I've believed myself to observe argument objectively, such joy found in the concept of self-destruction appears nihilistic. I am convinced it is not but to state otherwise without evidence is to ask the reader to indulge in faith or to admit defeat in my ability to dissect what I've observed. Without taking either of those two roads, I hope to unravel that paradox in future essays.<br /><br />"Where am I? What am I doing?" is a common reflective question for anyone, but particularly for women and men who work in technology. We love to change jobs every year or three, and in my experience a grass-is-always-greener (giag) approach rarely fails. <i>The grass often is greener.</i> Persistent gratefulness changes the answer to this question, though. Where giag says "jump ship!", gratitude says "try steering this ship first."<br /><br />As a partner of <a href="http://www.nilenso.com/" target="_blank">an employee-owned technology cooperative</a>, I get to help steer the ship. I can see that the experiments we run and the conclusions we draw directly influence our collective understanding of what we are building together. Everything we build together lives on a continuum of progress: the entirety of our business, a significant part of our individual lives, and a tiny (but not inconsequential) part of humanity. As I found in quiet moments alone in a darkened room of a Marriott, the consequence of gratitude is to find another source of gratitude. I am very fortunate to be where I am and I'm increasingly thankful for the opportunity to see what's next.</div>
 
 
 <div class="author">
-  <img src="http://nilenso.com/images/people/srihari-200.png" style="width: 96px; height: 96;">
+  <img src="http://nilenso.com/images/people/steven-200.png" style="width: 96px; height: 96;">
   <span style="position: absolute; padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/sriharisriraman">Srihari Sriraman</a> - check out <a href="http://sriharisriraman.in/">Srihari&#39;s Blog</a></i>
+    <i>Original post by <a href="http://twitter.com/deobald">Steven Deobald</a> - check out <a href="http://blog.deobald.ca/">Hungry, horny, sleepy, curious.</a></i>
+  </span>
+</div>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/24/functional-programming-101-with-haskell/">Functional Programming 101 - With Haskell</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+<time datetime="2014-01-24T00:00:00+05:30" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In this blog post, I&#39;ll attempt to explain some basic concepts of Functional Programming, using Haskell. This blog post isn&#39;t about Haskell per-se, but about one way of approaching this problem, which demonstrates the benefits of functional programming.</p>
+
+
+<p> <p>You can run most of these examples in ghci, by saving the contents of the example into a .hs file, loading up ghci and running :load file.hs.</p> <p>Many thanks to <a href="http://www.iit.edu/csl/cs/faculty/beckman_mattox.shtml">Mattox Beckman</a> for coming up with the programming exercise, and Junjie Ying for coming finding a better data structure for this explanation than I came up with.</p><h2 id='the-problem'>The Problem</h2><p>You are Hercules, about to fight the dreaded Hydra. The Hydra has 9 heads. When a head is chopped off, it spawns 8 more heads. When one of these 8 heads is cut off, each one spawns out 7 more heads. Chopping one of these spawns 6 more heads, and so on until the weakest head of the hydra will not spawn out any more heads.</p> <p>Our job is to figure out how many chops Hercules needs to make in order to kill all heads of the Hydra. And no, it&#39;s not n!.</p><h2 id='prelude-simple-overview-of-haskell-syntax'>Prelude: Simple Overview Of Haskell Syntax</h2><p>Before we dive into code, i&#39;ll explain a few constructs which are unique to Haskell, so it&#39;s easy for non Haskellers.</p> <ul><li>List Creation: You can create a list / array using the : operator. This can even be done lazily to get an infinite list. <script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=basics-1.hs"></script><noscript>  <pre>let firstArray = 0:1:[2, 3]<br />&ndash; [0, 1, 2, 3]<br />let infiniteOnes = 1:infiniteOnes<br />&ndash; [1, 1, 1, 1, 1, &hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;]<br />&ndash; never stops, hit ctrl-C to get your interpreter back</pre></noscript></li><li>Defining Function: Looks just like defining a variable, but it takes parameters. One way they are different from other languages is the ability to do pattern matching to simplify your code. Here, I define a method that sums all the elements of a list. <script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=basics-2.hs"></script><noscript>  <pre>sumOfElements []     = 0<br />sumOfElements (x:xs) = x + sumOfElements xs</pre></noscript></li><li>More List Foo: Adding lists can be done with ++. Checking if a list is empty can be done with null. You can use replicate to create a list with the same elements over and over. <script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=basics-3.hs"></script><noscript>  <pre>[1] ++ [3]     &ndash; [1, 3]<br />null []        &ndash; True<br />null [1]       &ndash; False<br />replicate 2 3  &ndash; [3, 3]</pre></noscript></li></ul><h2 id='choosing-a-data-structure'>Choosing a data structure</h2><p>Let&#39;s choose a simple data structure to represent the hydra. We&#39;ll pick an array to represent the heads of the Hydra, using the <code>level</code> of each head as the value. The initial state of the Hydra (with 9 <code>level 9</code> heads) can be represented as follows: <code>[9, 9, 9, 9, 9, 9, 9, 9, 9]</code>.</p><h2 id='chopping-off-a-head'>Chopping off a head</h2><p>The whole point of functional programming is to build small functions and compose them later. We&#39;ll build a few functions, specific to our domain, and a few more general ones to orchestrate.</p> <p>Let&#39;s first build a specific function to chop off the Hydra&#39;s head. We know that chopping off one <code>level 9</code> head should result in 8 <code>level 8</code> heads (and 8 of the original <code>level 9</code> heads). This is represented as <code>[8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9]</code></p> <p>Let&#39;s build the chop function. It takes a single argument, and the current levels of the all live heads. It will return the state of the heads after chopping the first one.</p> <p>The three lines of code below map to these rules:</p> <ul><li>If there are no heads left, just return <code>[]</code></li><li>If we find that there is a level 1 head at the start of our list, just chop it off and return the rest of the array</li><li>If we find that there is a higher level head at the start of our list, spawn n - 1 heads in it&#39;s place</li></ul> <p><script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=chop.hs"></script><noscript>  <pre>chop []       = []<br />chop (1:xs)   = xs<br />chop (n:xs)   = (replicate (n - 1) (n - 1)) ++ xs<br />&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-<br />chop [1]<br />&ndash; []<br />chop [4]<br />&ndash; [3, 3, 3]<br />chop [3, 3, 3]<br />&ndash; [2, 2, 3, 3]<br />chop [9,9,9,9,9,9,9,9,9]<br />&ndash; [8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9]</pre></noscript></p><h2 id='repeatedly-chopping-heads'>Repeatedly chopping heads</h2><p>Our function chop is a pure function as, given some input, it always returns the same output, without any sort of side effects. Side effects is a general term for modifying inputs / IO Operations / DB Calls, and so on.</p> <p>Since chop is pure function, we can safely call it over and over. Let&#39;s build a list where each element is the result of chopping the previous element. <script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=repeatedly-chop1.hs"></script><noscript>  <pre>repeatedlyChop heads = heads:repeatedlyChop (chop heads)<br />&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-<br />repeatedlyChop [3]<br />&ndash; [[3],[2,2],[1,2],[2],[1], [], [], [] &hellip;]<br />&ndash; this is an infinite list</pre></noscript></p> <p>This paradigm is so common, that we have a functional construct that does this: <a href="http://hackage.haskell.org/package/base-4.6.0.1/docs/Prelude.html#v:iterate">iterate</a>. We can replace the above code with the following: <script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=repeatedly-chop2.hs"></script><noscript>  <pre>repeatedlyChop heads = iterate chop heads</pre></noscript></p><h2 id='truncate-that-infinite-list'>Truncate that infinite list</h2><p>Great, we now have built a list of all the states the Hydra is in while Hercules is busy chopping away at it. However, this list goes on forever (we never put in a termination condition in the earlier code), so let&#39;s do that now.</p> <p>We can use a simple empty check (null) to test if the hydra is still alive. Let&#39;s keep items as long as the Hydra is alive <script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=takewhilealive.hs"></script><noscript>  <pre>takeWhileAlive (x:xs) = if null x then [] else x:(takeWhileAlive xs)</pre></noscript></p> <p>Putting the two together <script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=iteratethroughheads.hs"></script><noscript>  <pre>repeatedlyChopTillDead heads = takeWhileAlive (repeatedlyChopTillDead heads)<br />&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-<br />repeatedlyChopTillDead [4]<br />&ndash; [[4],[3,3,3],[2,2,3,3],[1,2,3,3],[2,3,3],[1,3,3],[3,3],[2,2,3],[1,2,3],[2,3],[1,3],[3],[2,2],[1,2],[2],[1]]</pre></noscript></p> <p>Again, these patterns are so common, that we can replace the entire thing with a single line. <a href="http://hackage.haskell.org/package/base-4.6.0.1/docs/Prelude.html#v:takeWhile">takeWhile</a> keeps things in the list until the first element that doesn&#39;t match. <script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=repeatedly-simple.hs"></script><noscript>  <pre>repeatedlyChopTillDead heads = takeWhile (not.null) (iterate chop heads)</pre></noscript></p><h2 id='finishing-up'>Finishing up</h2><p>Now that we have the sequence of chops needed to kill that Hydra, figuring out the number of chops is just a matter of figuring out how long the sequence is. <script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=count-chops.hs"></script><noscript>  <pre>countOfChops heads = length (repeatedlyChopTillDead heads)<br />&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;<br />countOfChops [1] &ndash; 1<br />countOfChops [3] &ndash; 5<br />countOfChops [9,9,9,9,9,9,9,9,9] &ndash; 986409 (this takes a while)</pre></noscript></p><h2 id='extending'>Extending</h2><p>Now that we&#39;ve solved the problem, what next? How easy is it to extend this? Let&#39;s add a new requirement: Hercules, though a half god, can only fight at most n Hydra heads at a time. If the number of Hydra heads goes above n, then hercules dies. Let&#39;s make a function <code>willHerculesDie</code> which takes two parameters, n and the Hydra.</p> <p>Turns out, this is pretty simple. We just need to count all the heads that are alive. If the count is more than n at any point, then we return true, and Hercules dies. <script src="https://gist.github.com/24df70ad958b0ba87e37.js?file=herculeswilldie.hs"></script><noscript>  <pre>willHerculesDie n heads = any (> n) (map length (repeatedlyChopTillDead heads))<br />&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-<br />willHerculesDie 37 [9,9,9,9,9,9,9,9,9] &ndash; False<br />willHerculesDie 36 [9,9,9,9,9,9,9,9,9] &ndash; True</pre></noscript></p><h2 id='so-what-next'>So what next?</h2><p>We&#39;ve built a bunch of really composable functions, and we can look at each one independently to tune the system.</p> <p>You can get Haskell set up with the <a href="http://www.haskell.org/platform/">Haskell Platform</a> and play around with the code <a href="https://gist.github.com/gja/24df70ad958b0ba87e37/#file-hydra-hs">here</a>.</p> <p>Some great books you can check out:</p> <ul><li><a href="http://mitpress.mit.edu/sicp/full-text/book/book.html">Structure and Interpretation of Computer Programs</a></li><li><a href="http://learnyouahaskell.com/">Learn you a Haskell for Great Good</a> - Greatest Haskell Tutorial out there</li><li><a href="https://leanpub.com/fp-oo">Functional Programming for the Object-Oriented Programmer</a></li></ul> <p><hr /><b>If you liked this post, you could:</b><br /> <h4 style="text-align: center;">  <a class="twitter-follow-button" data-show-count="false" href="https://twitter.com/tdinkar">Follow @tdinkar</a></h4> <div style="text-align: center;">  <b><a href="http://news.ycombinator.com/item?id=7113259">upvote it</a> on Hacker News</b></div> <div style="text-align: center;">  <b>or just <a href="http://www.blogger.com/comment.g?blogID=9188785269813520484&postID=5931143789690992852">leave a comment</a></b></div> <br/></p><div class="author">
+  <img src="http://nilenso.com/images/people/gja-200.png" style="width: 96px; height: 96;">
+  <span style="position: absolute; padding: 32px 15px;">
+    <i>Original post by <a href="http://twitter.com/tdinkar">Tejas Dinkar</a> - check out <a href="http://blog.gja.in/">Side Effect Free Rants</a></i>
+  </span>
+</div></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/30/how-to-disable-the-google-hangouts-menu-bar-icon/">How to Disable the Google Hangouts Menu Bar Icon on OS X</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+<time datetime="2013-10-30T00:00:00+05:30" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This has been annoying me for weeks now. Google Hangouts would place an menu-bar icon for each instance of Chrome I had running. Repeatedly quitting them didn&#8217;t have much effect; they&#8217;d keep coming back.</p>
+
+
+
+
+<p><img src="http://blog.timothyandrew.net/images/hangouts/menubar.png" alt="Menu Bar Screenshot" /></p>
+
+
+
+
+<p>Luckily, there&#8217;s an easy way to turn off the menu-bar icons.</p>
+
+
+
+
+<ul>
+<li>Open Chrome</li>
+<li>Menu Bar > Chrome > Preferences</li>
+<li>Click on Extensions, scroll down to Hangouts, and click on <em>Options</em></li>
+<li>Uncheck <em>Show system tray icon</em></li>
+<li>Click <em>OK</em></li>
+</ul>
+
+
+
+
+<p>And that&#8217;s it.</p>
+
+
+<div class="author">
+  <img src="http://nilenso.com/images/people/tim-200.png" style="width: 96px; height: 96;">
+  <span style="position: absolute; padding: 32px 15px;">
+    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
   </span>
 </div>
 
@@ -487,23 +294,23 @@ Included file 'custom/asides/subscribe.html' not found in _includes directory<se
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2019/02/01/india-has-a-three-body-problem/">India has a Three-Body Problem</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2018/08/13/fast-sudoku-solver-in-haskell-3-picking-the-right/">Fast Sudoku Solver in Haskell #3: Picking the Right Data Structures</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2018/07/11/fast-sudoku-solver-in-haskell-2-a-200x-faster-sol/">Fast Sudoku Solver in Haskell #2: A 200x Faster Solution</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2018/06/28/fast-sudoku-solver-in-haskell-1-a-simple-solution/">Fast Sudoku Solver in Haskell #1: A Simple Solution</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2018/05/23/finances-in-an-employee-owned-technology-co-opera/">Finances in an Employee-Owned Technology Co-operative</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2018/04/09/designing-for-open-source-software/">Designing for Open Source Software</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2018/03/21/designing-for-open-source-software/">Designing for open source software</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2017/10/01/writing-a-simple-rest-web-service-in-purescript-p/">Writing a Simple REST Web Service in PureScript - Part 2</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2017/09/29/writing-a-simple-rest-web-service-in-purescript-p/">Writing a Simple REST Web Service in PureScript - Part 1</a>
       </li>
     
   </ul>
