@@ -11,6 +11,12 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 ```
 
+## Using rvm
+Install `rvm` and run
+```
+rvm use ruby-2.3.8
+```
+
 ## Installing
 
 You will probably need to close and re-open your shell after each of these commands, because Ruby.

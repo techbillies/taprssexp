@@ -1,6 +1,5 @@
 
 public:
-	rbenv global 2.2.3
 	bundle exec planet generate
 	bundle exec jekyll build
 
