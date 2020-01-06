@@ -36,15 +36,17 @@ blogs:
     image: "https://nilenso.com/images/people/samrat-200.png"
     twitter: "samratmansingh"
 
-  - author: "Nivedita"
+  - author: "Nivedita Priyadarshini"
     feed: "https://medium.com/feed/@nid90"
     image: "https://nilenso.com/images/people/nid-200.png"
     twitter: "nid90"
 
-  - author: "Timmy Jose"
-    feed: "https://z0ltan.wordpress.com/feed.xml"
-    image: "https://nilenso.com/images/people/timmy-200.png"
-    twitter: "thetimmyjose"
+  - author: "Govind Krishna Joshi"
+    feed: "https://medium.com/feed/@govindkrjoshi"
+    image: "https://nilenso.com/images/people/govind-200.png"
+    twitter: "govindkrjoshi"
+
+
     ########################
     # Alumni: new posts won't be tagged with `nilenso` and if we regenerate
     #         the planet, old posts won't be lost
