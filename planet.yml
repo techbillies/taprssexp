@@ -47,6 +47,10 @@ blogs:
     image: "https://nilenso.com/images/people/govind-200.png"
     twitter: "govindkrjoshi"
 
+  - author: "Kiran Gangadharan"
+    feed: "https://medium.com/feed/@kirang89"
+    image: "https://nilenso.com/images/people/kiran-200.png"
+    twitter: "kirang89"
 
     ########################
     # Alumni: new posts won't be tagged with `nilenso` and if we regenerate
