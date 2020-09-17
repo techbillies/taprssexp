@@ -18,7 +18,7 @@
   
   
     
-      Using RoboGuice to Inject Views Into a POJO
+      Pow Over HTTPS
       
       
     
@@ -36,7 +36,11 @@
 
         
       
-   ...">
+    
+  
+
+
+  I use Pow to manage ...">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -102,6 +106,93 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/11/pow-over-https/">Pow Over HTTPS</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+<time datetime="2013-07-11T00:00:00+05:30" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I use <a href="http://pow.cx">Pow</a> to manage web servers on my development machine. It works pretty well.
+To start my server, I just hit a URL like <code>http://surveyweb.dev</code>, which starts the server (if it isn&#8217;t running) and spins it down automatically in 5 minutes.</p>
+
+
+
+
+<p>It doesn&#8217;t work over HTTPS by default; here&#8217;s how you get that done.</p>
+
+
+<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>gem install tunnels
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>This gem lets you route traffic from one port to another port.</p>
+
+
+
+
+<p>We need to route traffic from port 443, to port 80 (where the Pow server runs).</p>
+
+
+<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo tunnels 443 80
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>While the tunnel is open, I can access <code>https://surveyweb.dev</code> just fine.</p>
+
+
+
+
+<p>Pow also has a feature where I can access my server from another machine on the LAN using a URL like <code>http://surveyweb.192.168.1.10.xip.io/</code> where <code>192.168.1.10</code> is the IP address of my machine. Even with the tunnel open, HTTPS doesn&#8217;t work for this URL.</p>
+
+
+
+
+<p>We need to start another tunnel:</p>
+
+
+<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo tunnels 192.168.1.10:443 127.0.0.1:80 <span class="c"># Replace 192.168.1.10 with your IP address</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>And now, both URLs work over HTTPS.</p>
+
+
+<div class="author">
+  <img src="http://nilenso.com/images/people/tim-200.png" style="width: 96px; height: 96;">
+  <span style="position: absolute; padding: 32px 15px;">
+    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
+  </span>
+</div>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -810,104 +901,6 @@ We have to be a little creative here:</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/blog/2013/05/09/turning-your-local-git-repo-into-a-remote/">Turning Your Local Git Repo Into a Remote</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-<time datetime="2013-05-09T00:00:00+05:30" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Need to pull some changes from a friend&#8217;s local Git repo without having to push to <code>origin</code>? This post will show you how to do that.</p>
-
-
-
-
-<p>You can access a local Git repo using SSH, but setting up keys and such will probably take some time. For a quick-and-dirty solution, HTTP is <em>much</em> easier.</p>
-
-
-
-
-<p>On the machine you want to use as the server, navigate to your project and then into the <code>.git</code> directory.</p>
-
-
-<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd</span> /path/to/project
-</span><span class='line'><span class="nv">$ </span><span class="nb">cd</span> .git
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>Stand up a HTTP server using Python&#8217;s <code>SimpleHTTPServer</code> module. You can use any port number you like.</p>
-
-
-<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>python -m SimpleHTTPServer 5000
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>You&#8217;ll need the IP address of this machine as well. (Use <code>ifconfig</code>)</p>
-
-
-
-
-<p>Make sure you can access the python server from a browser on the client machine. You should be able to see something like this at <code>http://ip.address:5000/</code></p>
-
-
-
-
-<p><img src="images/2013-05-09-python-server.png" alt="Python Server Browser Screenshot" /></p>
-
-
-
-
-<p>On the client, you should be now able to access the git repo over HTTP as though it were a normal git remote.</p>
-
-
-<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git ls-remote <a href="http://ip.address:5000">http://ip.address:5000</a>
-</span><span class='line'><span class="nv">$ </span>git pull <a href="http://ip.address:5000">http://ip.address:5000</a> master
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>Add it as a remote to avoid typing out the entire IP each time.</p>
-
-
-<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git remote add <a href="http://ip.address:5000">http://ip.address:5000</a> <span class="nb">local</span>-foo
-</span><span class='line'><span class="nv">$ </span>git pull <span class="nb">local</span>-foo master
-</span></code></pre></td></tr></table></div></figure><div class="author">
-  <img src="http://nilenso.com/images/people/tim-200.png" style="width: 96px; height: 96;">
-  <span style="position: absolute; padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
-  </span>
-</div></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/14">&larr; Older</a>
@@ -935,6 +928,10 @@ Included file 'custom/asides/subscribe.html' not found in _includes directory<se
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2020/01/02/offline-first-apps-are-appropriate-for-many-clini/">Offline-first apps are appropriate for many clinical environments</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2019/10/04/training-the-simple-way/">Training, the Simple way</a>
       </li>
     
@@ -948,10 +945,6 @@ Included file 'custom/asides/subscribe.html' not found in _includes directory<se
     
       <li class="post">
         <a href="/blog/2018/08/13/fast-sudoku-solver-in-haskell-3-picking-the-right/">Fast Sudoku Solver in Haskell #3: Picking the Right Data Structures</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2018/07/11/fast-sudoku-solver-in-haskell-2-a-200x-faster-sol/">Fast Sudoku Solver in Haskell #2: A 200x Faster Solution</a>
       </li>
     
   </ul>

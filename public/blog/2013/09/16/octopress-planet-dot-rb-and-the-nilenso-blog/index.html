@@ -153,10 +153,10 @@ We use Octopress w...">
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nl">planet:</span>
-</span><span class='line'>    <span class="nl">posts_directory:</span> <span class="n">source</span><span class="o">/</span><span class="n">_posts</span><span class="o">/</span>
-</span><span class='line'>    <span class="nl">templates_directory:</span> <span class="n">source</span><span class="o">/</span><span class="n">_layouts</span><span class="o">/</span>
-</span><span class='line'>    <span class="nl">whitelisted_tags:</span> <span class="o">[</span><span class="s">&quot;nilenso&quot;</span><span class="o">,</span> <span class="s">&quot;open source&quot;</span><span class="o">,</span> <span class="s">&quot;software&quot;</span><span class="o">,</span> <span class="s">&quot;gsoc&quot;</span><span class="o">,</span> <span class="s">&quot;gnome&quot;</span><span class="o">,</span> <span class="s">&quot;lifehacks&quot;</span><span class="o">,</span> <span class="s">&quot;dev&quot;</span><span class="o">]</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span></span><span class="nl">planet:</span>
+</span><span class='line'>    <span class="n">posts_directory</span><span class="o">:</span> <span class="n">source</span><span class="o">/</span><span class="n">_posts</span><span class="o">/</span>
+</span><span class='line'>    <span class="n">templates_directory</span><span class="o">:</span> <span class="n">source</span><span class="o">/</span><span class="n">_layouts</span><span class="o">/</span>
+</span><span class='line'>    <span class="n">whitelisted_tags</span><span class="o">:</span> <span class="o">[</span><span class="s">&quot;nilenso&quot;</span><span class="o">,</span> <span class="s">&quot;open source&quot;</span><span class="o">,</span> <span class="s">&quot;software&quot;</span><span class="o">,</span> <span class="s">&quot;gsoc&quot;</span><span class="o">,</span> <span class="s">&quot;gnome&quot;</span><span class="o">,</span> <span class="s">&quot;lifehacks&quot;</span><span class="o">,</span> <span class="s">&quot;dev&quot;</span><span class="o">]</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 
@@ -177,7 +177,7 @@ We use Octopress w...">
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>planet-nilenso<span class="p">|</span>master <span class="nv">$ </span>planet <span class="nv">generate</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span></span>planet-nilenso<span class="p">|</span>master $ planet <span class="nv">generate</span>
 </span><span class='line'><span class="o">=</span>&gt; Parsing http://blog.kitallis.in/feeds/posts/default
 </span><span class='line'><span class="o">=</span>&gt; Found post titled GSoC - <span class="m">1</span> <span class="p">&amp;</span> <span class="m">2</span> - by Akshay <span class="nv">Gupta</span>
 </span><span class='line'>        <span class="o">=</span>&gt; Ignored post titled: Computers with categories: <span class="o">[</span>personal<span class="o">]</span>
@@ -202,7 +202,7 @@ We use Octopress w...">
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">task</span> <span class="ss">:octopress_planet_generate</span> <span class="k">do</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="n">task</span> <span class="ss">:octopress_planet_generate</span> <span class="k">do</span>
 </span><span class='line'>  <span class="n">run</span> <span class="s2">&quot;cd </span><span class="si">#{</span><span class="n">deploy_to</span><span class="si">}</span><span class="s2">/current &amp;&amp; bundle exec planet generate &amp;&amp; bundle exec rake generate&quot;</span>
 </span><span class='line'><span class="k">end</span>
 </span><span class='line'>
@@ -214,7 +214,7 @@ We use Octopress w...">
 
 <div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>$crontab -l </span></figcaption>
  <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>@daily <span class="nb">cd</span> /path/to/blog <span class="o">&amp;&amp;</span> planet generate <span class="o">&amp;&amp;</span> rake generate
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span></span>@daily <span class="nb">cd</span> /path/to/blog <span class="o">&amp;&amp;</span> planet generate <span class="o">&amp;&amp;</span> rake generate
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 
@@ -282,6 +282,10 @@ Included file 'custom/asides/subscribe.html' not found in _includes directory<se
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2020/01/02/offline-first-apps-are-appropriate-for-many-clini/">Offline-first apps are appropriate for many clinical environments</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2019/10/04/training-the-simple-way/">Training, the Simple way</a>
       </li>
     
@@ -295,10 +299,6 @@ Included file 'custom/asides/subscribe.html' not found in _includes directory<se
     
       <li class="post">
         <a href="/blog/2018/08/13/fast-sudoku-solver-in-haskell-3-picking-the-right/">Fast Sudoku Solver in Haskell #3: Picking the Right Data Structures</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2018/07/11/fast-sudoku-solver-in-haskell-2-a-200x-faster-sol/">Fast Sudoku Solver in Haskell #2: A 200x Faster Solution</a>
       </li>
     
   </ul>
