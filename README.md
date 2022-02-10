@@ -5,16 +5,16 @@ Scripts to automate the nilenso blog/planet (v2)
 ## Prerequisites
 
 Install `rbenv` and add this to `~/.bash_profile`:
-
 ```
+brew install rbenv
 export PATH="$HOME/.rbenv/bin:$PATH"
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 ```
 
 ## Using rvm
 Install `rvm` and run
 ```
-rvm use ruby-2.3.8
+\curl -sSL https://get.rvm.io | bash -s stable --ruby
+rvm use ruby-3.0.0
 ```
 
 ## Installing
@@ -22,7 +22,7 @@ rvm use ruby-2.3.8
 You will probably need to close and re-open your shell after each of these commands, because Ruby.
 
 ```
-rbenv install 2.2.3
+rbenv instal 3.0.0
 gem install bundler
 bundle install
 ```
@@ -37,6 +37,11 @@ make clean && make
 ```
 
 ...that should be it. If you have trouble with `planet.rb` or `Jekyll`, fork those repos, make your change, and get a PR back into the mainline. This repository should only contain tiny wrapper scripts and configuration.
+
+## Local server
+```
+make serve
+```
 
 ## Deploying
 
