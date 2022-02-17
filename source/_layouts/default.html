@@ -1,6 +1,12 @@
 {% capture root_url %}{{ site.root | strip_slash }}{% endcapture %}
 {% include head.html %}
-<body {% if page.body_id %} id="{{ page.body_id }}" {% endif %} {% if page.sidebar == false %} class="no-sidebar" {% endif %} class="collapse-sidebar sidebar-footer" >
+
+<body {% if page.body_id %} id="{{ page.body_id }}" {% endif %} {% if page.sidebar==false %} class="no-sidebar" {% endif
+  %}
+  class="collapse-sidebar sidebar-footer antialiased bg-white
+  md:max-w-[1092px] mx-auto w-full pl-6 pr-8 md:px-12
+  text-black text-base font-light"
+  style="font-family: museo-sans, sans-serif;">
   <header role="banner">{% include header.html %}</header>
   <nav role="navigation">{% include navigation.html %}</nav>
   <div id="main">
@@ -8,7 +14,7 @@
       {{ content | expand_urls: root_url }}
     </div>
   </div>
-  <div class="sidebar">
+  <!-- <div class="sidebar">
     <p class="sidebar-content">
       <a href="http://nilenso.com">nilenso</a> is an employee-owned software cooperative based out of Bangalore, India.
     </p>
@@ -19,8 +25,9 @@
       This blog is a showcase of our growth as a consultancy, a product company and generally curious beings.
       Get in touch with us at <a href="mailto:hello@nilenso.com">hello@nilenso.com</a>.
     </p>
-  </div>
+  </div> -->
 </body>
 {% include footer.html %}
 {% include after_footer.html %}
+
 </html>
