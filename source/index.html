@@ -6,11 +6,11 @@ layout: default
   {% assign index = true %}
   {% for post in paginator.posts %}
   {% assign content = post.content %}
-    <article class="mb-25">
+    <article class="mb-12">
       {% include article.html %}
     </article>
   {% endfor %}
-  <div class="pagination">
+  <div class="pagination p-2">
     {% if paginator.next_page %}
       <a class="prev" href="{{paginator.next_page_path}}">&larr; Older</a>
     {% endif %}
@@ -20,10 +20,10 @@ layout: default
     {% endif %}
   </div>
 </div>
-<aside class="sidebar">
+<!-- <aside class="sidebar">
   {% if site.blog_index_asides.size %}
     {% include_array blog_index_asides %}
   {% else %}
     {% include_array default_asides %}
   {% endif %}
-</aside>
+</aside> -->
