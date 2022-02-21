@@ -10,13 +10,13 @@ layout: default
       {% include article.html %}
     </article>
   {% endfor %}
-  <div class="pagination p-2">
+  <div class="flex justify-between pagination pt-2 pb-2">
     {% if paginator.next_page %}
-      <a class="prev" href="{{paginator.next_page_path}}">&larr; Older</a>
+      <a class="prev pagination-url" href="{{paginator.next_page_path}}">&laquo; Older</a>
     {% endif %}
-    <a href="/blog/archives">Blog Archives</a>
+    <a class="pagination-url" href="/blog/archives">Blog Archives</a>
     {% if paginator.previous_page %}
-    <a class="next" href="{{paginator.previous_page_path}}">Newer &rarr;</a>
+    <a class="next pagination-url" href="{{paginator.previous_page_path}}">Newer &raquo;</a>
     {% endif %}
   </div>
 </div>

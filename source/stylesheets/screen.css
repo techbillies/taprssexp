@@ -296,3 +296,7 @@ article p {
 .blog-year {
     width: 7rem;
 }
+
+.pagination-url {
+    color: var(--nilenso-pink);
+}
