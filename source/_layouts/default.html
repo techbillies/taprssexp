@@ -1,9 +1,8 @@
 {% capture root_url %}{{ site.root | strip_slash }}{% endcapture %}
 {% include head.html %}
 
-<body {% if page.body_id %} id="{{ page.body_id }}" {% endif %} {% if page.sidebar==false %} class="no-sidebar" {% endif
-  %}
-  class="collapse-sidebar sidebar-footer antialiased bg-white
+<body {% if page.body_id %} id="{{ page.body_id }}" {% endif %}
+  class="antialiased bg-white
   md:max-w-[1092px] mx-auto w-full pl-6 pr-8 md:px-12
   text-black text-base font-light"
   style="font-family: museo-sans, sans-serif;">
