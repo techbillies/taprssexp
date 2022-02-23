@@ -17,6 +17,8 @@ layout: default
     <a class="pagination-url" href="/blog/archives">Blog Archives</a>
     {% if paginator.previous_page %}
     <a class="next pagination-url" href="{{paginator.previous_page_path}}">Newer &raquo;</a>
+    {% else %}
+    <div></div>
     {% endif %}
   </div>
 </div>

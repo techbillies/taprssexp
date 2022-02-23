@@ -261,6 +261,56 @@ article ul {
     margin-bottom: 1.5rem;
 }
 
+article ol {
+    margin-left: 2em;
+    list-style-type: decimal;
+    margin-bottom: 1.5rem;
+}
+
+article a {
+    color: var(--nilenso-pink);
+}
+
+article h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+article pre {
+    background: #fdf6e3 url('/images/noise.png?1433967138') top left;
+    -moz-border-radius: 0.4em;
+    -webkit-border-radius: 0.4em;
+    border-radius: 0.4em;
+    border: 1px solid #e7dec3;
+    line-height: 1.45em;
+    font-size: 13px;
+    margin-bottom: 2.1em;
+    padding: .8em 1em;
+    color: #586e75;
+    overflow: auto;
+}
+
+p code,li code {
+    display: inline-block;
+    white-space: no-wrap;
+    background: #fff;
+    font-size: .8em;
+    line-height: 1.5em;
+    color: #555;
+    border: 1px solid #ddd;
+    -moz-border-radius: 0.4em;
+    -webkit-border-radius: 0.4em;
+    border-radius: 0.4em;
+    padding: 0 .3em;
+    margin: -1px 0;
+}
+
+p pre code,li pre code {
+    font-size: 1em !important;
+    background: none;
+    border: none;
+}
+
 article h3 {
     font-size: 1.5rem;
     color: var(--grey);
@@ -277,6 +327,7 @@ article p {
     margin-bottom: 1.5em;
 }
 
+/* Blog Archive Page CSS */
 #blog-archives {
     color: var(--grey);
 }
