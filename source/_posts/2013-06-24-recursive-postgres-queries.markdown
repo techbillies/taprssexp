@@ -383,7 +383,8 @@ We have to be a little creative here:</p>
 
 <p>31x faster? Not bad.</p>
 
-<p><a href="http://blog.timothyandrew.net/images/recursive-pg/not-bad.jpg"><img src="http://blog.timothyandrew.net/images/recursive-pg/not-bad.jpg" alt="Not bad" /></a></p><div class="author">
+<p><a href="http://blog.timothyandrew.net/images/recursive-pg/not-bad.jpg"><img src="http://blog.timothyandrew.net/images/recursive-pg/not-bad.jpg" alt="Not bad" /></a></p>
+<div class="author">
   <img src="http://nilenso.com/images/people/tim-200.png" style="width: 96px; height: 96;">
   <span style="position: absolute; padding: 32px 15px;">
     <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>

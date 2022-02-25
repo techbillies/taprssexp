@@ -33,11 +33,6 @@ blogs:
     image: "https://nilenso.com/images/people/deepa-200.png"
     twitter: "deepa_v"
 
-  - author: "Samrat Man Singh"
-    feed: "https://samrat.me/feed.xml"
-    image: "https://nilenso.com/images/people/samrat-200.png"
-    twitter: "samratmansingh"
-
   - author: "Nivedita Priyadarshini"
     feed: "https://medium.com/feed/@nid90"
     image: "https://nilenso.com/images/people/nid-200.png"
@@ -85,3 +80,7 @@ blogs:
   #   feed: "https://medium.com/feed/@noopurvarma"
   #   image: "https://nilenso.com/images/people/noopur-200.png"
   #   twitter: "9porcupine"
+  # - author: "Samrat Man Singh"
+  #   feed: "https://samrat.me/feed.xml"
+  #   image: "https://nilenso.com/images/people/samrat-200.png"
+  #   twitter: "samratmansingh"

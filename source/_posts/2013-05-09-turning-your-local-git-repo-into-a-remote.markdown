@@ -47,7 +47,8 @@ layout: post
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git remote add http://ip.address:5000 <span class="nb">local</span>-foo
 </span><span class='line'><span class="nv">$ </span>git pull <span class="nb">local</span>-foo master
-</span></code></pre></td></tr></table></div></figure><div class="author">
+</span></code></pre></td></tr></table></div></figure>
+<div class="author">
   <img src="http://nilenso.com/images/people/tim-200.png" style="width: 96px; height: 96;">
   <span style="position: absolute; padding: 32px 15px;">
     <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
