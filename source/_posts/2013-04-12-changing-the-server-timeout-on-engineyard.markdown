@@ -64,7 +64,8 @@ Add the following lines to <code>/data/nginx/nginx.conf</code> inside the <code>
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo /etc/init.d/nginx reload
 </span><span class='line'><span class="nv">$ </span>/engineyard/bin/app_&lt;app_name&gt; reload
-</span></code></pre></td></tr></table></div></figure><div class="author">
+</span></code></pre></td></tr></table></div></figure>
+<div class="author">
   <img src="http://nilenso.com/images/people/tim-200.png" style="width: 96px; height: 96;">
   <span style="position: absolute; padding: 32px 15px;">
     <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
