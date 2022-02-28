@@ -20,38 +20,42 @@ planet:
 blogs:
   - author: "Akshay Gupta"
     feed: "http://blog.kitallis.in/feeds/posts/default"
-    image:  "http://nilenso.com/images/people/kitallis-200.png"
+    image:  "https://nilenso.com/images/people/kitallis.webp"
     twitter: "kitallis"
 
   - author: "Srihari Sriraman"
     feed: "http://sriharisriraman.in/atom.xml"
-    image:  "http://nilenso.com/images/people/srihari-200.png"
+    image:  "https://nilenso.com/images/people/srihari.webp"
     twitter: "sriharisriraman"
 
   - author: "Deepa Venkatraman"
     feed: "https://medium.com/feed/@deepa_93680"
-    image: "https://nilenso.com/images/people/deepa-200.png"
+    image: "https://nilenso.com/images/people/deepa.webp"
     twitter: "deepa_v"
 
   - author: "Nivedita Priyadarshini"
     feed: "https://medium.com/feed/@nid90"
-    image: "https://nilenso.com/images/people/nid-200.png"
+    image: "https://nilenso.com/images/people/nid.webp"
     twitter: "nid90"
 
   - author: "Govind Krishna Joshi"
     feed: "https://medium.com/feed/@govindkrjoshi"
-    image: "https://nilenso.com/images/people/govind-200.png"
+    image: "https://nilenso.com/images/people/govind.webp"
     twitter: "govindkrjoshi"
 
   - author: "Kiran Gangadharan"
     feed: "https://medium.com/feed/@kirang89"
-    image: "https://nilenso.com/images/people/kiran-200.png"
+    image: "https://nilenso.com/images/people/kiran.webp"
     twitter: "kirang89"
 
     ########################
     # Alumni: new posts won't be tagged with `nilenso` and if we regenerate
     #         the planet, old posts won't be lost
     #########################
+  # - author: "Samrat Man Singh"
+  #   feed: "https://samrat.me/feed.xml"
+  #   image: "https://nilenso.com/images/people/samrat-200.png"
+  #   twitter: "samratmansingh"
   # - author: "Tejas Dinkar"
   #   feed: "http://blog.gja.in/feeds/posts/default"
   #   image: "http://nilenso.com/images/people/gja-200.png"
