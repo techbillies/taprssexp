@@ -616,7 +616,7 @@ X-Powered-By: Express
 <h2 id="conclusion" data-track-content data-content-name="conclusion" data-content-piece="ps-simple-rest-service-2">Conclusion<a href="#conclusion" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h2>
 <p>In this tutorial we learned how to create a simple JSON REST web service written in PureScript with persistence, validation, configuration and logging. The complete code for this tutorial can be found in <a href="https://github.com/abhin4v/ps-simple-rest-service" target="_blank" rel="noopener">github</a>. Discuss this post in the <a href="https://abhinavsarkar.net/posts/ps-simple-rest-service-2/#comment-container">comments</a>.</p><p>If you liked this post, please <a href="https://abhinavsarkar.net/posts/ps-simple-rest-service-2/#comment-container">leave a comment</a>.</p><img src="https://anna.abhinavsarkar.net/piwik.php?idsite=1&amp;rec=1" style="border:0; display: none;" />
 <div class="author">
-  <img src="https://nilenso.com/images/people/abhinav-200.png" style="width: 96px; height: 96;">
+  <img src="https://nilenso.com/images/alumni/abhinav.webp" style="width: 96px; height: 96;">
   <span style="position: absolute; padding: 32px 15px;">
     <i>Original post by <a href="http://twitter.com/abhin4v">Abhinav Sarkar</a> - check out <a href="https://abhinavsarkar.net">All posts on abhinavsarkar.net</a></i>
   </span>
