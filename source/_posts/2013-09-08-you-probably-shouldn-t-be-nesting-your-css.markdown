@@ -130,7 +130,7 @@ We love writing css that is similar to our html. The following would seem natura
 </ul>
 <div class="author">
   <img src="http://nilenso.com/images/people/srihari.webp" style="width: 96px; height: 96;">
-  <span style="position: absolute; padding: 32px 15px;">
+  <span style=" padding: 32px 15px;">
     <i>Original post by <a href="http://twitter.com/sriharisriraman">Srihari Sriraman</a> - check out <a href="http://sriharisriraman.in/">Srihari&#39;s Blog</a></i>
   </span>
 </div>

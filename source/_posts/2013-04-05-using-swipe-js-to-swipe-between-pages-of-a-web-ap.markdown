@@ -196,7 +196,7 @@ On a desktop, though, there&#8217;s no way to switch between pages.</p>
 </span></code></pre></td></tr></table></div></figure>
 <div class="author">
   <img src="http://nilenso.com/images/alumni/tim.webp" style="width: 96px; height: 96;">
-  <span style="position: absolute; padding: 32px 15px;">
+  <span style=" padding: 32px 15px;">
     <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
   </span>
 </div>

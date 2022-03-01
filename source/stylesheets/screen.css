@@ -351,3 +351,7 @@ article p {
 .pagination-url {
     color: var(--nilenso-pink);
 }
+
+.author {
+    display: flex;
+}

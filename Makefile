@@ -1,5 +1,5 @@
 public:
-	bundle exec planet generate
+	bundle exec planet generate --extension html
 	bundle exec jekyll build
 
 clean:
