@@ -8,7 +8,7 @@ layout: post
 Life in India incurs smaller expenses than life in Canada. (Unfortunately, it also involves a smaller salary; my Indian salary is approximately minimum wage in Canada.) Rent is reasonable ($225/mo) and food is as cheap as you'll find it anywhere -- even to eat out ($2 will stuff you in a cheap restaurant).<br /><br />But if Geoff can accomplish <a href="http://spreadsheets.google.com/pub?key=peb50bzsN_25TVu3vqMQNAw">the $10/day February he has planned</a>, he'll blow me out of the water.
 <div class="author">
   <img src="http://nilenso.com/images/alumni/steven.webp" style="width: 96px; height: 96;">
-  <span style="position: absolute; padding: 32px 15px;">
+  <span style=" padding: 32px 15px;">
     <i>Original post by <a href="http://twitter.com/deobald">Steven Deobald</a> - check out <a href="http://blog.deobald.ca/">Hungry, horny, sleepy, curious.</a></i>
   </span>
 </div>
