@@ -1,5 +1,5 @@
 <header class="py-12 pl-6 pr-8 md:px-12 mg:py-16 lg:py-16 bg-white">
-    <nav>
+    <nav class="hidden md:block">
         <div class="md:flex items-center justify-between">
             <a href="https://www.nilenso.com">
                 <figure class="w-48">
@@ -23,4 +23,47 @@
             </ul>
         </div>
     </nav>
+
+    <nav class="md:hidden w-full items-center flex justify-between">
+        <a href="/">
+            <figure class="w-36">
+                <img src="/images/logo.svg" alt="Logo" class="w-full">
+            </figure>
+        </a>
+        <div id="menuToggle" class="flex items-center">
+            <div>
+                <input id="hamburgerMenuState" type="checkbox">
+                <span class="bg-black w-5 h-0.5 rounded-md mb-1 block relative z-10"></span>
+                <span class="bg-black w-5 h-0.5 rounded-md mb-1 block relative z-10"></span>
+                <span class="bg-black w-5 h-0.5 rounded-md mb-1 block relative z-10"></span>
+                <div id="menu" class="overflow-hidden fixed top-0 left-0 bottom-0 w-full h-screen pt-12">
+                    <div class="relative">
+                        <a href="/" class="px-6 block">
+                            <figure class="w-36">
+                                <img src="/images/logo.svg" alt="Logo" class="w-full">
+                            </figure>
+                        </a>
+                        <ul class="pt-16">
+                            <li>
+                                <a class="font-normal text-base leading-tight tracking-wider px-6 py-3 block border-b border-gray-100 text-black hover:text-pink-300">
+                                    blog
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ root_url }}/blog/archives"
+                                class="font-normal text-base leading-tight tracking-wider px-6 py-3 block border-b border-gray-100 text-black hover:text-pink-300">
+                                    archive
+                                </a>
+                            </li> 
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <script>
+        document.querySelectorAll("#menu li a").forEach(navLink => {
+            navLink.addEventListener("click", () => document.querySelector("#hamburgerMenuState").click());
+        });
+    </script>
 </header>
