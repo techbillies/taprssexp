@@ -3,12 +3,12 @@
 
 <body {% if page.body_id %} id="{{ page.body_id }}" {% endif %}
   class="antialiased bg-white
-  md:max-w-[1092px] mx-auto w-full pl-6 pr-8 md:px-12
+  md:max-w-[1092px] mx-auto w-full 
   text-black text-base font-light"
   style="font-family: museo-sans, sans-serif;">
   <header role="banner">{% include header.html %}</header>
   <nav role="navigation">{% include navigation.html %}</nav>
-  <div id="main">
+  <div id="main" class="pl-6 pr-8 md:px-12">
     <div id="content">
       {{ content | expand_urls: root_url }}
     </div>
