@@ -245,6 +245,10 @@ article figure, article iframe {
     margin: auto;
 }
 
+article iframe {
+    max-width: 100%;
+}
+
 article figcaption {
     font-style: italic;
     text-align: center;
