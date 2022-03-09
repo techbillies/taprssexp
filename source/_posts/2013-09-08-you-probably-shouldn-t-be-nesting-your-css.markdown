@@ -127,9 +127,10 @@ We love writing css that is similar to our html. The following would seem natura
 <ul>
 <li>When you are writing modules that you will <a href="http://smacss.com/book/type-module#subclassing">subclass</a>, it is necessary to nest (by one level) the styling under the module&rsquo;s selector so that you can keep the defaults and override only the differences.</li>
 <li>When overriding <a href="http://smacss.com/book/type-base">base rules</a>, one usually has to provide enough specificity to override an element selector, say. In these cases, nesting (by one level) is ok.</li>
-</ul><div class="author">
-  <img src="http://nilenso.com/images/people/srihari-200.png" style="width: 96px; height: 96;">
-  <span style="position: absolute; padding: 32px 15px;">
+</ul>
+<div class="author">
+  <img src="http://nilenso.com/images/people/srihari.webp" style="width: 96px; height: 96;">
+  <span style=" padding: 32px 15px;">
     <i>Original post by <a href="http://twitter.com/sriharisriraman">Srihari Sriraman</a> - check out <a href="http://sriharisriraman.in/">Srihari&#39;s Blog</a></i>
   </span>
 </div>

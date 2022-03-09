@@ -6,7 +6,7 @@ layout: default
 <article role="article">
   {% if page.title %}
   <header>
-    <h1 class="entry-title">{% if site.titlecase %}{{ page.title | titlecase }}{% else %}{{ page.title }}{% endif %}</h1>
+    <h1 class="text-3xl text-pink-500 my-3">{% if site.titlecase %}{{ page.title | titlecase }}{% else %}{{ page.title }}{% endif %}</h1>
     {% if page.date %}<p class="meta">{% include post/date.html %}{{ time }}</p>{% endif %}
   </header>
   {% endif %}
@@ -31,7 +31,7 @@ layout: default
   </section>
 {% endif %}
 </div>
-{% unless page.sidebar == false %}
+<!-- {% unless page.sidebar == false %}
 <aside class="sidebar">
   {% if site.page_asides.size %}
     {% include_array page_asides %}
@@ -39,4 +39,4 @@ layout: default
     {% include_array default_asides %}
   {% endif %}
 </aside>
-{% endunless %}
+{% endunless %} -->

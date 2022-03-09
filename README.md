@@ -58,7 +58,7 @@ New feeds can be added to the planet.yml under the `blogs` section. The configur
 ```
   - author: "Akshay Gupta"
     feed: "http://blog.kitallis.in/feeds/posts/default"
-    image: "http://nilenso.com/images/people/kitallis-200.png"
+    image: "http://nilenso.com/images/people/kitallis.webp"
     twitter: "kitallis"
 ```
 
