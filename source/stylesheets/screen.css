@@ -331,6 +331,20 @@ article p {
     margin-bottom: 1.5em;
 }
 
+article .pre-quote {
+    background: #fdf6e3 url('/images/noise.png?1433967138') top left;
+    -moz-border-radius: 0.4em;
+    -webkit-border-radius: 0.4em;
+    border-radius: 0.4em;
+    border: 1px solid #e7dec3;
+    line-height: 1.45em;
+    font-size: 13px;
+    margin-bottom: 2.1em;
+    padding: .8em 1em;
+    color: #586e75;
+    font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+}
+
 /* Blog Archive Page CSS */
 #blog-archives {
     color: var(--grey);
