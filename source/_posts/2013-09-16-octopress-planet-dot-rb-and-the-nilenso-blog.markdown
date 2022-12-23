@@ -32,15 +32,15 @@ Another issue with planet.rb was that it quit abruptly when it failed to parse a
 
 {% codeblock $planet generate lang:bash %}
 planet-nilenso|master $ planet generate
-=> Parsing http://blog.kitallis.in/feeds/posts/default
+=> Parsing https://blog.kitallis.in/feeds/posts/default
 => Found post titled GSoC - 1 & 2 - by Akshay Gupta
         => Ignored post titled: Computers with categories: [personal]
 => Found post titled GSoC 2011 - 0 - by Akshay Gupta
 => Found post titled "Open Containing Folder" for EoG and gedit - by Akshay Gupta
         => Ignored post titled: Init with categories: [personal]
-=> Parsing http://blog.deobald.ca/feeds/posts/default                                                         
-        => Failed to fetch http://blog.deobald.ca/feeds/posts/default with response_code: 0                                                      
-=> Parsing http://blog.timothyandrew.net/atom.xml
+=> Parsing https://blog.deobald.ca/feeds/posts/default                                                         
+        => Failed to fetch https://blog.deobald.ca/feeds/posts/default with response_code: 0                                                      
+=> Parsing https://blog.timothyandrew.net/atom.xml
 => Found post titled Encrypt Your Emails on OS X - by Timothy Andrew
 => Found post titled Pow Over HTTPS - by Timothy Andrew                   
 {% endcodeblock %}

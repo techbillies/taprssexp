@@ -3,20 +3,20 @@ title: "Recursive Postgres Queries"
 kind: article
 created_at: 2013-06-24 03:00:00 UTC
 author: Timothy Andrew
-post_url: "http://blog.timothyandrew.net/blog/2013/06/24/recursive-postgres-queries/"
+post_url: "https://blog.timothyandrew.net/blog/2013/06/24/recursive-postgres-queries/"
 layout: post
 ---
 <h3>Introduction</h3>
 
-<p>At <a href="http://nilenso.com/">Nilenso</a>, I&#8217;m working on an (<a href="http://github.com/nilenso/ashoka-survey-web">open-source!</a>) app to design and conduct surveys.</p>
+<p>At <a href="https://nilenso.com/">Nilenso</a>, I&#8217;m working on an (<a href="http://github.com/nilenso/ashoka-survey-web">open-source!</a>) app to design and conduct surveys.</p>
 
 <p>Here&#8217;s a simple survey being designed:</p>
 
-<p><a href="http://blog.timothyandrew.net/images/recursive-pg/survey-overview.png"><img src="http://blog.timothyandrew.net/images/recursive-pg/survey-overview.png" alt="Survey Builder Overview" /></a></p>
+<p><a href="https://blog.timothyandrew.net/images/recursive-pg/survey-overview.png"><img src="https://blog.timothyandrew.net/images/recursive-pg/survey-overview.png" alt="Survey Builder Overview" /></a></p>
 
 <p>Internally, this is represented as:</p>
 
-<p><a href="http://blog.timothyandrew.net/images/recursive-pg/internal-survey-overview.png"><img src="http://blog.timothyandrew.net/images/recursive-pg/internal-survey-overview.png" alt="Survey Model Overview" /></a></p>
+<p><a href="https://blog.timothyandrew.net/images/recursive-pg/internal-survey-overview.png"><img src="https://blog.timothyandrew.net/images/recursive-pg/internal-survey-overview.png" alt="Survey Model Overview" /></a></p>
 
 <p>A survey is made up of many <em>questions</em>. A number of questions can (optionally) be grouped together in a <em>category</em>. Our actual data model is a bit more complicated than this (sub-questions, especially), but let&#8217;s assume that we&#8217;re just working with questions and categories.</p>
 
@@ -26,7 +26,7 @@ layout: post
 
 <p>For example, in this case,</p>
 
-<p><a href="http://blog.timothyandrew.net/images/recursive-pg/order-number-overview.png"><img src="http://blog.timothyandrew.net/images/recursive-pg/order-number-overview.png" alt="Order Number Overview" /></a></p>
+<p><a href="https://blog.timothyandrew.net/images/recursive-pg/order-number-overview.png"><img src="https://blog.timothyandrew.net/images/recursive-pg/order-number-overview.png" alt="Order Number Overview" /></a></p>
 
 <p>the question <code>Bar</code> will have an <code>order_number</code> that is <em>less than</em> the order number of <code>Baz</code>.</p>
 
@@ -49,7 +49,7 @@ layout: post
 
 <p>This gives us a depth-first ordering of this tree:</p>
 
-<p><a href="http://blog.timothyandrew.net/images/recursive-pg/naive-order.png"><img src="http://blog.timothyandrew.net/images/recursive-pg/naive-order.png" alt="Naive Ordering" /></a></p>
+<p><a href="https://blog.timothyandrew.net/images/recursive-pg/naive-order.png"><img src="https://blog.timothyandrew.net/images/recursive-pg/naive-order.png" alt="Naive Ordering" /></a></p>
 
 <p>For large surveys with 5+ levels of nesting, and more than a hundred questions, this is pretty slow.</p>
 
@@ -94,11 +94,11 @@ Top level elements don&#8217;t have a parent category, so their <code>category_i
 
 <p>This gives us the top-level elements.</p>
 
-<p><a href="http://blog.timothyandrew.net/images/recursive-pg/top-level-elements-query.png"><img src="http://blog.timothyandrew.net/images/recursive-pg/top-level-elements-query.png" alt="Top-Level Queries" /></a></p>
+<p><a href="https://blog.timothyandrew.net/images/recursive-pg/top-level-elements-query.png"><img src="https://blog.timothyandrew.net/images/recursive-pg/top-level-elements-query.png" alt="Top-Level Queries" /></a></p>
 
 <p>Now on to the recursive term. According to the Postgres docs:</p>
 
-<p><a href="http://blog.timothyandrew.net/images/recursive-pg/steps.png"><img src="http://blog.timothyandrew.net/images/recursive-pg/steps.png" alt="Postgres Steps" /></a></p>
+<p><a href="https://blog.timothyandrew.net/images/recursive-pg/steps.png"><img src="https://blog.timothyandrew.net/images/recursive-pg/steps.png" alt="Postgres Steps" /></a></p>
 
 <p>Our recursive term simply has to find all the direct children of the elements fetched by the non-recursive term.</p>
 
@@ -200,7 +200,7 @@ We have to be a little creative here:</p>
 
 <p>This yields all the survey elements:</p>
 
-<p><a href="http://blog.timothyandrew.net/images/recursive-pg/all-elements-without-order-query.png"><img src="http://blog.timothyandrew.net/images/recursive-pg/all-elements-without-order-query.png" alt="Query without ordering" /></a></p>
+<p><a href="https://blog.timothyandrew.net/images/recursive-pg/all-elements-without-order-query.png"><img src="https://blog.timothyandrew.net/images/recursive-pg/all-elements-without-order-query.png" alt="Query without ordering" /></a></p>
 
 <p>Unfortunately, it looks like the ordering is way off.</p>
 
@@ -267,7 +267,7 @@ We have to be a little creative here:</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><a href="http://blog.timothyandrew.net/images/recursive-pg/almost.png"><img src="http://blog.timothyandrew.net/images/recursive-pg/almost.png" alt="Query with duplicate" /></a></p>
+<p><a href="https://blog.timothyandrew.net/images/recursive-pg/almost.png"><img src="https://blog.timothyandrew.net/images/recursive-pg/almost.png" alt="Query with duplicate" /></a></p>
 
 <p>That&#8217;s <em>almost</em> right. There are two entries for <em>What&#8217;s your favourite song?</em></p>
 
@@ -333,7 +333,7 @@ We have to be a little creative here:</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><a href="http://blog.timothyandrew.net/images/recursive-pg/final.png"><img src="http://blog.timothyandrew.net/images/recursive-pg/final.png" alt="Final Query" /></a></p>
+<p><a href="https://blog.timothyandrew.net/images/recursive-pg/final.png"><img src="https://blog.timothyandrew.net/images/recursive-pg/final.png" alt="Final Query" /></a></p>
 
 <p>That seems about right. We&#8217;re done here.</p>
 
@@ -364,7 +364,7 @@ We have to be a little creative here:</p>
 
 <p>Each chain looks like this:</p>
 
-<p><a href="http://blog.timothyandrew.net/images/recursive-pg/chain.png"><img src="http://blog.timothyandrew.net/images/recursive-pg/chain.png" alt="Sub-question Chain" /></a></p>
+<p><a href="https://blog.timothyandrew.net/images/recursive-pg/chain.png"><img src="https://blog.timothyandrew.net/images/recursive-pg/chain.png" alt="Sub-question Chain" /></a></p>
 
 <p>Let&#8217;s see if recursive queries are faster.</p>
 
@@ -383,10 +383,10 @@ We have to be a little creative here:</p>
 
 <p>31x faster? Not bad.</p>
 
-<p><a href="http://blog.timothyandrew.net/images/recursive-pg/not-bad.jpg"><img src="http://blog.timothyandrew.net/images/recursive-pg/not-bad.jpg" alt="Not bad" /></a></p>
+<p><a href="https://blog.timothyandrew.net/images/recursive-pg/not-bad.jpg"><img src="https://blog.timothyandrew.net/images/recursive-pg/not-bad.jpg" alt="Not bad" /></a></p>
 <div class="author">
-  <img src="http://nilenso.com/images/alumni/tim.webp" style="width: 96px; height: 96;">
+  <img src="https://nilenso.com/images/alumni/tim.webp" style="width: 96px; height: 96;">
   <span style=" padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
+    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="https://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
   </span>
 </div>

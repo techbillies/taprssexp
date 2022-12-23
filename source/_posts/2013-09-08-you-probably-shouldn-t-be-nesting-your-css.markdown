@@ -3,7 +3,7 @@ title: "You probably shouldn&#39;t be nesting your CSS"
 kind: article
 created_at: 2013-09-08 06:46:00 UTC
 author: Srihari Sriraman
-post_url: "http://sriharisriraman.in/blog/2013/09/08/dont-nest-css/"
+post_url: "https://sriharisriraman.in/blog/2013/09/08/dont-nest-css/"
 layout: post
 ---
 <p><strong>TL;DR:</strong>  Don&rsquo;t nest CSS. Nest class names instead. This is one of the most useful take-aways from <a href="http://smacss.com">SMACSS</a>.
@@ -129,8 +129,8 @@ We love writing css that is similar to our html. The following would seem natura
 <li>When overriding <a href="http://smacss.com/book/type-base">base rules</a>, one usually has to provide enough specificity to override an element selector, say. In these cases, nesting (by one level) is ok.</li>
 </ul>
 <div class="author">
-  <img src="http://nilenso.com/images/people/srihari.webp" style="width: 96px; height: 96;">
+  <img src="https://nilenso.com/images/people/srihari.webp" style="width: 96px; height: 96;">
   <span style=" padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/sriharisriraman">Srihari Sriraman</a> - check out <a href="http://sriharisriraman.in/">Srihari&#39;s Blog</a></i>
+    <i>Original post by <a href="http://twitter.com/sriharisriraman">Srihari Sriraman</a> - check out <a href="https://sriharisriraman.in/">Srihari&#39;s Blog</a></i>
   </span>
 </div>

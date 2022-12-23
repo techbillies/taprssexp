@@ -77,7 +77,7 @@ The current survey builder works well and is pretty functional, but it fails on 
 We worked together with Accenture to come up with new designs and started working on rebuilding it last month. It is still in progress, and can be viewed from the `create-v2` menu. The new visual designs are [here](https://github.com/nilenso/ashoka-survey-web/commit/a5aeb01fadedf43311a779412ef49c0c28081d92).
 
 #### The Native Android App
-The `survey-mobile` app is built with [Titanium](http://www.appcelerator.com/platform/titanium-platform/). We're looking to move away from this to a native android app. You can read a bit about where we're at in this [post](http://blog.nilenso.com/blog/2013/09/10/android-native-mvp/) and checkout the mockups [here](https://github.com/nilenso/ashoka-survey-mobile-native/commit/317c4692227249d9b476286d821493404b0acb0f).
+The `survey-mobile` app is built with [Titanium](http://www.appcelerator.com/platform/titanium-platform/). We're looking to move away from this to a native android app. You can read a bit about where we're at in this [post](https://blog.nilenso.com/blog/2013/09/10/android-native-mvp/) and checkout the mockups [here](https://github.com/nilenso/ashoka-survey-mobile-native/commit/317c4692227249d9b476286d821493404b0acb0f).
 
 #### Data Portal
 Each survey conducted by Ashoka typically has about 300 responses. We currently have some basic reports built with google charts. But we don't have the ability to say, interpret data of similar/same respondents across multiple surveys.

@@ -57,8 +57,8 @@ Only a few plugins have been carried over from [planet-nilenso](http://github.co
 New feeds can be added to the planet.yml under the `blogs` section. The configuration would look something as follows:
 ```
   - author: "Akshay Gupta"
-    feed: "http://blog.kitallis.in/feeds/posts/default"
-    image: "http://nilenso.com/images/people/kitallis.webp"
+    feed: "https://blog.kitallis.in/feeds/posts/default"
+    image: "https://nilenso.com/images/people/kitallis.webp"
     twitter: "kitallis"
 ```
 
