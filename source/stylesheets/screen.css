@@ -22,9 +22,28 @@
 }
 
 html {
+    font-family: Poppins, sans-serif;
     scroll-behavior: smooth;
     --nilenso-pink: #FF3D84;
+    --nilenso-black: #000000;
     --grey: #4B5563;
+}
+
+p, p li, article {
+    font-family: Aleo, serif;
+}
+
+.monospaced {
+    font-size: 0.9em;
+}
+
+h1 {
+    font-weight: 600;
+    color: var(--nilenso-black);
+}
+
+h2, h3, h4 {
+    font-weight: 500;
 }
 
 #menuToggle {
