@@ -8,18 +8,40 @@
             </a>
             <ul class="flex">
                 <li>
-                    <a href="{{ root_url }}/" class="font-normal text-base leading-tight tracking-wider md:pr-4 lg:pr-8 xl:pr-8 text-black hover:text-pink-500 cursor-pointer">
-                        blog
+                    <a href="https://nilenso.com/work/"
+                       class="font-normal text-base leading-tight tracking-wider md:pr-4 lg:pr-8 xl:pr-8 text-black hover:text-pink-500 cursor-pointer">
+                        work
                     </a>
                 </li>
                 <li>
-                    <a href="{{ root_url }}/blog/archives"class="font-normal text-base leading-tight tracking-wider md:pr-4 lg:pr-8 xl:pr-8 text-black hover:text-pink-500 cursor-pointer">
-                        archive
+                    <a href="https://nilenso.com/jobs/"
+                       class="font-normal text-base leading-tight tracking-wider md:pr-4 lg:pr-8 xl:pr-8 text-black hover:text-pink-500 cursor-pointer">
+                        jobs
                     </a>
-                </li> 
-                <a class="header-link right page-link rss-link" href="{{ site.subscribe_rss }}" title="subscribe via RSS"><img
-                    class="rss-link-image" src="/images/rss.png"></img></a>
-                </div>
+                </li>
+                <li>
+                    <a href="https://nilenso.com/people/"
+                       class="font-normal text-base leading-tight tracking-wider md:pr-4 lg:pr-8 xl:pr-8 text-black hover:text-pink-500 cursor-pointer">
+                        people
+                    </a>
+                </li>
+                <li>
+                    <a href="/"
+                       class="font-normal text-base leading-tight tracking-wider md:pr-4 lg:pr-8 xl:pr-8 text-black hover:text-pink-500 cursor-pointer">
+                        {% if page.url == "/" %}
+                        {{ "blog" | replace: "o", "<span class='font-bold text-pink-500'>o</span>" }}
+                        {% else %}
+                        blog
+                        {% endif %}
+                    </a>
+                </li>
+                <li>
+                    <a href="#contact"
+                       class="font-normal text-base leading-tight tracking-wider md:pr-4 lg:pr-8 xl:pr-8 text-black hover:text-pink-500 cursor-pointer">
+                        contact
+                    </a>
+                </li>
+        </div>
             </ul>
         </div>
     </nav>
@@ -45,16 +67,39 @@
                         </a>
                         <ul class="pt-16">
                             <li>
-                                <a class="font-normal text-base leading-tight tracking-wider px-6 py-3 block border-b border-gray-100 text-black hover:text-pink-300">
-                                    blog
+                                <a class="font-normal text-base leading-tight tracking-wider px-6 py-3 block border-b border-gray-100 text-black hover:text-pink-300"
+                                   href="https://nilenso.com/work/">
+                                    work
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ root_url }}/blog/archives"
-                                class="font-normal text-base leading-tight tracking-wider px-6 py-3 block border-b border-gray-100 text-black hover:text-pink-300">
-                                    archive
+                                <a class="font-normal text-base leading-tight tracking-wider px-6 py-3 block border-b border-gray-100 text-black hover:text-pink-300"
+                                   href="https://nilenso.com/jobs/">
+                                    jobs
                                 </a>
-                            </li> 
+                            </li>
+                            <li>
+                                <a class="font-normal text-base leading-tight tracking-wider px-6 py-3 block border-b border-gray-100 text-black hover:text-pink-300"
+                                   href="https://nilenso.com/people/">
+                                    people
+                                </a>
+                            </li>
+                            <li>
+                                <a class="font-normal text-base leading-tight tracking-wider px-6 py-3 block border-b border-gray-100 text-black hover:text-pink-300"
+                                   href="/">
+                                    {% if page.url == "/" %}
+                                    {{ "blog" | replace: "o", "<span class='font-bold text-pink-500'>o</span>" }}
+                                    {% else %}
+                                    blog
+                                    {% endif %}
+                                </a>
+                            </li>
+                            <li>
+                                <a class="font-normal text-base leading-tight tracking-wider px-6 py-3 block border-b border-gray-100 text-black hover:text-pink-300"
+                                   href="#contact">
+                                    contact
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
