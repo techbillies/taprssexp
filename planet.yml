@@ -18,11 +18,6 @@ planet:
       - "offline-apps"
 
 blogs:
-  - author: "Akshay Gupta"
-    feed: "http://blog.kitallis.in/feeds/posts/default"
-    image:  "https://nilenso.com/images/people/kitallis.webp"
-    twitter: "kitallis"
-
   - author: "Srihari Sriraman"
     feed: "http://sriharisriraman.in/atom.xml"
     image:  "https://nilenso.com/images/people/srihari.webp"
@@ -32,11 +27,6 @@ blogs:
     feed: "https://medium.com/feed/@deepa_93680"
     image: "https://nilenso.com/images/people/deepa.webp"
     twitter: "deepa_v"
-
-  - author: "Nivedita Priyadarshini"
-    feed: "https://medium.com/feed/@nid90"
-    image: "https://nilenso.com/images/people/nid.webp"
-    twitter: "nid90"
 
   - author: "Govind Krishna Joshi"
     feed: "https://medium.com/feed/@govindkrjoshi"
@@ -52,6 +42,14 @@ blogs:
     # Alumni: new posts won't be tagged with `nilenso` and if we regenerate
     #         the planet, old posts won't be lost
     #########################
+  # - author: "Akshay Gupta"
+  #   feed: "http://blog.kitallis.in/feeds/posts/default"
+  #   image:  "https://nilenso.com/images/people/kitallis.webp"
+  #   twitter: "kitallis"
+  # - author: "Nivedita Priyadarshini"
+  #   feed: "https://medium.com/feed/@nid90"
+  #   image: "https://nilenso.com/images/people/nid.webp"
+  #   twitter: "nid90"
   # - author: "Samrat Man Singh"
   #   feed: "https://samrat.me/feed.xml"
   #   image: "https://nilenso.com/images/alumni/varun-200.png"
