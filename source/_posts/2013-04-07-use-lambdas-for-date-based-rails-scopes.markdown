@@ -3,7 +3,7 @@ title: "Use Lambdas for Date-based Rails Scopes"
 kind: article
 created_at: 2013-04-07 18:56:00 UTC
 author: Timothy Andrew
-post_url: "http://blog.timothyandrew.net/blog/2013/04/08/use-lambdas-for-date-based-rails-scopes/"
+post_url: "https://blog.timothyandrew.net/blog/2013/04/08/use-lambdas-for-date-based-rails-scopes/"
 layout: post
 ---
 <p>A scope allows you to specify an ARel query that can be used as a method call to the model (or association objects).</p>
@@ -64,8 +64,8 @@ This typically happens only when the server is restarted.</p>
 </span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 <div class="author">
-  <img src="http://nilenso.com/images/alumni/tim.webp" style="width: 96px; height: 96;">
+  <img src="https://nilenso.com/images/alumni/tim.webp" style="width: 96px; height: 96;">
   <span style=" padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
+    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="https://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
   </span>
 </div>

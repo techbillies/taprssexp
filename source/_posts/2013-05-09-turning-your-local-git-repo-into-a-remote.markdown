@@ -3,7 +3,7 @@ title: "Turning Your Local Git Repo Into a Remote"
 kind: article
 created_at: 2013-05-09 14:48:00 UTC
 author: Timothy Andrew
-post_url: "http://blog.timothyandrew.net/blog/2013/05/09/turning-your-local-git-repo-into-a-remote/"
+post_url: "https://blog.timothyandrew.net/blog/2013/05/09/turning-your-local-git-repo-into-a-remote/"
 layout: post
 ---
 <p>Need to pull some changes from a friend&#8217;s local Git repo without having to push to <code>origin</code>? This post will show you how to do that.</p>
@@ -49,8 +49,8 @@ layout: post
 </span><span class='line'><span class="nv">$ </span>git pull <span class="nb">local</span>-foo master
 </span></code></pre></td></tr></table></div></figure>
 <div class="author">
-  <img src="http://nilenso.com/images/alumni/tim.webp" style="width: 96px; height: 96;">
+  <img src="https://nilenso.com/images/alumni/tim.webp" style="width: 96px; height: 96;">
   <span style=" padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
+    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="https://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
   </span>
 </div>

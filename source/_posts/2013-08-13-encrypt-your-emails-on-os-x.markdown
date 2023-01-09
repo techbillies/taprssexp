@@ -3,7 +3,7 @@ title: "Encrypt Your Emails on OS X"
 kind: article
 created_at: 2013-08-13 17:44:00 UTC
 author: Timothy Andrew
-post_url: "http://blog.timothyandrew.net/blog/2013/08/13/encrypt-your-emails-on-os-x/"
+post_url: "https://blog.timothyandrew.net/blog/2013/08/13/encrypt-your-emails-on-os-x/"
 layout: post
 ---
 <h3>Introduction</h3>
@@ -67,7 +67,7 @@ If you set up your keys right, you should see a green <code>OpenPGP</code> on th
 
 <p>Once you fill in the <em>To:</em> field with an email address you know the public key for, the little padlock icon on the right should become clickable. Click it.</p>
 
-<p><img src="http://blog.timothyandrew.net/images/encryption/2.png" alt="Padlock Icon" /></p>
+<p><img src="https://blog.timothyandrew.net/images/encryption/2.png" alt="Padlock Icon" /></p>
 
 <p>If the padlock is closed, that means that the email you&#8217;re about to send is encrypted.</p>
 
@@ -75,7 +75,7 @@ If you set up your keys right, you should see a green <code>OpenPGP</code> on th
 
 <p>If someone else were to try and view the email, this is what they would see:</p>
 
-<p><img src="http://blog.timothyandrew.net/images/encryption/3.png" alt="Un-Decrypted View" /></p>
+<p><img src="https://blog.timothyandrew.net/images/encryption/3.png" alt="Un-Decrypted View" /></p>
 
 <h3>Receiving an Encrypted Email</h3>
 
@@ -84,7 +84,7 @@ GPG Suite will automatically decrypt the email and show it to you. It&#8217;s se
 
 <p>In fact, here&#8217;s what the email from the previous screenshot would look like in Mail.app:</p>
 
-<p><img src="http://blog.timothyandrew.net/images/encryption/4.png" alt="Decrypted Email" /></p>
+<p><img src="https://blog.timothyandrew.net/images/encryption/4.png" alt="Decrypted Email" /></p>
 
 <h3>Digital Signatures</h3>
 
@@ -94,7 +94,7 @@ GPG Suite will automatically decrypt the email and show it to you. It&#8217;s se
 
 <p>Simply <a href="http://en.wikipedia.org/wiki/Digital_signature">(digitally) sign</a> every email you send. GPG Suite makes this very easy. Just make sure the button next to the padlock is clicked:</p>
 
-<p><img src="http://blog.timothyandrew.net/images/encryption/5.png" alt="Signature Button" /></p>
+<p><img src="https://blog.timothyandrew.net/images/encryption/5.png" alt="Signature Button" /></p>
 
 <p>Here&#8217;s what this does:</p>
 
@@ -109,8 +109,8 @@ GPG Suite will automatically decrypt the email and show it to you. It&#8217;s se
 
 <p>An email client that supports digital signatures (GPG Suite included) will complain if this verification fails.</p>
 <div class="author">
-  <img src="http://nilenso.com/images/alumni/tim.webp" style="width: 96px; height: 96;">
+  <img src="https://nilenso.com/images/alumni/tim.webp" style="width: 96px; height: 96;">
   <span style=" padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
+    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="https://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
   </span>
 </div>

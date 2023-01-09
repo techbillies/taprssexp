@@ -3,7 +3,7 @@ title: "Changing the Server Timeout on EngineYard"
 kind: article
 created_at: 2013-04-12 16:59:00 UTC
 author: Timothy Andrew
-post_url: "http://blog.timothyandrew.net/blog/2013/04/12/changing-the-server-timeout-on-engineyard/"
+post_url: "https://blog.timothyandrew.net/blog/2013/04/12/changing-the-server-timeout-on-engineyard/"
 layout: post
 ---
 <p>While working on <a href="http://github.com/c42/survey-web">survey-web</a> today, we were stuck for a really long time trying to figure out this problem.</p>
@@ -11,11 +11,11 @@ layout: post
 <p>Unless otherwise specified, image uploads while adding a response are capped at 5MB per image.
 Adding a larger image (like this 20MB image) should result in a validation error showing up.</p>
 
-<p><img src="http://blog.timothyandrew.net/images/2013-04-12-image-too-big.png" alt="Validation Error" /></p>
+<p><img src="https://blog.timothyandrew.net/images/2013-04-12-image-too-big.png" alt="Validation Error" /></p>
 
 <p>On production, we&#8217;d see this.</p>
 
-<p><img src="http://blog.timothyandrew.net/images/2013-04-12-502.png" alt="Production" /></p>
+<p><img src="https://blog.timothyandrew.net/images/2013-04-12-502.png" alt="Production" /></p>
 
 <p>After a <em>lot</em> of digging, including looking at Carrierwave (and <a href="https://github.com/lardawge/carrierwave_backgrounder">Backgrounder</a>), delayed_job server logs, and our controller logic pretty closely, we noticed in <code>production.log</code> that Rails was sending down a <code>200</code>, but the browser was recieving a <code>502</code>.</p>
 
@@ -66,8 +66,8 @@ Add the following lines to <code>/data/nginx/nginx.conf</code> inside the <code>
 </span><span class='line'><span class="nv">$ </span>/engineyard/bin/app_&lt;app_name&gt; reload
 </span></code></pre></td></tr></table></div></figure>
 <div class="author">
-  <img src="http://nilenso.com/images/alumni/tim.webp" style="width: 96px; height: 96;">
+  <img src="https://nilenso.com/images/alumni/tim.webp" style="width: 96px; height: 96;">
   <span style=" padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
+    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="https://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
   </span>
 </div>

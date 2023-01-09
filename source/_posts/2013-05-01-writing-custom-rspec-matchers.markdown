@@ -3,7 +3,7 @@ title: "Writing Custom RSpec Matchers"
 kind: article
 created_at: 2013-05-01 06:26:00 UTC
 author: Timothy Andrew
-post_url: "http://blog.timothyandrew.net/blog/2013/05/01/writing-custom-rspec-matchers/"
+post_url: "https://blog.timothyandrew.net/blog/2013/05/01/writing-custom-rspec-matchers/"
 layout: post
 ---
 <p>RSpec matchers let you abstract away common assertions in your test code.</p>
@@ -100,8 +100,8 @@ layout: post
 
 <p>The example also includes a custom error message handler, which properly formats an error message if the assertion fails.</p>
 <div class="author">
-  <img src="http://nilenso.com/images/alumni/tim.webp" style="width: 96px; height: 96;">
+  <img src="https://nilenso.com/images/alumni/tim.webp" style="width: 96px; height: 96;">
   <span style=" padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
+    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="https://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
   </span>
 </div>

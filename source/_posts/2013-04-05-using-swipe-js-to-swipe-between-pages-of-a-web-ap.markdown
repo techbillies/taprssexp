@@ -3,10 +3,10 @@ title: "Using Swipe.js to swipe between pages of a web app"
 kind: article
 created_at: 2013-04-05 16:15:00 UTC
 author: Timothy Andrew
-post_url: "http://blog.timothyandrew.net/blog/2013/04/05/using-swipe-dot-js-to-swipe-between-pages-of-a-web-app/"
+post_url: "https://blog.timothyandrew.net/blog/2013/04/05/using-swipe-dot-js-to-swipe-between-pages-of-a-web-app/"
 layout: post
 ---
-<p>I was working with <a href="http://deobald.ca/">Steven</a> on <a href="http://github.com/deobald/jok">Jok</a> today.</p>
+<p>I was working with <a href="https://deobald.ca/">Steven</a> on <a href="http://github.com/deobald/jok">Jok</a> today.</p>
 
 <p>We were converting a two page (well 3, actually) page web application into a single page application that let you swipe between pages on mobile device but worked the same on a desktop browser.</p>
 
@@ -195,8 +195,8 @@ On a desktop, though, there&#8217;s no way to switch between pages.</p>
 </span><span class='line'><span class="nx">mySwipe</span><span class="p">.</span><span class="nx">setup</span><span class="p">();</span>
 </span></code></pre></td></tr></table></div></figure>
 <div class="author">
-  <img src="http://nilenso.com/images/alumni/tim.webp" style="width: 96px; height: 96;">
+  <img src="https://nilenso.com/images/alumni/tim.webp" style="width: 96px; height: 96;">
   <span style=" padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="http://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
+    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="https://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
   </span>
 </div>
