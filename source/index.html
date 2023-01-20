@@ -1,27 +1,37 @@
 ---
 layout: default
 ---
-
-<div class="blog-index">
+<section class="bg-black py-10 md:py-16 lg:py-16 px-6 md:px-10 lg:px-9">
+    <div>
+      <h2 class="text-pink-500 font-normal text-xl leading-snug md:text-4xl lg:lg:text-[2.8rem] lg:leading-snug md:leading-tight">
+          the nilenso blog.
+          <span class ="text-white font-light text-xl leading-snug md:text-4xl lg:lg:text-[2.8rem] lg:leading-snug md:leading-tight">
+              some placeholder text
+              <a href="{{ site.subscribe_rss }}" title="subscribe via RSS">
+                <img style="display: inline;" src="/images/rss.png"></img>
+              </a>
+          </span>
+      </h2>
+    </div>
+</section>
+<section id="index-page-grid">
   {% assign index = true %}
   {% for post in paginator.posts %}
   {% assign content = post.content %}
-    <article class="mb-12">
-      {% include article.html %}
-    </article>
+   <a href="{{ post.url }}">
+      <div class="post-tile border-gray-300 border-2">
+          <img src={{ post.image }}></img>
+          <div class="post-name">{{ post.title }}</div>
+          <div class="post-description"></div>
+          <div class="post-author border-t-2 border-gray-300">{{ post.author }}</div>
+      </div>
+  </a>
   {% endfor %}
-  <div class="flex justify-between pagination pt-2 pb-2">
-    {% if paginator.next_page %}
-      <a class="prev pagination-url" href="{{paginator.next_page_path}}">&laquo; Older</a>
-    {% endif %}
-    <a class="pagination-url" href="/blog/archives">Blog Archives</a>
-    {% if paginator.previous_page %}
-    <a class="next pagination-url" href="{{paginator.previous_page_path}}">Newer &raquo;</a>
-    {% else %}
-    <div></div>
-    {% endif %}
+  <div class="flex pt-2 pb-2">
+    browse our blog archives<a class="underline ml-1" href="/blog/archives"> here</a>
   </div>
-</div>
+</section>
+
 <!-- <aside class="sidebar">
   {% if site.blog_index_asides.size %}
     {% include_array blog_index_asides %}
