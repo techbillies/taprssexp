@@ -48,7 +48,7 @@ layout: post
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Now we&#8217;re rewriting <a href="http://github.com/nilenso/ashoka-survey-mobile">ashoka-survey-mobile</a> as a layered <a href="(http://github.com/nilenso/ashoka-survey-mobile-native">native app</a>).
+<p>Now we&#8217;re rewriting <a href="https://github.com/nilenso/ashoka-survey-mobile">ashoka-survey-mobile</a> as a layered <a href="(https://github.com/nilenso/ashoka-survey-mobile-native">native app</a>).
 We have a LoginView (POJO) which needs references to views present on-screen. Normally, we would instantiate the POJO in the activity, and pass it all the views it needs.</p>
 
 <p>But can we do this with RoboGuice? We can&#8217;t really use <code>@InjectView</code> in a POJO. It needs an Activity context.

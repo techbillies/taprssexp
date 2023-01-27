@@ -6,13 +6,13 @@ author: Timothy Andrew
 post_url: "https://blog.timothyandrew.net/blog/2013/04/05/using-swipe-dot-js-to-swipe-between-pages-of-a-web-app/"
 layout: post
 ---
-<p>I was working with <a href="https://deobald.ca/">Steven</a> on <a href="http://github.com/deobald/jok">Jok</a> today.</p>
+<p>I was working with <a href="https://deobald.ca/">Steven</a> on <a href="https://github.com/deobald/jok">Jok</a> today.</p>
 
 <p>We were converting a two page (well 3, actually) page web application into a single page application that let you swipe between pages on mobile device but worked the same on a desktop browser.</p>
 
 <p>Here&#8217;s how that&#8217;s done.</p>
 
-<p>First, download the <a href="http://swipejs.com/">Swipe.js</a> plugin.</p>
+<p>First, download the <a href="https://swipejs.com/">Swipe.js</a> plugin.</p>
 
 <p>You need the markup for all your pages in a single HTML file, wrapped with two <code>divs</code> that Swipe uses.</p>
 

@@ -6,7 +6,7 @@ author: Timothy Andrew
 post_url: "https://blog.timothyandrew.net/blog/2013/04/12/changing-the-server-timeout-on-engineyard/"
 layout: post
 ---
-<p>While working on <a href="http://github.com/c42/survey-web">survey-web</a> today, we were stuck for a really long time trying to figure out this problem.</p>
+<p>While working on <a href="https://github.com/c42/survey-web">survey-web</a> today, we were stuck for a really long time trying to figure out this problem.</p>
 
 <p>Unless otherwise specified, image uploads while adding a response are capped at 5MB per image.
 Adding a larger image (like this 20MB image) should result in a validation error showing up.</p>

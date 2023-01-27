@@ -6,10 +6,10 @@ author: Srihari Sriraman
 post_url: "https://sriharisriraman.in/blog/2013/09/08/dont-nest-css/"
 layout: post
 ---
-<p><strong>TL;DR:</strong>  Don&rsquo;t nest CSS. Nest class names instead. This is one of the most useful take-aways from <a href="http://smacss.com">SMACSS</a>.
+<p><strong>TL;DR:</strong>  Don&rsquo;t nest CSS. Nest class names instead. This is one of the most useful take-aways from <a href="https://smacss.com">SMACSS</a>.
 Follow this, and it will change the way you write scss for the better.</p>
 
-<p>With the coming of <a href="http://sass-lang.com/">sass</a>,  we have all seen how writing css has gotten easier.
+<p>With the coming of <a href="https://sass-lang.com/">sass</a>,  we have all seen how writing css has gotten easier.
 We love writing css that is similar to our html. The following would seem natural to us:</p>
 
 <figure class='code'><figcaption><span>HTML for a component</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -112,7 +112,7 @@ We love writing css that is similar to our html. The following would seem natura
 <li>All the context that we got in nesting css. Except that the nesting is in the name instead of nested braces that are hard to read.</li>
 <li>CSS with minimum specificity so that it is easy to override. For the purpose of subclassing modules, it is preferable to nest the styling by exactly one level. See exceptions below.</li>
 <li>Independence from structure, so we can move our components around without having to move css around. For this purpose, it is also good to stay away from element selectors.</li>
-<li>Control over cascading, that you thought was only possible <a href="http://37signals.com/svn/posts/3003-css-taking-control-of-the-cascade">with nesting</a>. The nesting in class names gives a unique name to your selector that is quite hard to override accidentally with cascading.</li>
+<li>Control over cascading, that you thought was only possible <a href="https://37signals.com/svn/posts/3003-css-taking-control-of-the-cascade">with nesting</a>. The nesting in class names gives a unique name to your selector that is quite hard to override accidentally with cascading.</li>
 <li>The answer to &ldquo;Where is the CSS for this?&rdquo;. Since the selectors have almost a one to one mapping with the class attributes, you just have to file-search for them now.</li>
 <li>Speed. See how this helped <a href="https://speakerdeck.com/jonrohan/githubs-css-performance?slide=11">github</a> speed up their diff pages.</li>
 </ul>
@@ -120,12 +120,12 @@ We love writing css that is similar to our html. The following would seem natura
 
 <h3>Conclusion:</h3>
 
-<p>Don&rsquo;t nest CSS. You could start off with the <a href="http://thesassway.com/beginner/the-inception-rule">inception rule</a>, but I strongly suggest you stick to zero nesting levels (see exceptions below).</p>
+<p>Don&rsquo;t nest CSS. You could start off with the <a href="https://thesassway.com/beginner/the-inception-rule">inception rule</a>, but I strongly suggest you stick to zero nesting levels (see exceptions below).</p>
 
 <h3>Exceptions:</h3>
 
 <ul>
-<li>When you are writing modules that you will <a href="http://smacss.com/book/type-module#subclassing">subclass</a>, it is necessary to nest (by one level) the styling under the module&rsquo;s selector so that you can keep the defaults and override only the differences.</li>
-<li>When overriding <a href="http://smacss.com/book/type-base">base rules</a>, one usually has to provide enough specificity to override an element selector, say. In these cases, nesting (by one level) is ok.</li>
+<li>When you are writing modules that you will <a href="https://smacss.com/book/type-module#subclassing">subclass</a>, it is necessary to nest (by one level) the styling under the module&rsquo;s selector so that you can keep the defaults and override only the differences.</li>
+<li>When overriding <a href="https://smacss.com/book/type-base">base rules</a>, one usually has to provide enough specificity to override an element selector, say. In these cases, nesting (by one level) is ok.</li>
 </ul>
 

@@ -8,14 +8,14 @@ layout: post
 ---
 <h3>Introduction</h3>
 
-<p>Now that we know that the American government is <a href="http://en.wikipedia.org/wiki/PRISM_(surveillance_program)">probably reading all our email</a>, we should be encrypting all sensitive emails that we send.
+<p>Now that we know that the American government is <a href="https://en.wikipedia.org/wiki/PRISM_(surveillance_program)">probably reading all our email</a>, we should be encrypting all sensitive emails that we send.
 At the very least, we should be signing all the email that we send, so that it can&#8217;t be changed en route.</p>
 
-<p>This guide assumes that you&#8217;re using a <a href="http://en.wikipedia.org/wiki/Mail_(application)">Mail.app</a> on a Mac, although similar tools exist for Windows and Linux.</p>
+<p>This guide assumes that you&#8217;re using a <a href="https://en.wikipedia.org/wiki/Mail_(application)">Mail.app</a> on a Mac, although similar tools exist for Windows and Linux.</p>
 
 <p>First, for those who are unfamiliar with this, here&#8217;s an (oversimplified) explanation of how encryption works.</p>
 
-<p>A <a href="http://en.wikipedia.org/wiki/Cryptographic_key">key</a> is a randomly generated string of characters which is used to encrypt/decrypt your data.
+<p>A <a href="https://en.wikipedia.org/wiki/Cryptographic_key">key</a> is a randomly generated string of characters which is used to encrypt/decrypt your data.
 Every user has a pair of keys. His <em>public key</em> can be freely shared online. His <em>private key</em> is known only to him, and must be safely stored.</p>
 
 <p>Let&#8217;s consider the classic Alice and Bob example.</p>
@@ -58,7 +58,7 @@ I use <a href="www.haystacksoftware.com/arq/">Arq</a> to backup my private keys 
 <p>To do this, open <em>GPG Keychain Access</em>, and press <em>⌘F</em> to launch the Find dialog. Enter the email address of the person you want to email.
 Once the search completes, you can import the public key for the email you entered.</p>
 
-<p>You can also do this manually using a key server like http://pgp.mit.edu/</p>
+<p>You can also do this manually using a key server like https://pgp.mit.edu/</p>
 
 <h3>Sending an Encrypted Email</h3>
 
@@ -92,7 +92,7 @@ GPG Suite will automatically decrypt the email and show it to you. It&#8217;s se
 
 <p>However, there is an easy way to avoid MITM attacks (man-in-the-middle attacks, where a third-party could modify the text of the email before it reaches you).</p>
 
-<p>Simply <a href="http://en.wikipedia.org/wiki/Digital_signature">(digitally) sign</a> every email you send. GPG Suite makes this very easy. Just make sure the button next to the padlock is clicked:</p>
+<p>Simply <a href="https://en.wikipedia.org/wiki/Digital_signature">(digitally) sign</a> every email you send. GPG Suite makes this very easy. Just make sure the button next to the padlock is clicked:</p>
 
 <p><img src="https://blog.timothyandrew.net/images/encryption/5.png" alt="Signature Button" /></p>
 

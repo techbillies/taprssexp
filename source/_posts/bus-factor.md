@@ -7,7 +7,7 @@
 - how to open connections
 
 # intro
-- what is "bus factor" (guido story): http://legacy.python.org/search/hypermail/python-1994q2/1040.html
+- what is "bus factor" (guido story): https://legacy.python.org/search/hypermail/python-1994q2/1040.html
 - we are not talking about succession planning, but connections -- communication channels
 - steve jobs was hard to replace (and wasn't replaced)
     - guido and rich hickey will be hard to replace

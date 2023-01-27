@@ -32,7 +32,7 @@ There is also an old <a href="https://www.youtube.com/watch?v=G0PuH1LFWhA">scree
 
 <h3>The story behind it</h3>
 
-<p>We were four developers who knew little about gtk and git. We started off well and shared our initial prototype. We got a mix of positive and dismissive responses from the gimp dev list. You can see the <a href="http://www.gimpusers.com/forums/gimp-developer/14142-an-update-on-the-menu-search">thread</a> where the devs and I debated the values it provided.</p>
+<p>We were four developers who knew little about gtk and git. We started off well and shared our initial prototype. We got a mix of positive and dismissive responses from the gimp dev list. You can see the <a href="https://www.gimpusers.com/forums/gimp-developer/14142-an-update-on-the-menu-search">thread</a> where the devs and I debated the values it provided.</p>
 
 <p>Quite a few devs tried it out and gave me feedback. I incorporated that feedback and fixed bugs and regularly interacted with the team on how it could be better. But tito got a fair amount of push back from the interaction design perspective.</p>
 
