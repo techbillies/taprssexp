@@ -17,18 +17,19 @@ layout: default
 <section id="index-page-grid">
   {% assign index = true %}
   {% for post in paginator.posts %}
-    {% if post.description and post.image %}
+    {% assign metadata = site.data.post_metadata | find: "title", post.title %}
+    {% if metadata.description and metadata.image %}
       {% assign tile_type = "post-tile-large" %}
     {% else %}
       {% assign tile_type = "post-tile-normal" %}
     {% endif %}
       <div class="{{ tile_type }} post-tile border-2 font-medium">
         <a href="{{ post.url }}">
-          <img src={{ post.image }}></img>
+          <img src={{ metadata.image }}></img>
           <div class="post-title p-2">{{ post.title }}</div>
-          {% if post.description %}
+          {% if metadata.description %}
             <div class="post-description p-2 leading-snug">
-              {{ post.description }}
+              {{ metadata.description }}
             </div>
           {% endif %}
           <div class="post-author border-t-2">

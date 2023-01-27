@@ -1,0 +1,35 @@
+- title: "Training, the Simple way"
+  image: https://cdn-images-1.medium.com/max/1024/0*glZZfA4Axh6f9MeJ
+  description: "We experimented with several training methods: a short video combined with in-person support works best for us. One year ago (in October 2018), we piloted the Simple app in five public health facilities in Punjab, India. The original process of teaching healthcare workers to use Simple in pilot hospitals involved in-person trainings from members of our team. We flew from Bangalore to Bathinda, spent a week visiting one facility each day, and taught healthcare workers how to use the app. We’ve come a long way since then."
+
+- title: "Offline-first apps are appropriate for many clinical environments"
+  image: https://cdn-images-1.medium.com/max/1024/1*UiW-BI_lk5F-h9jpCs8y0w.jpeg
+  description: "Offline-first has several upsides, but the primary benefit is that the app is always snappy and responsive, so clinicians aren’t waiting for their app to talk to the cloud during patient interactions. In a busy clinic like Ravdeep’s, this is a crucial feature. In countries like India, Bangladesh, or Ethiopia where a patient encounter is often less than 5 minutes, every second counts and therefore every call to the server matters."
+
+- title: "India has a Three-Body Problem"
+  image: https://cdn-images-1.medium.com/max/1024/1*rhPF6BaixRYWWK67q_4JYw.jpeg
+  description: When I moved to Bangalore six years ago, I had no interest in India’s garbage management problem. I moved here to build a software company, not to muck about with garbage bins. But every time I would fly between the subcontinent and the Americas, I would find relief on my home continent and exhaustion on my continent of immigration. Living in a giant garbage heap is mentally taxing. Every moment spent outdoors is either an angsty mental rundown of how I might help, complete with acute feelings of powerlessness, or searching for someone to blame (my brain’s lazy personal favourite is a generic and completely unhelpful “the middle class”).
+
+- title: "small-stalk"
+  image: /images/blog/small-stalk/architecture.png
+
+- title: "Everyday Recipes for Cooking Noobs"
+  image: /images/blog/everyday-recipes-for-cooking-noobs/french-toast.jpg
+
+- title: "From wings to cups"
+  image: https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Menstruationstasse_menstrual_cup_in_on_hand_1.jpg/512px-Menstruationstasse_menstrual_cup_in_on_hand_1.jpg
+
+- title: "Fast Sudoku Solver in Haskell #3: Picking the Right Data Structures"
+  description: In this post, we are going to follow the profiler and use the right Data Structures to improve the solution further and make it faster
+
+- title: "Fast Sudoku Solver in Haskell #2: A 200x Faster Solution"
+  description: In the first part of this series of posts, we wrote a simple Sudoku solver in Haskell. It used a constraint satisfaction algorithm with backtracking. The solution worked well but was very slow.
+
+- title: "Fast Sudoku Solver in Haskell #1: A Simple Solution"
+  description: Sudoku is a number placement puzzle. It consists of a 9x9 grid which is to be filled with digits from 1 to 9. Some of the cells of the grid come pre-filled and the player has to fill the rest.
+
+- title: "Finances in an Employee-Owned Technology Co-operative"
+  description: If you are not already familiar with nilenso, I apologize. This article may not make any sense to you. Requested as an opinion piece in reply to an internal email on salaries, it hinges on a lot of context.
+
+- title: "Designing for Open Source Software"
+  image: https://cdn-images-1.medium.com/max/1024/1*g6rztkAO4PgkBPPYG0A91w.png

@@ -5,7 +5,6 @@ created_at: 2018-07-11 00:00:00 UTC
 author: Abhinav Sarkar
 post_url: "https://abhinavsarkar.net/posts/fast-sudoku-solver-in-haskell-2/"
 layout: post
-description: In the first part of this series of posts, we wrote a simple Sudoku solver in Haskell. It used a constraint satisfaction algorithm with backtracking. The solution worked well but was very slow.
 ---
 <p>In the <a href="https://abhinavsarkar.net/posts/fast-sudoku-solver-in-haskell-1/">first part</a> of this series of posts, we wrote a simple <a href="https://en.wikipedia.org/wiki/Sudoku" target="_blank" rel="noopener">Sudoku</a> solver in <a href="https://www.haskell.org/" target="_blank" rel="noopener">Haskell</a>. It used a <a href="https://en.wikipedia.org/wiki/Constraint_satisfaction_problem" target="_blank" rel="noopener">constraint satisfaction</a> algorithm with <a href="https://en.wikipedia.org/wiki/Depth-first_search" target="_blank" rel="noopener">backtracking</a>. The solution worked well but was very slow. In this post, we are going to improve it and make it <strong>fast</strong>.</p>
 <!--more-->
