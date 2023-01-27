@@ -5,6 +5,7 @@ created_at: 2017-10-01 00:00:00 UTC
 author: Abhinav Sarkar
 post_url: "https://abhinavsarkar.net/posts/ps-simple-rest-service-2/"
 layout: post
+description: To recap, in the first part of this two-part tutorial, we built a simple JSON REST web service in PureScript to create, update, get, list and delete users
 ---
 <p>To recap, in the <a href="https://abhinavsarkar.net/posts/ps-simple-rest-service/">first</a> part of this two-part tutorial, we built a simple JSON <a href="https://en.wikipedia.org/wiki/REST" target="_blank" rel="noopener">REST</a> web service in <a href="http://purescript.org" target="_blank" rel="noopener">PureScript</a> to create, update, get, list and delete users, backed by a Postgres database. In this part we’ll work on the rest of the features. <!--more--> The requirements are:</p>
 <ol type="1">

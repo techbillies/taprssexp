@@ -6,7 +6,7 @@ layout: default
       <h2 class="text-pink-500 font-normal text-xl leading-snug md:text-4xl lg:lg:text-[2.8rem] lg:leading-snug md:leading-tight">
           the nilenso blog.
           <span class ="text-white font-light text-xl leading-snug md:text-4xl lg:lg:text-[2.8rem] lg:leading-snug md:leading-tight">
-              some placeholder text
+              ensonians write about work and life 
               <a href="{{ site.subscribe_rss }}" title="subscribe via RSS">
                 <img style="display: inline;" src="/images/rss.png"></img>
               </a>
@@ -17,20 +17,51 @@ layout: default
 <section id="index-page-grid">
   {% assign index = true %}
   {% for post in paginator.posts %}
-  {% assign content = post.content %}
-   <a href="{{ post.url }}">
-      <div class="post-tile border-gray-300 border-2">
+    {% if post.description and post.image %}
+      {% assign tile_type = "post-tile-large" %}
+    {% else %}
+      {% assign tile_type = "post-tile-normal" %}
+    {% endif %}
+      <div class="{{ tile_type }} post-tile border-2 font-medium">
+        <a href="{{ post.url }}">
           <img src={{ post.image }}></img>
-          <div class="post-name">{{ post.title }}</div>
-          <div class="post-description"></div>
-          <div class="post-author border-t-2 border-gray-300">{{ post.author }}</div>
+          <div class="post-title p-2">{{ post.title }}</div>
+          {% if post.description %}
+            <div class="post-description p-2 leading-snug">
+              {{ post.description }}
+            </div>
+          {% endif %}
+          <div class="post-author border-t-2">
+            <div class="flex flex-row">
+                {% assign blog_author = site.data.members | find: "name", post.author %}
+                {% if blog_author %}
+                  <div class="p-2">
+                    <img src="{{ blog_author.image_url }}" class="w-12 h-12 rounded-full">
+                  </div>
+                  <div class="p-2">
+                    <a class="text-sm" href="{{ blog_author.twitter }}">{{ blog_author.name }}</a>
+                    {% if blog_author.medium %}
+                      <p class="text-xs text-black font-light">Read more by {{ blog_author.short_name }} on <a class="text-pink-500" href="{{ blog_author.medium }}">Medium</a></p>
+                    {% elsif blog_author.website %}
+                      <p class="text-xs text-black font-light">Read more by {{ blog_author.short_name }} <a class="text-pink-500" href="{{ blog_author.website }}">here</a></p>
+                    {% endif %}
+                  </div>
+                {% else %}
+                  <div class="p-2">
+                    {{ post.author }}
+                  </div>
+                {% endif %}
+            </div>
+          </div>
+        </a>
       </div>
-  </a>
+  
+
   {% endfor %}
-  <div class="flex pt-2 pb-2">
-    browse our blog archives<a class="underline ml-1" href="/blog/archives"> here</a>
-  </div>
 </section>
+  <div class="flex pt-2 pb-2">
+    browse our blog archives<a class="underline ml-1" href="/blog/archives">here</a>
+  </div>
 
 <!-- <aside class="sidebar">
   {% if site.blog_index_asides.size %}

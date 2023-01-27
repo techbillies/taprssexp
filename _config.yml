@@ -38,7 +38,7 @@ category_dir: blog/categories
 markdown: kramdown
 highlighter: false # default python pygments have been replaced by pygments.rb
 
-paginate: 12          # Posts per page on the blog index
+paginate: 11         # Posts per page on the blog index
 paginate_path: "/blog/page/:num"
 
 recent_posts: 5       # Posts in the sidebar Recent Posts section

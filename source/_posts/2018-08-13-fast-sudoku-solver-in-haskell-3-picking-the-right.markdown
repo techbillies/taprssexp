@@ -5,6 +5,7 @@ created_at: 2018-08-13 00:00:00 UTC
 author: Abhinav Sarkar
 post_url: "https://abhinavsarkar.net/posts/fast-sudoku-solver-in-haskell-3/"
 layout: post
+description: In this post, we are going to follow the profiler and use the right Data Structures to improve the solution further and make it faster
 ---
 <p>In the <a href="https://abhinavsarkar.net/posts/fast-sudoku-solver-in-haskell-2/">previous part</a> in this series of posts, we optimized the simple Sudoku solver by implementing a new strategy to prune cells, and were able to achieve a speedup of almost 200x. Afterwards, we profiled the solution and found that there were bottlenecks in the program, leading to a slowdown. In this post, we are going to follow the profiler and use the right <em>Data Structures</em> to improve the solution further and make it <strong>faster</strong>.</p>
 <!--more-->
