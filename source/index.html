@@ -25,7 +25,7 @@ layout: default
     {% endif %}
       <div class="{{ tile_type }} post-tile border-2 font-medium">
         <a href="{{ post.url }}">
-          <img src={{ metadata.image }}></img>
+          <img class="post-img" src={{ metadata.image }}></img>
           <div class="post-title p-2">{{ post.title }}</div>
           {% if metadata.description %}
             <div class="post-description p-2 leading-snug">

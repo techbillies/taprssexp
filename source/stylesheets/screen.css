@@ -452,7 +452,7 @@ article .pre-quote {
     line-height: 1;
 }
 
-.post-tile img {
+.post-tile .post-img {
     margin-right: 10px;
     max-height: 45%;
     min-width: 100%;
