@@ -442,8 +442,7 @@ article .pre-quote {
     justify-self: stretch;
     max-height: 300px;
     min-width: 270px;
-    overflow: auto;
-    transition: transform 0.3s;
+    overflow: hidden;
 }
 
 .post-tile .post-title {
@@ -461,7 +460,8 @@ article .pre-quote {
 }
 
 .post-tile:hover {
-    transform: scale(105%);
+    background-color: #d7d7d7;
+    box-shadow: 0 0 0 2px #d7d7d7;
     cursor: pointer;
 }
 
