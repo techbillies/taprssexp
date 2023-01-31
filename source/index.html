@@ -39,7 +39,7 @@ layout: default
                   <div class="p-2">
                     <img src="{{ blog_author.image_url }}" class="w-12 h-12 rounded-full">
                   </div>
-                  <div class="p-2">
+                  <div class="p-2 flex flex-col place-content-evenly">
                     <a class="text-sm" href="{{ blog_author.twitter }}">{{ blog_author.name }}</a>
                     {% if blog_author.medium %}
                       <p class="text-xs text-black font-light">Read more by {{ blog_author.short_name }} on <a class="text-pink-500" href="{{ blog_author.medium }}">Medium</a></p>
@@ -48,10 +48,10 @@ layout: default
                     {% endif %}
                   </div>
                 {% else %}
-                <div class="p-2">
+                  <div class="p-2">
                     <img src="/images/favicon/favicon-32x32.png" class="w-12 h-12 rounded-full">
                   </div>
-                  <div class="p-2">
+                  <div class="p-2 flex flex-col place-content-evenly">
                     <a href="{{ post.url }}">{{ post.author }}</a>
                   </div>
                 {% endif %}

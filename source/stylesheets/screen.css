@@ -491,7 +491,7 @@ article .pre-quote {
 .post-tile .post-description {
     font-size: 0.9em;
     font-weight: 400;
-    max-height: 70%;
+    max-height: 55%;
     overflow: clip;
 }
 
