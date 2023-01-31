@@ -23,8 +23,8 @@ layout: default
     {% else %}
       {% assign tile_type = "post-tile-normal" %}
     {% endif %}
-      <div class="{{ tile_type }} post-tile border-2 font-medium">
-        <a href="{{ post.url }}">
+      <div class="{{ tile_type }} post-tile border-2 font-medium flex flex-col">
+        <a class="post-anchor" href="{{ post.url }}">
           <img class="post-img" src={{ metadata.image }}></img>
           <div class="post-title p-2">{{ post.title }}</div>
           {% if metadata.description %}
@@ -48,8 +48,11 @@ layout: default
                     {% endif %}
                   </div>
                 {% else %}
+                <div class="p-2">
+                    <img src="/images/favicon/favicon-32x32.png" class="w-12 h-12 rounded-full">
+                  </div>
                   <div class="p-2">
-                    {{ post.author }}
+                    <a href="{{ post.url }}">{{ post.author }}</a>
                   </div>
                 {% endif %}
             </div>

@@ -447,14 +447,15 @@ article .pre-quote {
 
 .post-tile .post-title {
     margin-top: 10px;
-    font-size: 0.9em;
-    max-height: 30%;
-    line-height: 1;
+    font-size: 1em;
+    max-height: 35%;
+    line-height: 1.2;
+    overflow: clip;
 }
 
 .post-tile .post-img {
     margin-right: 10px;
-    max-height: 45%;
+    max-height: 50%;
     min-width: 100%;
     object-fit: cover;
 }
@@ -468,20 +469,32 @@ article .pre-quote {
 .post-tile .post-author {
     font-size: 0.8em;
     color: var(--nilenso-pink);
-    max-height: 20%;
+    margin-top: auto;
+    max-height: 25%;
 }
 
 .post-tile-large .post-title {
     margin-top: 10px;
-    font-size: 1.2em;
+    font-size: 1.4em;
+}
+
+.post-tile .post-anchor {
+    max-height: 75%;
+    overflow: clip;
+}
+
+.post-tile-large .post-anchor {
+    max-height: 85%;
+    overflow: clip;
 }
 
 .post-tile .post-description {
-    font-size: 0.8em;
+    font-size: 0.9em;
     font-weight: 400;
-    max-height: 45%;
+    max-height: 70%;
     overflow: clip;
 }
+
 
 @media (max-width: 600px) {
     #index-page-grid .post-tile-large {
@@ -494,7 +507,7 @@ article .pre-quote {
 
     .post-title {
         line-height: 1.2;
-        font-size: 0.8em;
+        font-size: 1em;
     }
 
     .post-author {
@@ -503,7 +516,11 @@ article .pre-quote {
 
     .post-tile-large .post-title {
         line-height: 1.2;
-        font-size: 0.8em;
+        font-size: 1em;
+    }
+
+    .post-tile-large .post-img {
+        max-height: 70%;
     }
 
     .post-tile-large .post-author {
