@@ -5,8 +5,9 @@ created_at: 2017-10-01 00:00:00 UTC
 author: Abhinav Sarkar
 post_url: "https://abhinavsarkar.net/posts/ps-simple-rest-service-2/"
 layout: post
+description: To recap, in the first part of this two-part tutorial, we built a simple JSON REST web service in PureScript to create, update, get, list and delete users
 ---
-<p>To recap, in the <a href="https://abhinavsarkar.net/posts/ps-simple-rest-service/">first</a> part of this two-part tutorial, we built a simple JSON <a href="https://en.wikipedia.org/wiki/REST" target="_blank" rel="noopener">REST</a> web service in <a href="http://purescript.org" target="_blank" rel="noopener">PureScript</a> to create, update, get, list and delete users, backed by a Postgres database. In this part we’ll work on the rest of the features. <!--more--> The requirements are:</p>
+<p>To recap, in the <a href="https://abhinavsarkar.net/posts/ps-simple-rest-service/">first</a> part of this two-part tutorial, we built a simple JSON <a href="https://en.wikipedia.org/wiki/REST" target="_blank" rel="noopener">REST</a> web service in <a href="https://purescript.org" target="_blank" rel="noopener">PureScript</a> to create, update, get, list and delete users, backed by a Postgres database. In this part we’ll work on the rest of the features. <!--more--> The requirements are:</p>
 <ol type="1">
 <li>validation of API requests.</li>
 <li>reading the server and database configs from environment variables.</li>
@@ -17,7 +18,7 @@ layout: post
 <h2 id="bugs" data-track-content data-content-name="bugs" data-content-piece="ps-simple-rest-service-2">Bugs!<a href="#bugs" class="ref-link"></a><a href="#top" class="top-link" title="Back to top"></a></h2>
 <p>What happens if we hit a URL on our server which does not exist? Let’s fire up the server and test it:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a>$ <span class="ex">pulp</span> --watch run</span></code></pre></div>
-<pre class="http"><code>$ http GET http://localhost:4000/v1/random
+<pre class="http"><code>$ http GET https://localhost:4000/v1/random
 HTTP/1.1 404 Not Found
 Connection: keep-alive
 Content-Length: 148
@@ -66,7 +67,7 @@ X-Powered-By: Express
 <span id="cb3-26"><a href="#cb3-26"></a>  <span class="kw">where</span></span>
 <span id="cb3-27"><a href="#cb3-27"></a>    patch <span class="ot">=</span> http (<span class="dt">CustomMethod</span> <span class="st">&quot;patch&quot;</span>)</span></code></pre></div>
 <p><code>allRoutePattern</code> matches all routes because it uses a <code>"/.*"</code> <a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank" rel="noopener">regular expression</a>. We place it as the last route to match all the otherwise unrouted requests. Let’s see what is the result:</p>
-<pre class="http"><code>$ http GET http://localhost:4000/v1/random
+<pre class="http"><code>$ http GET https://localhost:4000/v1/random
 HTTP/1.1 404 Not Found
 Connection: keep-alive
 Content-Length: 27
@@ -80,7 +81,7 @@ X-Powered-By: Express
 }</code></pre>
 <p>Now we get a nicely formatted JSON response.</p>
 <p>Another scenario is when our application throws some uncaught error. To simulate this, we shut down our postgres database and hit the server for listing users:</p>
-<pre class="http"><code>$ http GET http://localhost:4000/v1/users
+<pre class="http"><code>$ http GET https://localhost:4000/v1/users
 HTTP/1.1 500 Internal Server Error
 Connection: keep-alive
 Content-Length: 372
@@ -115,7 +116,7 @@ X-Powered-By: Express
 <span id="cb6-12"><a href="#cb6-12"></a>  <span class="kw">where</span></span>
 <span id="cb6-13"><a href="#cb6-13"></a>    patch <span class="ot">=</span> http (<span class="dt">CustomMethod</span> <span class="st">&quot;patch&quot;</span>)</span></code></pre></div>
 <p>We add the <code>useOnError</code> handler which comes with <a href="https://pursuit.purescript.org/packages/purescript-express" target="_blank" rel="noopener"><code>purescript-express</code></a> to return the error message as a JSON response. Back on the command-line:</p>
-<pre class="http"><code>$ http GET http://localhost:4000/v1/users
+<pre class="http"><code>$ http GET https://localhost:4000/v1/users
 HTTP/1.1 500 Internal Server Error
 Connection: keep-alive
 Content-Length: 47
@@ -317,13 +318,13 @@ X-Powered-By: Express
 <span id="cb11-93"><a href="#cb11-93"></a>  setStatus status</span>
 <span id="cb11-94"><a href="#cb11-94"></a>  end</span></code></pre></div>
 <p>The code is much cleaner now. Let’s try out a few test cases:</p>
-<pre class="http"><code>$ http POST http://localhost:4000/v1/users id:=3 name=roger
+<pre class="http"><code>$ http POST https://localhost:4000/v1/users id:=3 name=roger
 HTTP/1.1 201 Created
 Connection: keep-alive
 Content-Length: 0
 Date: Sat, 30 Sep 2017 12:13:37 GMT
 X-Powered-By: Express</code></pre>
-<pre class="http"><code>$ http POST http://localhost:4000/v1/users id:=3
+<pre class="http"><code>$ http POST https://localhost:4000/v1/users id:=3
 HTTP/1.1 422 Unprocessable Entity
 Connection: keep-alive
 Content-Length: 102
@@ -335,7 +336,7 @@ X-Powered-By: Express
 {
     &quot;error&quot;: &quot;Error at array index 0: (ErrorAtProperty \&quot;name\&quot; (TypeMismatch \&quot;String\&quot; \&quot;Undefined\&quot;))&quot;
 }</code></pre>
-<pre class="http"><code>$ http POST http://localhost:4000/v1/users id:=3 name=&quot;&quot;
+<pre class="http"><code>$ http POST https://localhost:4000/v1/users id:=3 name=&quot;&quot;
 HTTP/1.1 422 Unprocessable Entity
 Connection: keep-alive
 Content-Length: 39
@@ -347,7 +348,7 @@ X-Powered-By: Express
 {
     &quot;error&quot;: &quot;User name must not be empty&quot;
 }</code></pre>
-<pre class="http"><code>$ http POST http://localhost:4000/v1/users id:=0 name=roger
+<pre class="http"><code>$ http POST https://localhost:4000/v1/users id:=0 name=roger
 HTTP/1.1 422 Unprocessable Entity
 Connection: keep-alive
 Content-Length: 36
@@ -359,7 +360,7 @@ X-Powered-By: Express
 {
     &quot;error&quot;: &quot;User ID must be positive&quot;
 }</code></pre>
-<pre class="http"><code>$ http GET http://localhost:4000/v1/user/3
+<pre class="http"><code>$ http GET https://localhost:4000/v1/user/3
 HTTP/1.1 200 OK
 Connection: keep-alive
 Content-Length: 23
@@ -372,7 +373,7 @@ X-Powered-By: Express
     &quot;id&quot;: 3,
     &quot;name&quot;: &quot;roger&quot;
 }</code></pre>
-<pre class="http"><code>$ http GET http://localhost:4000/v1/user/asdf
+<pre class="http"><code>$ http GET https://localhost:4000/v1/user/asdf
 HTTP/1.1 422 Unprocessable Entity
 Connection: keep-alive
 Content-Length: 38
@@ -384,7 +385,7 @@ X-Powered-By: Express
 {
     &quot;error&quot;: &quot;User ID must be an integer&quot;
 }</code></pre>
-<pre class="http"><code>$ http GET http://localhost:4000/v1/user/-1
+<pre class="http"><code>$ http GET https://localhost:4000/v1/user/-1
 HTTP/1.1 422 Unprocessable Entity
 Connection: keep-alive
 Content-Length: 36
@@ -410,7 +411,7 @@ X-Powered-By: Express
 <span id="cb19-9"><a href="#cb19-9"></a>                     , <span class="fu">max</span><span class="op">:</span> <span class="dv">10</span></span>
 <span id="cb19-10"><a href="#cb19-10"></a>                     , idleTimeoutMillis<span class="op">:</span> <span class="dv">1000</span></span>
 <span id="cb19-11"><a href="#cb19-11"></a>                     }</span></code></pre></div>
-<p>We are going to extract it out of the code and read it from the environment variables using the <a href="https://pursuit.purescript.org/packages/purescript-config" target="_blank" rel="noopener"><code>purescript-config</code></a> package. First, we install the required packages using <a href="http://bower.io" target="_blank" rel="noopener">bower</a>.</p>
+<p>We are going to extract it out of the code and read it from the environment variables using the <a href="https://pursuit.purescript.org/packages/purescript-config" target="_blank" rel="noopener"><code>purescript-config</code></a> package. First, we install the required packages using <a href="https://bower.io" target="_blank" rel="noopener">bower</a>.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1"></a>$ <span class="ex">bower</span> install --save purescript-node-process purescript-config</span></code></pre></div>
 <p>Now, we write the following code in the <code>src/SimpleService/Config.purs</code> file:</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb21-1"><a href="#cb21-1"></a><span class="kw">module</span> <span class="dt">SimpleService.Config</span> <span class="kw">where</span></span>

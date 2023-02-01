@@ -6,9 +6,9 @@ comments: true
 categories: 
 ---
 
-We use [Octopress](http://octopress.com) with [planet.rb](https://github.com/pote/planet.rb) for this blog. It aggregates our personal blogs and also lets us post on the company's behalf. It works pretty well.
+We use [Octopress](https://octopress.com) with [planet.rb](https://github.com/pote/planet.rb) for this blog. It aggregates our personal blogs and also lets us post on the company's behalf. It works pretty well.
 
-We started off with [planetplanet](http://www.planetplanet.org/), tried [planetvenus](http://www.intertwingly.net/code/venus/docs/index.html) and then settled on planet.rb. The plusses are:
+We started off with [planetplanet](https://www.planetplanet.org/), tried [planetvenus](https://www.intertwingly.net/code/venus/docs/index.html) and then settled on planet.rb. The plusses are:
 
 -  We can now use the blog as both: a company blog and an aggregator at the same time.
 -  Octopress is great for us Ruby devs. We needed partials, sass, themeability, extensibility and a static site.

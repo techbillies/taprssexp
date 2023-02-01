@@ -1,27 +1,72 @@
 ---
 layout: default
 ---
-
-<div class="blog-index">
+<section class="bg-black py-10 md:py-16 lg:py-16 px-6 md:px-10 lg:px-9">
+    <div>
+      <h2 class="text-pink-500 font-normal text-xl leading-snug md:text-4xl lg:lg:text-[2.8rem] lg:leading-snug md:leading-tight">
+          the nilenso blog.
+          <span class ="text-white font-light text-xl leading-snug md:text-4xl lg:lg:text-[2.8rem] lg:leading-snug md:leading-tight">
+              ensonians write about work and life 
+              <a href="{{ site.subscribe_rss }}" title="subscribe via RSS">
+                <img style="display: inline;" src="/images/rss.png"></img>
+              </a>
+          </span>
+      </h2>
+    </div>
+</section>
+<section id="index-page-grid">
   {% assign index = true %}
   {% for post in paginator.posts %}
-  {% assign content = post.content %}
-    <article class="mb-12">
-      {% include article.html %}
-    </article>
-  {% endfor %}
-  <div class="flex justify-between pagination pt-2 pb-2">
-    {% if paginator.next_page %}
-      <a class="prev pagination-url" href="{{paginator.next_page_path}}">&laquo; Older</a>
-    {% endif %}
-    <a class="pagination-url" href="/blog/archives">Blog Archives</a>
-    {% if paginator.previous_page %}
-    <a class="next pagination-url" href="{{paginator.previous_page_path}}">Newer &raquo;</a>
+    {% assign metadata = site.data.post_metadata | find: "title", post.title %}
+    {% if metadata.description and metadata.image %}
+      {% assign tile_type = "post-tile-large" %}
     {% else %}
-    <div></div>
+      {% assign tile_type = "post-tile-normal" %}
     {% endif %}
+      <div class="{{ tile_type }} post-tile border-2 font-medium flex flex-col">
+        <a class="post-anchor" href="{{ post.url }}">
+          <img class="post-img" src={{ metadata.image }}></img>
+          <div class="post-title p-2">{{ post.title }}</div>
+          {% if metadata.description %}
+            <div class="post-description p-2 leading-snug">
+              {{ metadata.description }}
+            </div>
+          {% endif %}
+          <div class="post-author border-t-2">
+            <div class="flex flex-row">
+                {% assign blog_author = site.data.members | find: "name", post.author %}
+                {% if blog_author %}
+                  <div class="p-2">
+                    <img src="{{ blog_author.image_url }}" class="w-12 h-12 rounded-full">
+                  </div>
+                  <div class="p-2 flex flex-col place-content-evenly">
+                    <a class="text-sm" href="{{ blog_author.twitter }}">{{ blog_author.name }}</a>
+                    {% if blog_author.medium %}
+                      <p class="text-xs text-black font-light">Read more by {{ blog_author.short_name }} on <a class="text-pink-500" href="{{ blog_author.medium }}">Medium</a></p>
+                    {% elsif blog_author.website %}
+                      <p class="text-xs text-black font-light">Read more by {{ blog_author.short_name }} <a class="text-pink-500" href="{{ blog_author.website }}">here</a></p>
+                    {% endif %}
+                  </div>
+                {% else %}
+                  <div class="p-2">
+                    <img src="/images/favicon/favicon-32x32.png" class="w-12 h-12 rounded-full">
+                  </div>
+                  <div class="p-2 flex flex-col place-content-evenly">
+                    <a href="{{ post.url }}">{{ post.author }}</a>
+                  </div>
+                {% endif %}
+            </div>
+          </div>
+        </a>
+      </div>
+  
+
+  {% endfor %}
+</section>
+  <div class="flex pt-2 pb-2">
+    browse our blog archives<a class="underline ml-1" href="/blog/archives">here</a>
   </div>
-</div>
+
 <!-- <aside class="sidebar">
   {% if site.blog_index_asides.size %}
     {% include_array blog_index_asides %}

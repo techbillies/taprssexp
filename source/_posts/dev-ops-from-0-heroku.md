@@ -10,7 +10,7 @@ Vagrant Specific (this is for your local box)
 
 ```
 # add a new box, precise64 (12.04) is the latest Ubuntu LTS.
-vagrant box add precise64 http://files.vagrantup.com/precise64.box
+vagrant box add precise64 https://files.vagrantup.com/precise64.box
 
 vagrant box list
 ```

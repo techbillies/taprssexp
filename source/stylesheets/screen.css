@@ -1,10 +1,4 @@
 @media (min-width: 768px) {
-    .md\:max-w-\[1092px\] {
-        max-width: 1092px;
-    }
-}
-
-@media (min-width: 768px) {
     .md\:max-w-\[1366px\] {
         max-width: 1366px;
     }
@@ -33,6 +27,7 @@ html {
     --nilenso-pink: #FF3D84;
     --nilenso-black: #000000;
     --grey: #4B5563;
+    --nilenso-gray-2: #BDBDBD;
 }
 
 p, p li, article {
@@ -422,4 +417,114 @@ article .pre-quote {
 
 .author {
     display: flex;
+}
+
+/* CSS for index page */
+#index-page-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    grid-auto-rows: 300px;
+    grid-auto-flow: dense;
+    gap: 10px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+#index-page-grid > * {
+    grid-area: span 1 / span 1;
+}
+
+#index-page-grid .post-tile-large {
+    grid-area: span 2 / span 2;
+}
+
+.post-tile-normal {
+    justify-self: stretch;
+    max-height: 300px;
+    min-width: 270px;
+    overflow: hidden;
+}
+
+.post-tile .post-title {
+    margin-top: 10px;
+    font-size: 1em;
+    max-height: 35%;
+    line-height: 1.2;
+    overflow: clip;
+}
+
+.post-tile .post-img {
+    margin-right: 10px;
+    max-height: 50%;
+    min-width: 100%;
+    object-fit: cover;
+}
+
+.post-tile:hover {
+    background-color: #d7d7d7;
+    box-shadow: 0 0 0 2px #d7d7d7;
+    cursor: pointer;
+}
+
+.post-tile .post-author {
+    font-size: 0.8em;
+    color: var(--nilenso-pink);
+    margin-top: auto;
+    max-height: 25%;
+}
+
+.post-tile-large .post-title {
+    margin-top: 10px;
+    font-size: 1.4em;
+}
+
+.post-tile .post-anchor {
+    max-height: 75%;
+    overflow: clip;
+}
+
+.post-tile-large .post-anchor {
+    max-height: 85%;
+    overflow: clip;
+}
+
+.post-tile .post-description {
+    font-size: 0.9em;
+    font-weight: 400;
+    max-height: 65%;
+    overflow: clip;
+}
+
+
+@media (max-width: 600px) {
+    #index-page-grid .post-tile-large {
+        grid-area: span 1 / span 1;
+    }
+
+    .post-tile-large .post-description {
+        display: none;
+    }
+
+    .post-title {
+        line-height: 1.2;
+        font-size: 1em;
+    }
+
+    .post-author {
+        line-height: 1.2;
+    }
+
+    .post-tile-large .post-title {
+        line-height: 1.2;
+        font-size: 1em;
+    }
+
+    .post-tile-large .post-img {
+        max-height: 70%;
+    }
+
+    .post-tile-large .post-author {
+        line-height: 1.2;
+    }
+
 }

@@ -6,7 +6,7 @@ author: Timothy Andrew
 post_url: "https://blog.timothyandrew.net/blog/2013/04/28/yaml-serialization-for-delayed-job/"
 layout: post
 ---
-<p>When we first moved excel generation off to a delayed job on <a href="http://github.com/c42/survey-web">survey-web</a>, we had code that looked like this:</p>
+<p>When we first moved excel generation off to a delayed job on <a href="https://github.com/c42/survey-web">survey-web</a>, we had code that looked like this:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>

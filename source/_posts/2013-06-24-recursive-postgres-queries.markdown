@@ -8,7 +8,7 @@ layout: post
 ---
 <h3>Introduction</h3>
 
-<p>At <a href="https://nilenso.com/">Nilenso</a>, I&#8217;m working on an (<a href="http://github.com/nilenso/ashoka-survey-web">open-source!</a>) app to design and conduct surveys.</p>
+<p>At <a href="https://nilenso.com/">Nilenso</a>, I&#8217;m working on an (<a href="https://github.com/nilenso/ashoka-survey-web">open-source!</a>) app to design and conduct surveys.</p>
 
 <p>Here&#8217;s a simple survey being designed:</p>
 
@@ -60,7 +60,7 @@ layout: post
 
 <p>I&#8217;ve used gems like <a href="https://github.com/collectiveidea/awesome_nested_set"><code>awesome_nested_set</code></a> before, but as far as I could find, none of them supported fetching results across multiple models.</p>
 
-<p>Then I stumbled on <a href="http://www.postgresql.org/docs/9.1/static/queries-with.html">a page</a> describing PostgreSQL&#8217;s support for recursive queries! That seemed perfect.</p>
+<p>Then I stumbled on <a href="https://www.postgresql.org/docs/9.1/static/queries-with.html">a page</a> describing PostgreSQL&#8217;s support for recursive queries! That seemed perfect.</p>
 
 <p>Let&#8217;s solve this particular problem using recursive queries. (My understanding of this is still very basic, so please don&#8217;t take my word for any of this)</p>
 
@@ -206,11 +206,11 @@ We have to be a little creative here:</p>
 
 <h3>Ordering a Recursive Query</h3>
 
-<p>The problem is that since we&#8217;re effectively <em>appending</em> second-level elements to first-level elements, we&#8217;re effectively performing a <a href="https://en.wikipedia.org/wiki/Breadth-first_search"><em>breadth-first search</em></a> instead of a <a href="http://en.wikipedia.org/wiki/Depth-first_search"><em>depth-first search</em></a>.</p>
+<p>The problem is that since we&#8217;re effectively <em>appending</em> second-level elements to first-level elements, we&#8217;re effectively performing a <a href="https://en.wikipedia.org/wiki/Breadth-first_search"><em>breadth-first search</em></a> instead of a <a href="https://en.wikipedia.org/wiki/Depth-first_search"><em>depth-first search</em></a>.</p>
 
 <p>How can we correct that?</p>
 
-<p>Postgres has <a href="http://www.postgresql.org/docs/9.1/static/arrays.html">arrays</a> that can be built during a query.</p>
+<p>Postgres has <a href="https://www.postgresql.org/docs/9.1/static/arrays.html">arrays</a> that can be built during a query.</p>
 
 <p>Let&#8217;s build an array of order numbers for each element that we fetch. Let&#8217;s call this the <code>path</code>. The <code>path</code> for an element is:</p>
 
