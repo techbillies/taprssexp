@@ -101,9 +101,4 @@ The next best thing is to inject the activity into the POJO (RoboGuice is smart 
 
 
 <p>And then your POJO can manipulate the views that are on-screen as required.</p>
-<div class="author">
-  <img src="https://nilenso.com/images/alumni/tim.webp" style="width: 96px; height: 96;">
-  <span style=" padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="https://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
-  </span>
-</div>
+

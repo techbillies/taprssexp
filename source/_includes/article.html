@@ -1,44 +1,82 @@
-{% unless page.no_header %}
-  <header>
-  {% if index %}
-    {% if post.external-url %}
-      <h1 class="text-3xl my-3">
-        <a href="{{ post.external-url }}">{% if site.titlecase %}{{ post.title | titlecase }} {% else %}{{ post.title }}{% endif %}</a> {% if post.external-url %}<a href="{{ root_url }}{{ post.url }}">&#8734;</a> {% endif %}
-      </h1>
-      {% else %}
-      <h1 class="text-3xl my-3">
-        <a href="{{ root_url }}{{ post.url }}">{% if site.titlecase %}{{ post.title | titlecase }}{% else %}{{ post.title }}{% endif %}</a>
-      </h1>
-      {% endif %}
-      {% else %}
-    {% if page.external-url %}
-      <h1 class="text-3xl my-3">
-        <a href="{{ page.external-url }}">{% if site.titlecase %}{{ page.title | titlecase }} {% else %}{{ page.title }}{% endif %}</a> &#8734;
-      </h1>
-      {% else %}
-      <h1 class="text-3xl my-3">
-        {% if site.titlecase %}{{ page.title | titlecase }}{% else %}{{ page.title }}{% endif %}
-      </h1>
-    {% endif %}
-  {% endif %}
-    {% unless page.meta == false %}
-      <p class="meta">
-        {% include post/date.html %}{{ time }}
-        {% if site.disqus_short_name and page.comments != false and post.comments != false and site.disqus_show_comment_count == true %}
-         | <a href="{% if index %}{{ root_url }}{{ post.url }}{% endif %}#disqus_thread">Comments</a>
-        {% endif %}
-      </p>
-    {% endunless %}
-  </header>
-{% endunless %}
-{% if index %}
-  <div class="entry-content">{{ content | excerpt }}</div>
-  {% capture excerpted %}{{ content | has_excerpt }}{% endcapture %}
-  {% if excerpted == 'true' %}
-    <footer>
-      <a rel="full-article" href="{{ root_url }}{{ post.url }}">{{ site.excerpt_link }}</a>
-    </footer>
-  {% endif %}
-{% else %}
-<div class="entry-content">{{ content }}</div>
-{% endif %}
+<div class="flex flex-col">
+    <div class="mb-8">
+        <a class="text-3xl" href="/"><img src="/images/back-arrow.svg"></a>
+    </div>
+    <div class="flex flex-col-reverse md:flex-row">
+        <div class="md:w-3/12 md:pr-20" style="font-family: Poppins">
+            {% assign blog_author = site.data.members | find: "name", page.author %}
+            {% if blog_author %}
+            <div class="border-t border-b border-black flex flex-col pb-4">
+                <div class="p-4 w-36 h-36 self-center">
+                    <img src="{{ blog_author.image_url }}" class="rounded-full">
+                </div>
+                <a class="text-sm font-medium" href="{{ blog_author.twitter }}">{{ blog_author.name }}</a>
+                {% if blog_author.medium %}
+                <p class="text-xs m-0" style="font-family: Poppins">Read more by {{ blog_author.short_name }} on <a
+                        href="{{ blog_author.medium }}">Medium</a></p>
+                {% elsif blog_author.website %}
+                <p class="text-xs m-0" style="font-family: Poppins">Read more by {{ blog_author.short_name }} <a
+                        href="{{ blog_author.website }}">here</a></p>
+                {% endif %}
+
+            </div>
+            {% endif %}
+        </div>
+        <div class="md:w-8/12">
+            {% unless page.no_header %}
+            <header>
+                {% if index %}
+                {% if post.external-url %}
+                <h1 class="text-3xl md:text-5xl mb-3">
+                    <a href="{{ post.external-url }}">{% if site.titlecase %}{{ post.title | titlecase }} {% else %}{{
+                        post.title
+                        }}{% endif %}</a> {% if post.external-url %}<a href="{{ root_url }}{{ post.url }}">&#8734;</a>
+                    {%
+                    endif %}
+                </h1>
+                {% else %}
+                <h1 class="text-3xl md:text-5xl mb-3">
+                    <a href="{{ root_url }}{{ post.url }}">{% if site.titlecase %}{{ post.title | titlecase }}{% else
+                        %}{{
+                        post.title }}{% endif %}</a>
+                </h1>
+                {% endif %}
+                {% else %}
+                {% if page.external-url %}
+                <h1 class="text-3xl md:text-5xl mb-3">
+                    <a href="{{ page.external-url }}">{% if site.titlecase %}{{ page.title | titlecase }} {% else %}{{
+                        page.title
+                        }}{% endif %}</a> &#8734;
+                </h1>
+                {% else %}
+                <h1 class="text-3xl md:text-5xl mb-3">
+                    {% if site.titlecase %}{{ page.title | titlecase }}{% else %}{{ page.title }}{% endif %}
+                </h1>
+                {% endif %}
+                {% endif %}
+                {% unless page.meta == false %}
+                <span class="meta">
+                    {% include post/date.html %}{{ time }}
+                    {% if site.disqus_short_name and page.comments != false and post.comments != false and
+                    site.disqus_show_comment_count == true %}
+                    | <a href="{% if index %}{{ root_url }}{{ post.url }}{% endif %}#disqus_thread">Comments</a>
+                    {% endif %}
+                </span>
+                {% endunless %}
+            </header>
+            {% endunless %}
+
+            {% if index %}
+            <div class="entry-content">{{ content | excerpt }}</div>
+            {% capture excerpted %}{{ content | has_excerpt }}{% endcapture %}
+            {% if excerpted == 'true' %}
+            <footer>
+                <a rel="full-article" href="{{ root_url }}{{ post.url }}">{{ site.excerpt_link }}</a>
+            </footer>
+            {% endif %}
+            {% else %}
+            <div class="entry-content">{{ content }}</div>
+            {% endif %}
+        </div>
+    </div>
+</div>

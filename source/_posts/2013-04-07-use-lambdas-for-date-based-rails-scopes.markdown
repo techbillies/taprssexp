@@ -63,9 +63,4 @@ This typically happens only when the server is restarted.</p>
 </span><span class='line'>  <span class="n">scope</span> <span class="ss">:expired</span><span class="p">,</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="n">where</span><span class="p">(</span><span class="s2">&quot;expiry_date &lt; ?&quot;</span><span class="p">,</span> <span class="no">Date</span><span class="o">.</span><span class="n">today</span><span class="p">)</span> <span class="p">}</span>
 </span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
-<div class="author">
-  <img src="https://nilenso.com/images/alumni/tim.webp" style="width: 96px; height: 96;">
-  <span style=" padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/timothyandrew">Timothy Andrew</a> - check out <a href="https://blog.timothyandrew.net/">Timothy&#39;s Blog</a></i>
-  </span>
-</div>
+

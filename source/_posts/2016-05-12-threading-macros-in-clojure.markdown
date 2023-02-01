@@ -101,9 +101,3 @@ layout: post
 </div>
 <p>You could use the threading operator or even write it in a single line, but it would be messy.</p>
 <p class="p1"><span class="s2">A </span><span class="s3">threading</span><span class="s2"> macro can be used to reverse the read order: the value is primarily for people reading your code later; if using a </span><span class="s3">threading</span><span class="s2"> macro doesn&#8217;t feel like it will make your code easier for the next person to read, it&#8217;s probably the wrong choice.</span></p>
-<div class="author">
-  <img src="https://nilenso.com/images/alumni/unni.webp" style="width: 96px; height: 96;">
-  <span style=" padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/krish8664">Unnikrishnan Geethagovindan</a> - check out <a href="https://blog.unnikrishnan.in">My blog</a></i>
-  </span>
-</div>

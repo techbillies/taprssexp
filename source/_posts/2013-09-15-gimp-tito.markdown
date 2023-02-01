@@ -39,9 +39,4 @@ There is also an old <a href="https://www.youtube.com/watch?v=G0PuH1LFWhA">scree
 <h3>We can finish this together</h3>
 
 <p>I really need some company in finishing this up. Mitch (Michael Natterer on IRC) took a look at the diff and suggested a few changes that would make it eligible to go upstream. I&rsquo;ve created <a href="https://github.com/ssrihari/gimp-tito/issues">issues</a> for these on github. My gut feeling is that this should take lesser than a week. Please <a href="https://twitter.com/sriharisriraman">get in touch</a> if you are interested. Let&rsquo;s collaborate!</p>
-<div class="author">
-  <img src="https://nilenso.com/images/people/srihari.webp" style="width: 96px; height: 96;">
-  <span style=" padding: 32px 15px;">
-    <i>Original post by <a href="http://twitter.com/sriharisriraman">Srihari Sriraman</a> - check out <a href="https://sriharisriraman.in/">Srihari&#39;s Blog</a></i>
-  </span>
-</div>
+
