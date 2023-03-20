@@ -1,0 +1,93 @@
+---
+title: "FOSSMeet 2023: The brazen indifference for Free Software, because people think Something Else is more important."
+kind: article
+created_at: 2022-11-08 10:26:00 UTC
+author: Atharva Raykar
+layout: post
+---
+
+_Views in this article are those of Atharva, and not nilenso. The coop isn’t yet a hivemind._
+
+After an afternoon replete with good food, coconut juice, sweltering heat and exhaustion, we went to the venue at NIT Calicut. As we waited for the microphones to be set up for the keynote, I had a chat with the soon-retiring professor who helped conceive FOSSMeet. He helped revive this edition of the conference after a three-year gap, and also had a part in the Free Software revolution in Kerala, which saw schools and government departments adopt Free Software.
+
+He told me how important it is for this conference to continue. Young people these days are great with technology, and there are plenty of platforms to talk about it. What we need more critically is a platform to uphold the ideals and values of Free or _Swatantra_ Software. That is software that respects [the four essential freedoms](https://www.gnu.org/philosophy/free-sw.en.html#fs-definition). I used to think like the Professor when I first learnt about Free Software. But on that day, I didn’t have the heart to tell him what I really thought about the state of Free Software.
+
+_Free Software has already lost. It’s all about what helps corporations now._
+
+I observed that many of the college-age attendees could not differentiate between Free Software and Open Source software. This was juxtaposed with an abundance of stickers and merchandise containing playful references to Richard M Stallman, the founder and larger-than-life figure that looms over the Free Software movement [^1].
+
+![outside NIT calicut's FOSSMeet venue](/images/blog/fossmeet-2023/fossmeet-venue.webp)
+
+A lot of corrections and disambiguations were made over the next three days. And a few people prefixing their questions with an apology for still using Windows.
+
+There were also some of the older speakers and Free Software supporters that made appeals to adopt and use Free and Open Source Software. Throw away the proprietary stuff run by large corporations who don’t have your best interests.
+
+_These ideals are great_, I thought for a second. But this train of thought derailed soon.
+
+_Nearly all the great open-source alternatives being suggested here are fuelled and funded by the same giant corporations we are rallying against. That’s why we are getting to use it for free. GitHub is owned by Microsoft, and that’s where nearly all Open Source software lives._
+
+I thought of the pride that some college professors and authorities would have if their students got placed in Microsoft or Google.
+
+The talking points continued to be dispensed. Encourage freedom-respecting alternatives, even if they are slightly worse. The beauty of FOSS is that if something does not work for you, or if a feature is missing, we can always fix the software ourselves and share the changes back to help everyone else. My dissonance grew.
+
+_Yeah right. If the WiFi driver on someone’s laptop breaks, almost no one will spend their time learning kernel programming to figure out how to fix it. The same goes for most Free Software. People don’t have the expertise or time. The burden of ensuring that things work goes to thankless, burnt-out maintainers, or centralised entities (ie, big corporations). And what about the underpaid schoolteachers and officials in the rural districts running FOSS? Are we going to tell them to go fix everything for themselves?_
+
+The success stories of FOSS adoption in schools and governments were brought up.
+
+_Were they adopted because they were cost-saving, or because the government really cares about the four freedoms? Do they give back to the community?_
+
+As the conference went on, my thoughts inner monologues got louder. I grew uncomfortable. Anyone who has read about mindfulness practices would know that denying reality causes stress and suffering.
+
+_We have our Free Software (and our Proprietary Software, and whatever software). Yet the world still ails from injustice, disease, poverty and suffering. If this conference is about something greater than cool technology, why aren’t we getting to the heart of the matter? What is the heart of the matter?_
+
+And on the morning of the second day, I felt we had suffered enough. I slanted over to fellow ensonians Prabhanshu[^2] and Akshatha and said, “Maybe there’s room for a talk full of bitter pills and harsh realities. It might offend, but it needs to be talked about.”
+
+Quite wonderfully, my request for the world was willed into existence. The next speaker in line, Akshay S Dinesh, stepped up and supplied the bitter pills I was seeking, but he made them taste sweet with his fun, highly interactive talk, amusingly titled “Enough of JavaScript build tools. Solving real-world problems collaboratively through FOSS, etc”.
+
+He laid out percentage figures with no descriptions in his slides and made people guess what these were. And systematically, the realisations started reverberating. The top 10% held around 70% of the nation’s wealth. If we owned a scooter, car or house, we were likely in that top 10%. He talked about catastrophic health expenditures and how a large chunk of Indians without our privileges are vulnerable to losing their wealth to medical emergencies. He talked about the prejudices that still exist in society and the mess we’re in.
+
+Something changed for me in this Free Software conference, which until now was like many other such events, teeming with usual appeals to adopt Stallman-certified software. Now it finally felt like something more. We are finally talking about the big picture. Free Software might have tried to address this at some point. He laid bare what really ails us.
+
+He left the audience with an exercise called “The 4th Box”[^3].
+
+<img width="60%" height="60%" src="/images/blog/fossmeet-2023/the-fourth-box.jpg" alt="The fourth box image">
+
+Each box displays the various attempts to fix injustices in our society. The first one is to apply the same solution equally, not accounting for the privileges people have. The other is something like affirmative action, where you solve each person’s needs differently, to get an equal outcome. The third box is to remove the obstacle entirely (why was it even there?). The fourth box is blank. It’s because there aren’t just three ways to address it. We need all of the good ideas we can get and more of them.
+
+And right after he showed this, came the money line, which brought us back to Free and Open Source Software.
+
+_FOSS is an option._
+
+It’s not the solution. It’s just an option, and not necessarily the best one. Use it with all the other tools in the box to help make the world more equitable.
+
+Akshay did not talk about JavaScript.
+
+<div style="margin:1.5rem auto; width: max-content">.　 . • ☆ . ° .• °:. *₊ ° . ☆</div>
+
+I met some of the other speakers in the lunch break, mostly young whippersnappers like me who are all bundled up in a polythene bag labelled Gen-Z (usually by overly-confident journalists).
+
+These were people like me, who were drawn to FOSS movements and had their fair share of contributions to various communities. And like me, they shared the same varietal of scepticism about FOSS. It was clear what the younger folks at the conference were focused on. We wanted to solve problems. We didn’t want to be activists tied to a cause. Use the tools we have to make the world better and get on with it.
+
+There was the technical chatter too, of course. I was talking about TypeScript to the CTO of a company that runs a popular Open Source project. Types were a layer of restrictions added over JavaScript that guarantees the elimination of certain classes of errors. The debate we had was that while it’s useful to have these restrictions to protect fallible humans from themselves, we also eliminate a really large set of valid programs that are perfectly valid due to the same restrictions. It’s a tradeoff.
+
+I’d like to think about Free Software similarly. It’s a set of restrictions over the licensing and distribution of Software that if followed, will guarantee some good outcomes for society. It’s much harder to exploit your users when your program can be used, modified and inspected in pretty much any way. For example, if my local hospital’s patient management software met the Free Software definition, I would be able to verify if it did something nasty, like transmitting my prescription data to third parties. Moreover, a rural clinic would theoretically be able to take the same software and adapt it to make it work better in internet-scarce regions. Quite neat. But slapping a GPL licence on the patient management software would still not stop a malicious hospital from producing a data dump of all its data and selling it. They could still exploit their users if they really wanted to.
+
+Stallman’s definitions of freedom will also rule out large classes of perfectly-good-for-society software with the villainous label of “unethical”. The Free Software Foundation is quite aggressive about things not meeting their standards. They see a binary, where there is a spectrum.
+
+Stallman would lament the fact that my colleague Prabhanshu is working with MIT-licensed software at Simple. This license won’t meet the Free Software standards of “ethical” because someone could theoretically make modifications and deploy a proprietary variant that cannot be audited or trusted. While this is true, it does not change the fact that Simple is a software that has created highly positive outcomes for society. More so than a lot of software licensed in a way that would make the Free Software folk content.
+
+
+![Venn diagram: software that creates negative outcomes overlaps with software that creates positive outcomes. A smaller circle called "free software" is inside the circle with positive outcomes, only slightly overlapping the negative outcomes](/images/blog/fossmeet-2023/free-software-vd.png)
+
+
+And that’s why I am largely indifferent to Free Software as an ideology. Some say it’s dying, and others argue it’s already dead. I haven’t checked the pulse. I am not interested in another subculture that lives and dies by the holy words of its greatest founder.
+
+The world is magical, but there are no magic spells. We don’t only need Free Software. We need something with a bigger frame, something more complete, and more of it.
+
+Footnotes
+
+[^1]: Enough has been written about this guy already. I’ll save some words in this essay.
+
+[^2]: Prabhanshu gave a talk on simple.org, a software he worked on which saves lives in rural areas.
+
+[^3]: Image Credit: A collaboration between Center for Story-based Strategy & Interaction Institute for Social Change.
