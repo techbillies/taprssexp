@@ -450,7 +450,6 @@ article .pre-quote {
     font-size: 1em;
     max-height: 35%;
     line-height: 1.2;
-    overflow: clip;
 }
 
 .post-tile .post-img {
