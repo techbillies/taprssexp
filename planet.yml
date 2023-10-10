@@ -19,24 +19,11 @@ planet:
 
 blogs:
   - author: "Srihari Sriraman"
-    feed: "https://sriharisriraman.in/atom.xml"
+    feed: "https://thearabianpost.com/feed"
     image:  "https://nilenso.com/images/people/srihari.webp"
     twitter: "sriharisriraman"
 
-  - author: "Deepa Venkatraman"
-    feed: "https://medium.com/feed/@deepa_93680"
-    image: "https://nilenso.com/images/people/deepa.webp"
-    twitter: "deepa_v"
 
-  - author: "Govind Krishna Joshi"
-    feed: "https://medium.com/feed/@govindkrjoshi"
-    image: "https://nilenso.com/images/people/govind.webp"
-    twitter: "govindkrjoshi"
-
-  - author: "Kiran Gangadharan"
-    feed: "https://medium.com/feed/@kirang89"
-    image: "https://nilenso.com/images/people/kiran.webp"
-    twitter: "kirang89"
 
     ########################
     # Alumni: new posts won't be tagged with `nilenso` and if we regenerate
